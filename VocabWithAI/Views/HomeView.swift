@@ -239,14 +239,14 @@ struct FeatureGridView: View {
             FeatureCard(
                 title: "단어등록",
                 icon: "plus.circle.fill",
-                iconColor: .gray,
+                iconColor: .blue,
                 action: onLogTap
             )
             
             FeatureCard(
                 title: "오늘의 표현",
                 icon: "message.fill",
-                iconColor: .gray,
+                iconColor: .blue,
                 action: onExpressionTap
             )
             

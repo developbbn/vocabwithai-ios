@@ -61,21 +61,6 @@ struct ContentView: View {
 }
 
 // MARK: - Placeholder Views
-struct SearchView: View {
-    var body: some View {
-        NavigationView {
-            ZStack {
-                Color(.systemGroupedBackground)
-                    .ignoresSafeArea()
-                Text("검색")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-            }
-            .navigationTitle("검색")
-        }
-    }
-}
-
 struct SettingsView: View {
     var body: some View {
         NavigationView {
