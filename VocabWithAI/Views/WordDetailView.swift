@@ -49,7 +49,16 @@ struct WordDetailView: View {
                     .padding(12)
                     .contentShape(Rectangle())
             }
+
             Spacer()
+
+            NavigationLink(destination: EditWordView(word: word)) {
+                Image(systemName: "pencil")
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundColor(.black)
+                    .padding(12)
+                    .contentShape(Rectangle())
+            }
         }
     }
 

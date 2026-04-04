@@ -50,6 +50,27 @@ class WordRepository: ObservableObject {
         generateAIContent(for: newWord)
     }
 
+    // MARK: - Public: 단어 수정
+    func updateWord(_ updated: Word) {
+        guard let index = words.firstIndex(where: { $0.id == updated.id }) else { return }
+        let wordChanged = words[index].word != updated.word
+
+        // 단어가 바뀌면 AI 콘텐츠 초기화 후 재생성
+        var wordToSave = updated
+        if wordChanged {
+            wordToSave.aiContent = nil
+            wordToSave.quizData  = nil
+        }
+
+        words[index] = wordToSave
+        save()
+        print("✏️ 단어 수정 완료: \(updated.word)")
+
+        if wordChanged {
+            generateAIContent(for: wordToSave)
+        }
+    }
+
     // MARK: - Public: 단어 삭제
     func deleteWord(_ word: Word) {
         words.removeAll { $0.id == word.id }
