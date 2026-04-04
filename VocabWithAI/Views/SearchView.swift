@@ -12,29 +12,27 @@ struct SearchView: View {
     @FocusState private var isSearchFocused: Bool
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                // MARK: - 검색바 영역 (흰색 배경)
-                VStack {
-                    searchBar
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 12)
-                }
-                .padding(.top, 50)
-                .background(Color.white)
+        VStack(spacing: 0) {
+            // MARK: - 검색바 영역 (흰색 배경)
+            VStack {
+                searchBar
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+            }
+            .padding(.top, 50)
+            .background(Color.white)
 
-                // MARK: - 상태에 따라 다른 콘텐츠
-                if viewModel.isSearching {
-                    searchActiveContent
-                } else {
-                    idleContent
-                }
+            // MARK: - 상태에 따라 다른 콘텐츠
+            if viewModel.isSearching {
+                searchActiveContent
+            } else {
+                idleContent
             }
-            .background(Color.white.ignoresSafeArea())
-            .navigationBarHidden(true)
-            .onTapGesture {
-                isSearchFocused = false
-            }
+        }
+        .background(Color.white.ignoresSafeArea())
+        .navigationBarHidden(true)
+        .onTapGesture {
+            isSearchFocused = false
         }
     }
 
@@ -199,7 +197,16 @@ struct SearchView: View {
                 ScrollView {
                     VStack(spacing: 10) {
                         ForEach(viewModel.filteredResults) { result in
-                            SearchResultRow(result: result, query: viewModel.searchText)
+                            SearchResultRow(
+                                result: result,
+                                query: viewModel.searchText,
+                                onTap: {
+                                    switch result {
+                                    case .word(let w):   viewModel.saveResultAsRecentSearch(w.word)
+                                    case .phrase(let p): viewModel.saveResultAsRecentSearch(p.japanese)
+                                    }
+                                }
+                            )
                         }
                     }
                     .padding(.horizontal, 16)
@@ -275,36 +282,54 @@ struct TrendingWordRow: View {
 struct SearchResultRow: View {
     let result: SearchResult
     let query: String
+    var onTap: (() -> Void)? = nil
 
     var body: some View {
-        HStack(spacing: 12) {
-            VStack(alignment: .leading, spacing: 6) {
-                HStack(spacing: 8) {
-                    highlightedText(mainText, query: query)
-                        .font(.system(size: 16, weight: .semibold))
+        NavigationLink(destination: destination) {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack(spacing: 8) {
+                        highlightedText(mainText, query: query)
+                            .font(.system(size: 16, weight: .semibold))
 
-                    // 타입 뱃지
-                    Text(badgeLabel)
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(badgeColor)
-                        .padding(.horizontal, 7)
-                        .padding(.vertical, 3)
-                        .background(badgeColor.opacity(0.12))
-                        .cornerRadius(6)
+                        Text(badgeLabel)
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundColor(badgeColor)
+                            .padding(.horizontal, 7)
+                            .padding(.vertical, 3)
+                            .background(badgeColor.opacity(0.12))
+                            .cornerRadius(6)
+                    }
+
+                    Text("뜻: \(subText)")
+                        .font(.system(size: 13))
+                        .foregroundColor(.gray)
+                        .lineLimit(1)
                 }
 
-                Text("뜻: \(subText)")
-                    .font(.system(size: 13))
-                    .foregroundColor(.gray)
-                    .lineLimit(1)
-            }
+                Spacer()
 
-            Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(.gray.opacity(0.4))
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .background(Color.white)
+            .cornerRadius(14)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 14)
-        .background(Color.white)
-        .cornerRadius(14)
+        .buttonStyle(PlainButtonStyle())
+        .simultaneousGesture(TapGesture().onEnded { onTap?() })
+    }
+
+    @ViewBuilder
+    private var destination: some View {
+        switch result {
+        case .word(let w):
+            WordDetailView(word: w)
+        case .phrase(let p):
+            PhraseDetailView(phrase: p)
+        }
     }
 
     // MARK: - 하이라이팅

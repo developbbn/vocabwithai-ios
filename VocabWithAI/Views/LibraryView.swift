@@ -11,7 +11,7 @@ struct LibraryView: View {
     @StateObject private var viewModel = LibraryViewModel()
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Color(.systemGroupedBackground)
                     .ignoresSafeArea()
@@ -118,9 +118,12 @@ struct LibraryView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         ForEach(viewModel.phrases) { phrase in
-                            PhraseRowView(phrase: phrase, onDelete: {
-                                viewModel.deletePhrase(phrase)
-                            })
+                            NavigationLink(destination: PhraseDetailView(phrase: phrase)) {
+                                PhraseRowView(phrase: phrase, onDelete: {
+                                    viewModel.deletePhrase(phrase)
+                                })
+                            }
+                            .buttonStyle(PlainButtonStyle())
                             
                             Divider()
                                 .padding(.leading, 20)

@@ -139,6 +139,13 @@ class SearchViewModel: ObservableObject {
         saveRecentSearch(query)
     }
 
+    // MARK: - 결과 탭 시 해당 단어/표현을 최근 검색어로 저장
+    func saveResultAsRecentSearch(_ text: String) {
+        let query = text.trimmingCharacters(in: .whitespaces)
+        guard !query.isEmpty else { return }
+        saveRecentSearch(query)
+    }
+
     // MARK: - 최근 검색어
     private func saveRecentSearch(_ query: String) {
         var searches = recentSearches

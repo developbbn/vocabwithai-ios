@@ -33,7 +33,9 @@ struct ContentView: View {
                     }
                     .tag(1)
 
-                SearchView()
+                NavigationStack {
+                    SearchView()
+                }
                     .tabItem {
                         VStack {
                             Image(systemName: "magnifyingglass")
@@ -60,7 +62,7 @@ struct ContentView: View {
     }
 }
 
-// MARK: - Placeholder Views
+// MARK: - Placeholder
 struct SettingsView: View {
     var body: some View {
         NavigationView {
