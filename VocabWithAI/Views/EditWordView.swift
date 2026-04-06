@@ -11,9 +11,11 @@ struct EditWordView: View {
     @StateObject private var viewModel: EditWordViewModel
     @Environment(\.presentationMode) private var presentationMode
     @State private var showDeleteConfirm = false
+    var onDelete: (() -> Void)? = nil
 
-    init(word: Word) {
+    init(word: Word, onDelete: (() -> Void)? = nil) {
         _viewModel = StateObject(wrappedValue: EditWordViewModel(word: word))
+        self.onDelete = onDelete
     }
 
     var body: some View {
@@ -91,6 +93,7 @@ struct EditWordView: View {
                     WordRepository.shared.deleteWord(target)
                 }
                 presentationMode.wrappedValue.dismiss()
+                onDelete?()
             }
             Button("취소", role: .cancel) {}
         }

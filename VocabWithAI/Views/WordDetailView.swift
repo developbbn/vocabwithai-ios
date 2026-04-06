@@ -40,6 +40,7 @@ struct WordDetailView: View {
         .navigationBarHidden(true)
     }
 
+    // MARK: - Navigation Bar
     private var customNavBar: some View {
         HStack {
             Button(action: { presentationMode.wrappedValue.dismiss() }) {
@@ -52,9 +53,11 @@ struct WordDetailView: View {
 
             Spacer()
 
-            NavigationLink(destination: EditWordView(word: word)) {
+            NavigationLink(destination: EditWordView(word: word, onDelete: {
+                presentationMode.wrappedValue.dismiss()
+            })) {
                 Image(systemName: "pencil")
-                    .font(.system(size: 18, weight: .bold))
+                    .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(.black)
                     .padding(12)
                     .contentShape(Rectangle())
@@ -62,6 +65,7 @@ struct WordDetailView: View {
         }
     }
 
+    // MARK: - Header
     private var wordHeader: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(word.word)
@@ -80,6 +84,7 @@ struct WordDetailView: View {
         }
     }
 
+    // MARK: - AI Learning Content
     private func aiContentView(_ content: String) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
@@ -91,27 +96,12 @@ struct WordDetailView: View {
                     .foregroundColor(.black)
             }
 
-            if #available(iOS 15.0, *) {
-                Text(.init(content))
-                    .font(.system(size: 16))
-                    .lineSpacing(6)
-                    .textSelection(.enabled)
-                    .padding(20)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.white)
-                    .cornerRadius(16)
-            } else {
-                Text(content)
-                    .font(.system(size: 16))
-                    .lineSpacing(6)
-                    .padding(20)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.white)
-                    .cornerRadius(16)
-            }
+            // 커스텀 파싱 뷰를 사용하여 계층 구조 시각화
+            ParsedInsightView(content: content)
         }
     }
 
+    // MARK: - No Content Fallback
     private var noAIContent: some View {
         VStack(spacing: 16) {
             Image(systemName: "sparkles")
@@ -130,6 +120,7 @@ struct WordDetailView: View {
         .cornerRadius(16)
     }
 
+    // MARK: - User Memo
     private var userMemoSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {

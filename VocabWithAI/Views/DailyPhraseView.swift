@@ -8,32 +8,43 @@
 import SwiftUI
 
 struct DailyPhraseView: View {
-    @ObservedObject private var viewModel = DailyPhraseViewModel.shared  // ← 싱글톤 사용
+    @ObservedObject private var viewModel = DailyPhraseViewModel.shared
     @Environment(\.dismiss) private var dismiss
-    
+
+    // 검색에서 특정 표현을 넘길 때 사용. nil이면 오늘의 표현 로드
+    var phrase: DailyPhrase? = nil
+
     var body: some View {
-        ZStack {
-            Color(.systemGroupedBackground)
-                .ignoresSafeArea()
-            
-            if viewModel.isLoading {
+        Group {
+            if let fixedPhrase = phrase {
+                // 외부에서 표현을 받은 경우 → 바로 표시
+                contentView(phrase: fixedPhrase)
+            } else if viewModel.isLoading {
                 loadingView
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if let error = viewModel.errorMessage {
                 errorView(message: error)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if let phrase = viewModel.currentPhrase {
                 contentView(phrase: phrase)
+            } else {
+                // 아무 상태도 아닐 때의 빈 화면 처리 (안전망)
+                Color.clear
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            
-            // Custom Nav Bar
-            VStack {
-                customNavBar
-                    .padding(.horizontal, 20)
-                    .padding(.top, 12)
-                Spacer()
-            }
+        }
+        // 배경색을 뷰 전체에 적용
+        .background(Color(.systemGroupedBackground).ignoresSafeArea())
+        // 네비게이션 바를 최상단(Z축의 맨 위)에 독립적으로 오버레이! (터치 씹힘 해결)
+        .overlay(alignment: .topLeading) {
+            customNavBar
+                .padding(.horizontal, 20)
+                .padding(.top, 12)
         }
         .navigationBarHidden(true)
         .onAppear {
+            guard phrase == nil else { return } // 외부 표현이 있으면 스킵
+
             // 표현 학습 완료 처리
             DailyStatsManager.shared.markExpressionDone()
 
@@ -53,7 +64,11 @@ struct DailyPhraseView: View {
                 Image(systemName: "chevron.left")
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.black)
+                    .padding(12) // 터치 영역 확장
+                    .contentShape(Rectangle()) // 빈 공간도 터치로 인식하게 강제
             }
+            .offset(x: -12) // 패딩 때문에 오른쪽으로 밀린 버튼을 다시 왼쪽으로 당겨줌
+            
             Spacer()
         }
     }
@@ -99,7 +114,7 @@ struct DailyPhraseView: View {
             VStack(alignment: .leading, spacing: 24) {
                 // Date Header
                 dateHeader(phrase: phrase)
-                    .padding(.top, 80)
+                    .padding(.top, 80) // 오버레이된 네비바와 겹치지 않게 여백 주기
                 
                 // Title
                 Text("오늘의 표현")
@@ -122,9 +137,27 @@ struct DailyPhraseView: View {
     
     // MARK: - Date Header
     private func dateHeader(phrase: DailyPhrase) -> some View {
-        Text(phrase.dateString)
-            .font(.system(size: 14, weight: .semibold))
-            .foregroundColor(.blue)
+        HStack {
+            Text(phrase.dateString)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(.blue)
+
+            Spacer()
+
+            if self.phrase == nil {
+                Button(action: {
+                    viewModel.currentPhrase = nil
+                    viewModel.generateTodayPhrase()
+                }) {
+                    Image(systemName: "arrow.clockwise")
+                        .font(.system(size: 22, weight: .semibold))
+                        .foregroundColor(.blue)
+                        .padding(8)
+                        .contentShape(Rectangle())
+                }
+                .offset(x: 8)
+            }
+        }
     }
     
     // MARK: - Phrase Card
@@ -137,7 +170,10 @@ struct DailyPhraseView: View {
                     Image(systemName: phrase.isBookmarked ? "bookmark.fill" : "bookmark")
                         .font(.system(size: 24))
                         .foregroundColor(phrase.isBookmarked ? .blue : .gray.opacity(0.4))
+                        .padding(8)
+                        .contentShape(Rectangle())
                 }
+                .offset(x: -8)
                 
                 Spacer()
                 
@@ -205,26 +241,62 @@ struct DailyPhraseView: View {
                     .foregroundColor(.black)
             }
             
-            // iOS 15+ 마크다운 지원
-            if #available(iOS 15.0, *) {
-                Text(.init(content))
-                    .font(.system(size: 16))
-                    .lineSpacing(6)
-                    .textSelection(.enabled)
-                    .padding(20)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.blue.opacity(0.05))
-                    .cornerRadius(16)
-            } else {
-                Text(content)
-                    .font(.system(size: 16))
-                    .lineSpacing(6)
-                    .padding(20)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.blue.opacity(0.05))
-                    .cornerRadius(16)
+            // 커스텀 파싱 뷰 사용
+            ParsedInsightView(content: content)
+        }
+    }
+}
+
+// MARK: - Custom Insight Parser View
+struct ParsedInsightView: View {
+    let content: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            // 전체 텍스트를 줄바꿈(\n) 기준으로 쪼갬
+            let lines = content.components(separatedBy: .newlines)
+            
+            ForEach(0..<lines.count, id: \.self) { index in
+                let line = lines[index].trimmingCharacters(in: .whitespaces)
+                
+                if line.isEmpty {
+                    EmptyView()
+                } else if line.hasPrefix("###") {
+                    // 1. ### 일 때: 일반 크기 (16)
+                    let text = line.replacingOccurrences(of: "###", with: "").trimmingCharacters(in: .whitespaces)
+                    Text(text)
+                        .font(.system(size: 16, weight: .regular))
+                        .foregroundColor(.black.opacity(0.8))
+                        .padding(.leading, 16) // 안쪽으로 쏙 들어가게
+                } else if line.hasPrefix("##") {
+                    // 2. ## 일 때: 좀 크게 (19), 파란색
+                    let text = line.replacingOccurrences(of: "##", with: "").trimmingCharacters(in: .whitespaces)
+                    Text(text)
+                        .font(.system(size: 19, weight: .semibold))
+                        .foregroundColor(.blue)
+                        .padding(.leading, 8)
+                        .padding(.top, 6)
+                } else if line.hasPrefix("#") {
+                    // 3. # 일 때: 아주 크게 (24), 굵게
+                    let text = line.replacingOccurrences(of: "#", with: "").trimmingCharacters(in: .whitespaces)
+                    Text(text)
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.black)
+                        .padding(.top, 16)
+                } else {
+                    // 4. 기호가 없는 일반 설명 텍스트 (16)
+                    Text(line)
+                        .font(.system(size: 16))
+                        .foregroundColor(.black.opacity(0.8))
+                        .lineSpacing(4)
+                        .padding(.leading, 8)
+                }
             }
         }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.blue.opacity(0.05))
+        .cornerRadius(16)
     }
 }
 
