@@ -24,6 +24,7 @@
 		DC406F362F8138A400F40A90 /* EditWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F352F8138A400F40A90 /* EditWordView.swift */; };
 		DC406F3C2F86962D00F40A90 /* PromptManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F3B2F86962B00F40A90 /* PromptManager.swift */; };
 		DC406F3E2F86965B00F40A90 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F3D2F86965B00F40A90 /* SettingsView.swift */; };
+		DC406F422F869F5200F40A90 /* MarkdownContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F412F869F5000F40A90 /* MarkdownContentView.swift */; };
 		DC7A16E32F3210D200689CAC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E22F3210D200689CAC /* ContentView.swift */; };
 		DC7A16E62F32112400689CAC /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E52F32112400689CAC /* HomeViewModel.swift */; };
 		DC7A16E92F322D7100689CAC /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E82F322D7100689CAC /* Word.swift */; };
@@ -62,6 +63,7 @@
 		DC406F352F8138A400F40A90 /* EditWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWordView.swift; sourceTree = "<group>"; };
 		DC406F3B2F86962B00F40A90 /* PromptManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptManager.swift; sourceTree = "<group>"; };
 		DC406F3D2F86965B00F40A90 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		DC406F412F869F5000F40A90 /* MarkdownContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownContentView.swift; sourceTree = "<group>"; };
 		DC7A16E22F3210D200689CAC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DC7A16E52F32112400689CAC /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		DC7A16E82F322D7100689CAC /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 		DC7A16F62F37525000689CAC /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				DC406F412F869F5000F40A90 /* MarkdownContentView.swift */,
 				DC7A16F72F37526700689CAC /* WordRowView.swift */,
 			);
 			path = Components;
@@ -322,6 +325,7 @@
 				DC406F2C2F7AC89400F40A90 /* SearchView.swift in Sources */,
 				DC7A16FB2F37579C00689CAC /* GeminiService.swift in Sources */,
 				DC14397B2F6047CE00EFF80C /* DailyStatsManager.swift in Sources */,
+				DC406F422F869F5200F40A90 /* MarkdownContentView.swift in Sources */,
 				DC406F362F8138A400F40A90 /* EditWordView.swift in Sources */,
 				DC406F282F7AC79400F40A90 /* SearchViewModel.swift in Sources */,
 				DC406F322F812DC200F40A90 /* PhraseDetailView.swift in Sources */,

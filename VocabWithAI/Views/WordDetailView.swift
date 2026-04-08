@@ -19,18 +19,27 @@ struct WordDetailView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 28) {
-                wordHeader
+            VStack(alignment: .leading, spacing: 24) {
+
+                // 타이틀
+                Text("단어 상세")
+                    .font(.system(size: 32, weight: .bold))
+                    .foregroundColor(.black)
                     .padding(.top, 80)
 
+                // 단어 카드
+                wordCard
+
+                // AI 콘텐츠
                 if let aiContent = currentWord.aiContent, !aiContent.isEmpty {
-                    aiContentView(aiContent)
+                    aiContentSection(aiContent)
                 } else if repository.loadingWordIds.contains(currentWord.id) {
                     aiLoadingView
                 } else {
                     noAIContent
                 }
 
+                // 메모
                 if !currentWord.memo.isEmpty {
                     userMemoSection
                 }
@@ -46,6 +55,56 @@ struct WordDetailView: View {
                 .padding(.top, 12)
         }
         .navigationBarHidden(true)
+    }
+
+    // MARK: - Word Card
+    private var wordCard: some View {
+        VStack(spacing: 0) {
+            // 카드 헤더 — 태그
+            HStack {
+                Spacer()
+                Text("WORD")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(.blue)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(Color.blue.opacity(0.1))
+                    .cornerRadius(6)
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 24)
+
+            // 메인 콘텐츠
+            VStack(spacing: 16) {
+                // 발음 (히라가나)
+                if !currentWord.pronunciation.isEmpty {
+                    Text(currentWord.pronunciation)
+                        .font(.system(size: 18))
+                        .foregroundColor(.gray)
+                }
+
+                // 단어 (큰 글씨)
+                Text(currentWord.word)
+                    .font(.system(size: 44, weight: .bold))
+                    .foregroundColor(.black)
+                    .multilineTextAlignment(.center)
+
+                Divider()
+                    .frame(width: 60)
+                    .padding(.vertical, 4)
+
+                // 뜻
+                Text(currentWord.meaning)
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundColor(.black)
+                    .multilineTextAlignment(.center)
+            }
+            .padding(.horizontal, 24)
+            .padding(.vertical, 32)
+        }
+        .background(Color.white)
+        .cornerRadius(20)
+        .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 2)
     }
 
     private var customNavBar: some View {
@@ -84,25 +143,8 @@ struct WordDetailView: View {
         }
     }
 
-    private var wordHeader: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text(currentWord.word)
-                .font(.system(size: 44, weight: .bold))
-                .foregroundColor(.black)
-
-            if !currentWord.pronunciation.isEmpty {
-                Text(currentWord.pronunciation)
-                    .font(.system(size: 20))
-                    .foregroundColor(.gray)
-            }
-
-            Text(currentWord.meaning)
-                .font(.system(size: 24, weight: .medium))
-                .foregroundColor(.gray)
-        }
-    }
-
-    private func aiContentView(_ content: String) -> some View {
+    // MARK: - AI Content Section
+    private func aiContentSection(_ content: String) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
                 Image(systemName: "sparkles")
@@ -113,24 +155,11 @@ struct WordDetailView: View {
                     .foregroundColor(.black)
             }
 
-            if #available(iOS 15.0, *) {
-                Text(.init(content))
-                    .font(.system(size: 16))
-                    .lineSpacing(6)
-                    .textSelection(.enabled)
-                    .padding(20)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.white)
-                    .cornerRadius(16)
-            } else {
-                Text(content)
-                    .font(.system(size: 16))
-                    .lineSpacing(6)
-                    .padding(20)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.white)
-                    .cornerRadius(16)
-            }
+            MarkdownContentView(content: content)
+                .padding(20)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.blue.opacity(0.05))
+                .cornerRadius(16)
         }
     }
 
