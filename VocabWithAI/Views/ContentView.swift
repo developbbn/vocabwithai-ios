@@ -62,22 +62,6 @@ struct ContentView: View {
     }
 }
 
-// MARK: - Placeholder
-struct SettingsView: View {
-    var body: some View {
-        NavigationView {
-            ZStack {
-                Color(.systemGroupedBackground)
-                    .ignoresSafeArea()
-                Text("설정")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-            }
-            .navigationTitle("설정")
-        }
-    }
-}
-
 // MARK: - Preview
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

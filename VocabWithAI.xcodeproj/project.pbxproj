@@ -22,6 +22,8 @@
 		DC406F322F812DC200F40A90 /* PhraseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F312F812DC200F40A90 /* PhraseDetailView.swift */; };
 		DC406F342F81388800F40A90 /* EditWordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F332F81388700F40A90 /* EditWordViewModel.swift */; };
 		DC406F362F8138A400F40A90 /* EditWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F352F8138A400F40A90 /* EditWordView.swift */; };
+		DC406F3C2F86962D00F40A90 /* PromptManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F3B2F86962B00F40A90 /* PromptManager.swift */; };
+		DC406F3E2F86965B00F40A90 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F3D2F86965B00F40A90 /* SettingsView.swift */; };
 		DC7A16E32F3210D200689CAC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E22F3210D200689CAC /* ContentView.swift */; };
 		DC7A16E62F32112400689CAC /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E52F32112400689CAC /* HomeViewModel.swift */; };
 		DC7A16E92F322D7100689CAC /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E82F322D7100689CAC /* Word.swift */; };
@@ -58,6 +60,8 @@
 		DC406F312F812DC200F40A90 /* PhraseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhraseDetailView.swift; sourceTree = "<group>"; };
 		DC406F332F81388700F40A90 /* EditWordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWordViewModel.swift; sourceTree = "<group>"; };
 		DC406F352F8138A400F40A90 /* EditWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWordView.swift; sourceTree = "<group>"; };
+		DC406F3B2F86962B00F40A90 /* PromptManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptManager.swift; sourceTree = "<group>"; };
+		DC406F3D2F86965B00F40A90 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DC7A16E22F3210D200689CAC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DC7A16E52F32112400689CAC /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		DC7A16E82F322D7100689CAC /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -146,6 +150,7 @@
 		DC7A16F92F37579100689CAC /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				DC406F3B2F86962B00F40A90 /* PromptManager.swift */,
 				DC7A16FA2F37579C00689CAC /* GeminiService.swift */,
 				DCA8D1282F5DD1230008636B /* ToastManager.swift */,
 				DC14397A2F6047CE00EFF80C /* DailyStatsManager.swift */,
@@ -206,6 +211,7 @@
 				DC406F2B2F7AC89400F40A90 /* SearchView.swift */,
 				DC406F312F812DC200F40A90 /* PhraseDetailView.swift */,
 				DC406F352F8138A400F40A90 /* EditWordView.swift */,
+				DC406F3D2F86965B00F40A90 /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -290,6 +296,7 @@
 			files = (
 				DCE700152F3210A1009AC55B /* HomeView.swift in Sources */,
 				DC7A16E32F3210D200689CAC /* ContentView.swift in Sources */,
+				DC406F3E2F86965B00F40A90 /* SettingsView.swift in Sources */,
 				DC1439772F5F0A0C00EFF80C /* MultipleChoiceQuizViewModel.swift in Sources */,
 				DC7A16F52F37515C00689CAC /* WordDetailView.swift in Sources */,
 				DC7A16EF2F374FCB00689CAC /* LibraryViewModel.swift in Sources */,
@@ -306,6 +313,7 @@
 				DC7A16E62F32112400689CAC /* HomeViewModel.swift in Sources */,
 				DC832DEE2F532F1100ACA109 /* DailyPhrase.swift in Sources */,
 				DCD6032B2F5C66E70044AC42 /* WordRepository.swift in Sources */,
+				DC406F3C2F86962D00F40A90 /* PromptManager.swift in Sources */,
 				DC14396E2F5DDAE200EFF80C /* FlashcardView.swift in Sources */,
 				DC38BC7E2F5B1BC100C57432 /* DailyPhraseViewModel.swift in Sources */,
 				DC1439792F5F0A3C00EFF80C /* MultipleChoiceQuizView.swift in Sources */,

@@ -40,7 +40,6 @@ struct WordDetailView: View {
         .navigationBarHidden(true)
     }
 
-    // MARK: - Navigation Bar
     private var customNavBar: some View {
         HStack {
             Button(action: { presentationMode.wrappedValue.dismiss() }) {
@@ -65,7 +64,6 @@ struct WordDetailView: View {
         }
     }
 
-    // MARK: - Header
     private var wordHeader: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(word.word)
@@ -84,7 +82,6 @@ struct WordDetailView: View {
         }
     }
 
-    // MARK: - AI Learning Content
     private func aiContentView(_ content: String) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
@@ -96,12 +93,27 @@ struct WordDetailView: View {
                     .foregroundColor(.black)
             }
 
-            // 커스텀 파싱 뷰 사용
-            ParsedInsightView(content: content)
+            if #available(iOS 15.0, *) {
+                Text(.init(content))
+                    .font(.system(size: 16))
+                    .lineSpacing(6)
+                    .textSelection(.enabled)
+                    .padding(20)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.white)
+                    .cornerRadius(16)
+            } else {
+                Text(content)
+                    .font(.system(size: 16))
+                    .lineSpacing(6)
+                    .padding(20)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.white)
+                    .cornerRadius(16)
+            }
         }
     }
 
-    // MARK: - No Content Fallback
     private var noAIContent: some View {
         VStack(spacing: 16) {
             Image(systemName: "sparkles")
@@ -120,7 +132,6 @@ struct WordDetailView: View {
         .cornerRadius(16)
     }
 
-    // MARK: - User Memo
     private var userMemoSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
@@ -139,59 +150,6 @@ struct WordDetailView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color.white)
                 .cornerRadius(16)
-        }
-    }
-}
-
-// 💡 에러 방지: 다른 파일에 ParsedInsightView가 없다면 아래 주석을 해제해서 사용하세요.
-/*
-struct ParsedInsightView: View {
-    let content: String
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            let lines = content.components(separatedBy: .newlines)
-            ForEach(0..<lines.count, id: \.self) { index in
-                let line = lines[index].trimmingCharacters(in: .whitespaces)
-                if line.hasPrefix("###") {
-                    Text(line.replacingOccurrences(of: "###", with: "").trimmingCharacters(in: .whitespaces))
-                        .font(.system(size: 16))
-                        .padding(.leading, 16)
-                } else if line.hasPrefix("##") {
-                    Text(line.replacingOccurrences(of: "##", with: "").trimmingCharacters(in: .whitespaces))
-                        .font(.system(size: 19, weight: .semibold))
-                        .foregroundColor(.blue)
-                        .padding(.leading, 8)
-                } else if line.hasPrefix("#") {
-                    Text(line.replacingOccurrences(of: "#", with: "").trimmingCharacters(in: .whitespaces))
-                        .font(.system(size: 24, weight: .bold))
-                        .padding(.top, 10)
-                } else {
-                    Text(line).font(.system(size: 16))
-                }
-            }
-        }
-        .padding(20)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.blue.opacity(0.05))
-        .cornerRadius(16)
-    }
-}
-*/
-
-// MARK: - Preview (수정됨)
-struct WordDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        // 프리뷰가 작동하려면 샘플 데이터가 반드시 필요해!
-        let sampleWord = Word(
-            word: "検索",
-            meaning: "검색",
-            pronunciation: "けんさく",
-            memo: "자주 쓰는 단어",
-            aiContent: "# 1. 한자 분석\n## 検\n### 부수: 木"
-        )
-        
-        NavigationView {
-            WordDetailView(word: sampleWord)
         }
     }
 }
