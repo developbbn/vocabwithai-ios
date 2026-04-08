@@ -16,7 +16,6 @@
 		DC1439792F5F0A3C00EFF80C /* MultipleChoiceQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1439782F5F0A3C00EFF80C /* MultipleChoiceQuizView.swift */; };
 		DC14397B2F6047CE00EFF80C /* DailyStatsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC14397A2F6047CE00EFF80C /* DailyStatsManager.swift */; };
 		DC38BC7E2F5B1BC100C57432 /* DailyPhraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC38BC7D2F5B1BC100C57432 /* DailyPhraseViewModel.swift */; };
-		DC38BC802F5B1C5600C57432 /* DailyPhraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC38BC7F2F5B1C5600C57432 /* DailyPhraseView.swift */; };
 		DC406F282F7AC79400F40A90 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F272F7AC78C00F40A90 /* SearchViewModel.swift */; };
 		DC406F2C2F7AC89400F40A90 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F2B2F7AC89400F40A90 /* SearchView.swift */; };
 		DC406F322F812DC200F40A90 /* PhraseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F312F812DC200F40A90 /* PhraseDetailView.swift */; };
@@ -55,7 +54,6 @@
 		DC1439782F5F0A3C00EFF80C /* MultipleChoiceQuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceQuizView.swift; sourceTree = "<group>"; };
 		DC14397A2F6047CE00EFF80C /* DailyStatsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyStatsManager.swift; sourceTree = "<group>"; };
 		DC38BC7D2F5B1BC100C57432 /* DailyPhraseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPhraseViewModel.swift; sourceTree = "<group>"; };
-		DC38BC7F2F5B1C5600C57432 /* DailyPhraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPhraseView.swift; sourceTree = "<group>"; };
 		DC406F272F7AC78C00F40A90 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		DC406F2B2F7AC89400F40A90 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		DC406F312F812DC200F40A90 /* PhraseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhraseDetailView.swift; sourceTree = "<group>"; };
@@ -210,7 +208,6 @@
 				DC7A16EC2F322DAC00689CAC /* AddWordView.swift */,
 				DC7A16F02F374FF000689CAC /* LibraryView.swift */,
 				DC7A16F42F37515C00689CAC /* WordDetailView.swift */,
-				DC38BC7F2F5B1C5600C57432 /* DailyPhraseView.swift */,
 				DC406F2B2F7AC89400F40A90 /* SearchView.swift */,
 				DC406F312F812DC200F40A90 /* PhraseDetailView.swift */,
 				DC406F352F8138A400F40A90 /* EditWordView.swift */,
@@ -305,7 +302,6 @@
 				DC7A16EF2F374FCB00689CAC /* LibraryViewModel.swift in Sources */,
 				DC7A16EB2F322D9200689CAC /* AddWordViewModel.swift in Sources */,
 				DC406F342F81388800F40A90 /* EditWordViewModel.swift in Sources */,
-				DC38BC802F5B1C5600C57432 /* DailyPhraseView.swift in Sources */,
 				DC1439752F5F07FE00EFF80C /* MultipleChoiceTypeView.swift in Sources */,
 				DC7A16F12F374FF000689CAC /* LibraryView.swift in Sources */,
 				DCA8D1292F5DD1230008636B /* ToastManager.swift in Sources */,

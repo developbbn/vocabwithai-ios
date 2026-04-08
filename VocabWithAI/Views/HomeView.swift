@@ -50,12 +50,11 @@ struct HomeView: View {
                 }
             }
             .navigationBarHidden(true)
-            // MARK: - Navigation Destinations
             .navigationDestination(isPresented: $showAddWord) {
                 AddWordView()
             }
             .navigationDestination(isPresented: $showDailyPhrase) {
-                DailyPhraseView()
+                PhraseDetailView()
             }
             .navigationDestination(isPresented: $showMultipleChoiceType) {
                 MultipleChoiceTypeView()
@@ -63,7 +62,6 @@ struct HomeView: View {
             .navigationDestination(isPresented: $showFlashcard) {
                 FlashcardView()
             }
-            // MARK: - Sheet
             .sheet(isPresented: $showQuizSheet) {
                 QuizSelectionSheet(isPresented: $showQuizSheet) { quizType in
                     switch quizType {
@@ -98,7 +96,6 @@ struct HeaderView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                // Profile Icon
                 Circle()
                     .fill(Color.gray.opacity(0.2))
                     .frame(width: 46, height: 46)
@@ -121,7 +118,6 @@ struct HeaderView: View {
                 }
                 .padding(.trailing, 8)
 
-                // Notification Bell
                 Button(action: {}) {
                     Image(systemName: "bell.fill")
                         .font(.system(size: 22))
@@ -130,7 +126,6 @@ struct HeaderView: View {
             }
 
             Spacer()
-            
         }
         .confirmationDialog(
             "모든 단어를 삭제하시겠어요?",
@@ -221,12 +216,12 @@ struct FeatureGridView: View {
     let onLogTap: () -> Void
     let onExpressionTap: () -> Void
     let onListeningTap: () -> Void
-    
+
     let columns = [
         GridItem(.flexible(), spacing: 16),
         GridItem(.flexible(), spacing: 16)
     ]
-    
+
     var body: some View {
         LazyVGrid(columns: columns, spacing: 16) {
             FeatureCard(
@@ -235,21 +230,18 @@ struct FeatureGridView: View {
                 iconColor: .blue,
                 action: onQuizTap
             )
-            
             FeatureCard(
                 title: "단어등록",
                 icon: "plus.circle.fill",
                 iconColor: .blue,
                 action: onLogTap
             )
-            
             FeatureCard(
                 title: "오늘의 표현",
                 icon: "message.fill",
                 iconColor: .blue,
                 action: onExpressionTap
             )
-            
             FeatureCard(
                 title: "음성듣기",
                 icon: "headphones",
@@ -266,15 +258,13 @@ struct FeatureCard: View {
     let icon: String
     let iconColor: Color
     let action: () -> Void
-    
+
     var body: some View {
         Button(action: action) {
             VStack(alignment: .leading) {
                 Spacer()
-                
                 HStack {
                     Spacer()
-                    
                     Circle()
                         .fill(Color.white)
                         .frame(width: 60, height: 60)
@@ -315,8 +305,7 @@ struct RecentlyLearnedView: View {
             Text("최근 학습한 단어")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.gray)
-            
-            // Placeholder for word cards
+
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
                     ForEach(0..<3) { _ in
