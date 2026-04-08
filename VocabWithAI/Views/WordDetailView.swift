@@ -10,6 +10,12 @@ import SwiftUI
 struct WordDetailView: View {
     let word: Word
     @Environment(\.presentationMode) private var presentationMode
+    @ObservedObject private var repository = WordRepository.shared
+
+    /// Repository에서 최신 word 데이터를 가져옴. 새로고침 후 UI 즉시 반영
+    private var currentWord: Word {
+        repository.words.first(where: { $0.id == word.id }) ?? word
+    }
 
     var body: some View {
         ScrollView {
@@ -17,13 +23,15 @@ struct WordDetailView: View {
                 wordHeader
                     .padding(.top, 80)
 
-                if let aiContent = word.aiContent, !aiContent.isEmpty {
+                if let aiContent = currentWord.aiContent, !aiContent.isEmpty {
                     aiContentView(aiContent)
+                } else if repository.loadingWordIds.contains(currentWord.id) {
+                    aiLoadingView
                 } else {
                     noAIContent
                 }
 
-                if !word.memo.isEmpty {
+                if !currentWord.memo.isEmpty {
                     userMemoSection
                 }
 
@@ -52,7 +60,19 @@ struct WordDetailView: View {
 
             Spacer()
 
-            NavigationLink(destination: EditWordView(word: word, onDelete: {
+            // 새로고침 버튼 — AI 콘텐츠 재생성
+            Button(action: {
+                WordRepository.shared.regenerateAIContent(for: currentWord)
+            }) {
+                Image(systemName: "arrow.clockwise")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(repository.loadingWordIds.contains(currentWord.id) ? .gray : .black)
+                    .padding(12)
+                    .contentShape(Rectangle())
+            }
+            .disabled(repository.loadingWordIds.contains(currentWord.id))
+
+            NavigationLink(destination: EditWordView(word: currentWord, onDelete: {
                 presentationMode.wrappedValue.dismiss()
             })) {
                 Image(systemName: "pencil")
@@ -66,17 +86,17 @@ struct WordDetailView: View {
 
     private var wordHeader: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(word.word)
+            Text(currentWord.word)
                 .font(.system(size: 44, weight: .bold))
                 .foregroundColor(.black)
 
-            if !word.pronunciation.isEmpty {
-                Text(word.pronunciation)
+            if !currentWord.pronunciation.isEmpty {
+                Text(currentWord.pronunciation)
                     .font(.system(size: 20))
                     .foregroundColor(.gray)
             }
 
-            Text(word.meaning)
+            Text(currentWord.meaning)
                 .font(.system(size: 24, weight: .medium))
                 .foregroundColor(.gray)
         }
@@ -114,6 +134,20 @@ struct WordDetailView: View {
         }
     }
 
+    private var aiLoadingView: some View {
+        VStack(spacing: 16) {
+            ProgressView()
+                .scaleEffect(1.4)
+            Text("AI 정보를 가져오는 중...")
+                .font(.system(size: 16))
+                .foregroundColor(.gray)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 60)
+        .background(Color.white)
+        .cornerRadius(16)
+    }
+
     private var noAIContent: some View {
         VStack(spacing: 16) {
             Image(systemName: "sparkles")
@@ -143,13 +177,27 @@ struct WordDetailView: View {
                     .foregroundColor(.black)
             }
 
-            Text(word.memo)
+            Text(currentWord.memo)
                 .font(.system(size: 16))
                 .lineSpacing(6)
                 .padding(20)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color.white)
                 .cornerRadius(16)
+        }
+    }
+}
+
+// MARK: - Preview
+struct WordDetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            WordDetailView(word: Word(
+                word: "検索",
+                meaning: "검색",
+                pronunciation: "けんさく",
+                memo: ""
+            ))
         }
     }
 }

@@ -21,6 +21,8 @@ class WordRepository: ObservableObject {
 
     // MARK: - Published State
     @Published private(set) var words: [Word] = []
+    /// 현재 AI 생성 중인 단어 ID 집합. WordDetailView 로딩 표시에 사용
+    @Published private(set) var loadingWordIds: Set<UUID> = []
 
     // MARK: - Private
     private let storageKey = "savedWords"
@@ -48,6 +50,18 @@ class WordRepository: ObservableObject {
 
         // 2. 백그라운드 AI 생성
         generateAIContent(for: newWord)
+    }
+
+    // MARK: - Public: AI 콘텐츠 재생성
+    /// aiContent, quizData를 초기화하고 AI를 다시 요청한다.
+    /// WordDetailView 새로고침 버튼에서 호출
+    func regenerateAIContent(for word: Word) {
+        guard let index = words.firstIndex(where: { $0.id == word.id }) else { return }
+        words[index].aiContent = nil
+        words[index].quizData  = nil
+        save()
+        generateAIContent(for: words[index])
+        print("🔄 AI 재생성 시작: \(word.word)")
     }
 
     // MARK: - Public: 단어 수정
@@ -90,18 +104,20 @@ class WordRepository: ObservableObject {
     // MARK: - Private: 백그라운드 AI 생성
     private func generateAIContent(for word: Word) {
         print("🔵 백그라운드 AI 생성 시작: \(word.word)")
+        loadingWordIds.insert(word.id)
 
         GeminiService.shared.generateWordContent(for: word.word)
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     print("🔴 AI 에러 (\(word.word)): \(error.localizedDescription)")
                 }
+                self?.loadingWordIds.remove(word.id)
             } receiveValue: { [weak self] result in
                 guard let self else { return }
                 print("🟢 AI 성공: \(word.word) / quizData: \(result.quizData != nil ? "✅" : "❌")")
                 self.updateAIContent(wordId: word.id, result: result)
-
+                self.loadingWordIds.remove(word.id)
                 // 전역 토스트 표시 → 어떤 화면에 있어도 노출
                 ToastManager.shared.show("「\(word.word)」 AI 분석 완료! ✨")
             }
