@@ -10,6 +10,7 @@ import SwiftUI
 struct MultipleChoiceQuizView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: MultipleChoiceQuizViewModel
+    @State private var showExitConfirm = false
 
     init(mode: MultipleChoiceMode) {
         _viewModel = StateObject(wrappedValue: MultipleChoiceQuizViewModel(mode: mode))
@@ -56,6 +57,78 @@ struct MultipleChoiceQuizView: View {
             }
         }
         .navigationBarHidden(true)
+        .overlay {
+            if showExitConfirm {
+                // 배경 딤
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                    .onTapGesture { showExitConfirm = false }
+
+                // 슬라이드 시트
+                VStack {
+                    Spacer()
+                    exitConfirmSheet
+                }
+                .ignoresSafeArea(edges: .bottom)
+                .transition(.move(edge: .bottom))
+                .animation(.spring(response: 0.35, dampingFraction: 0.8), value: showExitConfirm)
+            }
+        }
+    }
+
+    // MARK: - 종료 확인 시트
+    private var exitConfirmSheet: some View {
+        VStack(spacing: 0) {
+            // 핸들
+            RoundedRectangle(cornerRadius: 3)
+                .fill(Color.gray.opacity(0.3))
+                .frame(width: 40, height: 5)
+                .padding(.top, 12)
+                .padding(.bottom, 20)
+
+            // 타이틀
+            Text("퀴즈를 종료할까요?")
+                .font(.system(size: 20, weight: .bold))
+                .foregroundColor(.black)
+                .padding(.bottom, 8)
+
+            Text("현재까지 푼 문제로 결과가 집계돼요")
+                .font(.system(size: 14))
+                .foregroundColor(.gray)
+                .padding(.bottom, 28)
+
+            // 버튼
+            VStack(spacing: 12) {
+                Button(action: {
+                    showExitConfirm = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        viewModel.finishEarly()
+                    }
+                }) {
+                    Text("지금까지 결과 보기")
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 56)
+                        .background(Color.blue)
+                        .cornerRadius(14)
+                }
+
+                Button(action: { showExitConfirm = false }) {
+                    Text("계속 풀기")
+                        .font(.system(size: 17, weight: .medium))
+                        .foregroundColor(.blue)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 56)
+                        .background(Color.blue.opacity(0.08))
+                        .cornerRadius(14)
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 40)
+        }
+        .background(Color.white)
+        .cornerRadius(24, corners: [.topLeft, .topRight])
     }
 
     // MARK: - 네비게이션 바
@@ -70,10 +143,11 @@ struct MultipleChoiceQuizView: View {
             Text("단어 퀴즈")
                 .font(.system(size: 18, weight: .semibold))
             Spacer()
-            // 균형용 투명 버튼
-            Image(systemName: "arrow.left")
-                .font(.system(size: 20))
-                .foregroundColor(.clear)
+            Button(action: { showExitConfirm = true }) {
+                Text("퀴즈 종료")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.blue)
+            }
         }
     }
 
@@ -191,47 +265,89 @@ struct MultipleChoiceQuizView: View {
     // MARK: - 결과 화면
     private var resultView: some View {
         VStack(spacing: 0) {
-            navBar
-                .padding(.horizontal, 20)
-                .padding(.top, 12)
-
             Spacer()
 
-            VStack(spacing: 16) {
-                Image(systemName: viewModel.correctCount == viewModel.totalCount
-                      ? "star.fill" : "checkmark.circle.fill")
-                    .font(.system(size: 70))
-                    .foregroundColor(.blue)
+            // 원형 진행 그래프
+            ZStack {
+                // 배경 링
+                Circle()
+                    .stroke(Color.blue.opacity(0.15), lineWidth: 16)
+                    .frame(width: 200, height: 200)
 
-                Text(viewModel.correctCount == viewModel.totalCount ? "완벽해요! 🎉" : "수고했어요!")
-                    .font(.system(size: 32, weight: .bold))
+                // 점수 링
+                Circle()
+                    .trim(from: 0, to: viewModel.accuracy)
+                    .stroke(Color.blue, style: StrokeStyle(lineWidth: 16, lineCap: .round))
+                    .frame(width: 200, height: 200)
+                    .rotationEffect(.degrees(-90))
+                    .animation(.easeOut(duration: 0.8), value: viewModel.accuracy)
 
-                Text("\(viewModel.totalCount)문제 중 \(viewModel.correctCount)개 정답")
-                    .font(.system(size: 18))
+                // 중앙 텍스트
+                VStack(spacing: 4) {
+                    Text("최종 점수")
+                        .font(.system(size: 14))
+                        .foregroundColor(.gray)
+                    Text(viewModel.scoreText)
+                        .font(.system(size: 40, weight: .bold))
+                        .foregroundColor(.black)
+                    Text("\(Int(viewModel.accuracy * 100))%")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.blue)
+                }
+            }
+            .padding(.bottom, 40)
+
+            // 결과 멘트
+            VStack(spacing: 10) {
+                Text(viewModel.resultTitle)
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundColor(.black)
+
+                Text(viewModel.resultSubtitle)
+                    .font(.system(size: 16))
                     .foregroundColor(.gray)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
             }
 
             Spacer()
 
-            VStack(spacing: 12) {
-                Button(action: { viewModel.restart() }) {
-                    Text("다시 풀기")
-                        .font(.system(size: 17, weight: .semibold))
+            // 버튼
+            VStack(spacing: 16) {
+                if !viewModel.wrongQuestions.isEmpty {
+                    Button(action: { /* TODO: 틀린 문제 복습 */ }) {
+                        HStack(spacing: 8) {
+                            Text("틀린 문제 \(viewModel.wrongQuestions.count)개 확인하기")
+                                .font(.system(size: 17, weight: .semibold))
+                            Image(systemName: "arrow.right")
+                                .font(.system(size: 15, weight: .semibold))
+                        }
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
-                        .frame(height: 56)
+                        .frame(height: 58)
                         .background(Color.blue)
-                        .cornerRadius(14)
+                        .cornerRadius(16)
+                    }
+                } else {
+                    Button(action: { viewModel.restart() }) {
+                        Text("다시 풀기")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 58)
+                            .background(Color.blue)
+                            .cornerRadius(16)
+                    }
                 }
 
                 Button(action: { dismiss() }) {
-                    Text("종료")
-                        .font(.system(size: 17))
+                    Text("홈으로 이동")
+                        .font(.system(size: 16))
                         .foregroundColor(.gray)
                 }
             }
             .padding(.horizontal, 24)
-            .padding(.bottom, 40)
+            .padding(.bottom, 48)
         }
     }
 
@@ -329,5 +445,26 @@ struct MultipleChoiceQuizView_Previews: PreviewProvider {
         NavigationStack {
             MultipleChoiceQuizView(mode: .kanji)
         }
+    }
+}
+
+// MARK: - Corner Radius Extension
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape(RoundedCorner(radius: radius, corners: corners))
+    }
+}
+
+struct RoundedCorner: Shape {
+    var radius: CGFloat
+    var corners: UIRectCorner
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
     }
 }

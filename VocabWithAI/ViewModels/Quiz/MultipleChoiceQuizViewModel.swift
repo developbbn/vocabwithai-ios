@@ -33,6 +33,9 @@ class MultipleChoiceQuizViewModel: ObservableObject {
     @Published var isFinished: Bool = false
     @Published var correctCount: Int = 0
 
+    /// 틀린 문제 목록 — 결과 화면 "틀린 문제 확인하기"에서 사용
+    @Published var wrongQuestions: [QuizQuestion] = []
+
     // MARK: - Properties
     let mode: MultipleChoiceMode
 
@@ -46,6 +49,11 @@ class MultipleChoiceQuizViewModel: ObservableObject {
     var currentQuestion: QuizQuestion? {
         guard currentIndex < questions.count else { return nil }
         return questions[currentIndex]
+    }
+
+    /// 실제로 푼 문제 수 (조기 종료 시 currentIndex + 1, 완료 시 totalCount)
+    var answeredCount: Int {
+        isFinished ? min(currentIndex + 1, questions.count) : 0
     }
 
     var totalCount: Int { questions.count }
@@ -63,6 +71,34 @@ class MultipleChoiceQuizViewModel: ObservableObject {
         }
     }
 
+    /// 결과 화면용 점수 문자열 (예: "18/20")
+    var scoreText: String { "\(correctCount)/\(answeredCount)" }
+
+    /// 정답률 (0.0 ~ 1.0)
+    var accuracy: Double {
+        guard answeredCount > 0 else { return 0 }
+        return Double(correctCount) / Double(answeredCount)
+    }
+
+    /// 정답률에 따른 결과 멘트
+    var resultTitle: String {
+        switch accuracy {
+        case 1.0:        return "완벽해요! 🎉"
+        case 0.8...:     return "대단한 결과예요!"
+        case 0.6...:     return "잘 하고 있어요!"
+        default:         return "조금만 더 힘내요!"
+        }
+    }
+
+    var resultSubtitle: String {
+        switch accuracy {
+        case 1.0:        return "모든 문제를 맞혔어요. 최고예요!"
+        case 0.8...:     return "거의 완벽한 점수입니다. 조금만 더 힘내세요."
+        case 0.6...:     return "절반 이상 맞혔어요. 복습하면 더 잘할 수 있어요!"
+        default:         return "틀린 문제를 복습해 보세요. 분명 나아질 거예요!"
+        }
+    }
+
     // MARK: - Actions
     func select(_ choice: String) {
         guard !isAnswered else { return }
@@ -70,6 +106,8 @@ class MultipleChoiceQuizViewModel: ObservableObject {
         isAnswered = true
         if choice == currentQuestion?.answer {
             correctCount += 1
+        } else {
+            if let q = currentQuestion { wrongQuestions.append(q) }
         }
     }
 
@@ -85,20 +123,23 @@ class MultipleChoiceQuizViewModel: ObservableObject {
         }
     }
 
+    /// 현재까지 푼 결과로 즉시 종료
+    func finishEarly() {
+        // 현재 문제가 답변됐으면 포함, 아니면 제외
+        if !isAnswered && currentIndex < questions.count {
+            // 현재 문제는 미답변 — currentIndex 유지 (answeredCount = currentIndex)
+        }
+        isFinished = true
+    }
+
     func restart() {
         currentIndex = 0
         selectedChoice = nil
         isAnswered = false
         isFinished = false
         correctCount = 0
+        wrongQuestions = []
         buildQuestions()
-    }
-
-    func retryWrong() {
-        // 틀린 문제만 모아서 다시 시작
-        // isFinished 시점에 wrong 목록을 따로 저장해뒀다가 쓰면 되지만
-        // 여기선 간단히 전체 재시작
-        restart()
     }
 
     // MARK: - Private: 문제 생성
