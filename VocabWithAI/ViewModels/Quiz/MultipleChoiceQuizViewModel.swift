@@ -100,11 +100,20 @@ class MultipleChoiceQuizViewModel: ObservableObject {
         guard !isAnswered else { return }
         selectedChoice = choice
         isAnswered = true
-        answeredCount += 1  // 답변한 문제 수 증가
+        answeredCount += 1
+
         if choice == currentQuestion?.answer {
             correctCount += 1
         } else {
             if let q = currentQuestion { wrongQuestions.append(q) }
+        }
+
+        // 선지 선택 시 단어 정보 토스트 표시
+        if let w = currentQuestion?.word {
+            var lines = [w.word]
+            if !w.pronunciation.isEmpty { lines.append(w.pronunciation) }
+            lines.append(w.meaning)
+            ToastManager.shared.show(lines: lines, duration: 2.0)
         }
     }
 

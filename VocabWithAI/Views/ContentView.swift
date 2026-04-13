@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selectedTab = 0
-    @ObservedObject private var toastManager = ToastManager.shared
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -55,9 +54,7 @@ struct ContentView: View {
             }
             .accentColor(.blue)
 
-            // 전역 토스트 오버레이 - 어떤 탭에 있어도 항상 최상단에 표시
-            ToastView(message: toastManager.message, isShowing: $toastManager.isShowing)
-                .padding(.bottom, 80) // 탭바 위에 띄우기
+            ToastStackView()
         }
     }
 }

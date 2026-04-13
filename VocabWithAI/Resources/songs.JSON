@@ -1,0 +1,366 @@
+[
+  {
+    "id": "song_04",
+    "title": "ヒロイン",
+    "artist": "back number",
+    "youtubeURL": "https://youtu.be/eit6sIzS7g8",
+    "thumbnailURL": "https://i.ytimg.com/vi/eit6sIzS7g8/hqdefault.jpg",
+    "youtubeID": "eit6sIzS7g8",
+    "jlptLevel": "N5-N3",
+    "isRecommended": false,
+    "cards": [
+      {
+        "id": "c04_01",
+        "timestamp": 17.0,
+        "japanese": "君の毎日に 僕は似合わないかな",
+        "reading": "きみのまいにちに ぼくはにあわないかな",
+        "meaning": "너의 매일에 나는 어울리지 않는 걸까",
+        "highlightWords": [
+          { "word": "毎日", "reading": "まいにち", "meaning": "매일" },
+          { "word": "似合う", "reading": "にあう", "meaning": "어울리다" }
+        ]
+      },
+      {
+        "id": "c04_02",
+        "timestamp": 24.0,
+        "japanese": "白い空から 雪が落ちた",
+        "reading": "しろいそらから ゆきがおちた",
+        "meaning": "하얀 하늘에서 눈이 내렸어",
+        "highlightWords": [
+          { "word": "白い", "reading": "しろい", "meaning": "하얗다" },
+          { "word": "空", "reading": "そら", "meaning": "하늘" },
+          { "word": "雪", "reading": "ゆき", "meaning": "눈" },
+          { "word": "落ちる", "reading": "おちる", "meaning": "떨어지다, 내리다" }
+        ]
+      },
+      {
+        "id": "c04_03",
+        "timestamp": 30.0,
+        "japanese": "別にいいさと 吐き出したため息が",
+        "reading": "べつにいいさと はきだしたためいきが",
+        "meaning": "별로 상관없겠지, 하고 내뱉은 한숨이",
+        "highlightWords": [
+          { "word": "別に", "reading": "べつに", "meaning": "별로, 특별히" },
+          { "word": "吐き出す", "reading": "はきだす", "meaning": "내뱉다, 토해내다" },
+          { "word": "ため息", "reading": "ためいき", "meaning": "한숨" }
+        ]
+      },
+      {
+        "id": "c04_04",
+        "timestamp": 37.0,
+        "japanese": "少し残って 寂しそうに消えた",
+        "reading": "すこしのこって さびしそうにきえた",
+        "meaning": "조금 남았다가 쓸쓸한 듯이 사라졌어",
+        "highlightWords": [
+          { "word": "少し", "reading": "すこし", "meaning": "조금" },
+          { "word": "残る", "reading": "のこる", "meaning": "남다" },
+          { "word": "寂しい", "reading": "さびしい", "meaning": "쓸쓸하다, 외롭다" },
+          { "word": "消える", "reading": "きえる", "meaning": "사라지다" }
+        ]
+      },
+      {
+        "id": "c04_05",
+        "timestamp": 43.0,
+        "japanese": "君の街にも 降っているかな",
+        "reading": "きみのまちにも ふっているかな",
+        "meaning": "네가 있는 거리에도 내리고 있으려나",
+        "highlightWords": [
+          { "word": "街", "reading": "まち", "meaning": "거리, 동네" },
+          { "word": "降る", "reading": "ふる", "meaning": "(눈, 비가) 내리다" }
+        ]
+      },
+      {
+        "id": "c04_06",
+        "timestamp": 53.0,
+        "japanese": "ああ今隣で",
+        "reading": "ああいまとなりで",
+        "meaning": "아아, 지금 내 옆에서",
+        "highlightWords": [
+          { "word": "今", "reading": "いま", "meaning": "지금" },
+          { "word": "隣", "reading": "となり", "meaning": "옆" }
+        ]
+      },
+      {
+        "id": "c04_07",
+        "timestamp": 55.0,
+        "japanese": "雪が綺麗と笑うのは君がいい",
+        "reading": "ゆきがきれいとわらうのはきみがいい",
+        "meaning": "눈이 예쁘다며 웃는 건 너였으면 좋겠어",
+        "highlightWords": [
+          { "word": "綺麗だ", "reading": "きれいだ", "meaning": "예쁘다, 깨끗하다" },
+          { "word": "笑う", "reading": "わらう", "meaning": "웃다" }
+        ]
+      },
+      {
+        "id": "c04_08",
+        "timestamp": 61.0,
+        "japanese": "でも寒いねって嬉しそうなのも",
+        "reading": "でもさむいねってうれしそうなのも",
+        "meaning": "그래도 춥네~ 라며 기뻐 보이는 것도",
+        "highlightWords": [
+          { "word": "寒い", "reading": "さむい", "meaning": "춥다" },
+          { "word": "嬉しい", "reading": "うれしい", "meaning": "기쁘다" },
+          { "word": "〜そう", "reading": "〜そう", "meaning": "~해 보이다 (양태)" }
+        ]
+      },
+      {
+        "id": "c04_09",
+        "timestamp": 67.0,
+        "japanese": "転びそうになって掴んだ手のその先で",
+        "reading": "ころびそうになってつかんだてのそのさきで",
+        "meaning": "넘어질 뻔해서 붙잡은 손 끝에서",
+        "highlightWords": [
+          { "word": "転ぶ", "reading": "ころぶ", "meaning": "넘어지다" },
+          { "word": "掴む", "reading": "つかむ", "meaning": "잡다, 쥐다" },
+          { "word": "先", "reading": "さき", "meaning": "끝, 앞" }
+        ]
+      },
+      {
+        "id": "c04_10",
+        "timestamp": 73.0,
+        "japanese": "ありがとうって楽しそうなのも",
+        "reading": "ありがとうってたのしそうなのも",
+        "meaning": "고마워~ 라며 즐거워 보이는 것도",
+        "highlightWords": [
+          { "word": "楽しい", "reading": "たのしい", "meaning": "즐겁다" }
+        ]
+      },
+      {
+        "id": "c04_11",
+        "timestamp": 86.0,
+        "japanese": "気付けば辺りは ほとんどが白く染まって",
+        "reading": "きづけばあたりは ほとんどがしろくそまって",
+        "meaning": "정신을 차려보면 주변은 온통 하얗게 물들어서",
+        "highlightWords": [
+          { "word": "気付く", "reading": "きづく", "meaning": "눈치채다, 정신을 차리다" },
+          { "word": "辺り", "reading": "あたり", "meaning": "부근, 주변" },
+          { "word": "ほとんど", "reading": "ほとんど", "meaning": "대부분, 거의" },
+          { "word": "染まる", "reading": "そまる", "meaning": "물들다" }
+        ]
+      },
+      {
+        "id": "c04_12",
+        "timestamp": 93.0,
+        "japanese": "散らかってた事 忘れてしまいそう",
+        "reading": "ちらかってたこと わすれてしまいそう",
+        "meaning": "어지럽혀져 있던 일들마저 잊어버릴 것 같아",
+        "highlightWords": [
+          { "word": "散らかる", "reading": "ちらかる", "meaning": "어질러지다, 흩어지다" },
+          { "word": "忘れる", "reading": "わすれる", "meaning": "잊다" },
+          { "word": "〜てしまう", "reading": "〜てしまう", "meaning": "~해 버리다" }
+        ]
+      },
+      {
+        "id": "c04_13",
+        "timestamp": 99.0,
+        "japanese": "意外と積もったねと",
+        "reading": "いがいとつもったねと",
+        "meaning": "의외로 많이 쌓였네, 하고",
+        "highlightWords": [
+          { "word": "意外", "reading": "いがい", "meaning": "의외, 뜻밖" },
+          { "word": "積もる", "reading": "つもる", "meaning": "쌓이다" }
+        ]
+      },
+      {
+        "id": "c04_14",
+        "timestamp": 101.0,
+        "japanese": "メールを送ろうとして",
+        "reading": "めーるをおくろうとして",
+        "meaning": "문자를 보내려다가",
+        "highlightWords": [
+          { "word": "送る", "reading": "おくる", "meaning": "보내다" },
+          { "word": "〜ようとする", "reading": "〜ようとする", "meaning": "~하려고 하다" }
+        ]
+      },
+      {
+        "id": "c04_15",
+        "timestamp": 106.0,
+        "japanese": "打ちかけのまま ポケットに入れた",
+        "reading": "うちかけのまま ぽけっとにいれた",
+        "meaning": "치다 만 채 주머니에 넣었어",
+        "highlightWords": [
+          { "word": "〜かけ", "reading": "〜かけ", "meaning": "~하다 말다 (도중임)" },
+          { "word": "〜まま", "reading": "〜まま", "meaning": "~한 채로" },
+          { "word": "入れる", "reading": "いれる", "meaning": "넣다" }
+        ]
+      },
+      {
+        "id": "c04_16",
+        "timestamp": 112.0,
+        "japanese": "好まれるような 強く優しい僕に",
+        "reading": "このまれるような つよくやさしいぼくに",
+        "meaning": "네가 좋아할 만한 강하고 다정한 나로",
+        "highlightWords": [
+          { "word": "好まれる", "reading": "このまれる", "meaning": "호감을 사다 (好む의 수동)" },
+          { "word": "強い", "reading": "つよい", "meaning": "강하다" },
+          { "word": "優しい", "reading": "やさしい", "meaning": "다정하다, 상냥하다" }
+        ]
+      },
+      {
+        "id": "c04_17",
+        "timestamp": 122.0,
+        "japanese": "変われないかな",
+        "reading": "かわれないかな",
+        "meaning": "변할 순 없는 걸까",
+        "highlightWords": [
+          { "word": "変わる", "reading": "かわる", "meaning": "변하다" }
+        ]
+      },
+      {
+        "id": "c04_18",
+        "timestamp": 130.0,
+        "japanese": "出しかけた答え胸が痛くて",
+        "reading": "だしかけたこたえむねがいたくて",
+        "meaning": "꺼내려다 말았던 대답에 가슴이 아파서",
+        "highlightWords": [
+          { "word": "出す", "reading": "だす", "meaning": "내다, 꺼내다" },
+          { "word": "答え", "reading": "こたえ", "meaning": "대답" },
+          { "word": "胸", "reading": "むね", "meaning": "가슴" },
+          { "word": "痛い", "reading": "いたい", "meaning": "아프다" }
+        ]
+      },
+      {
+        "id": "c04_19",
+        "timestamp": 136.0,
+        "japanese": "渡し方もどこに捨てればいいかも分からずに",
+        "reading": "わたしかたもどこにすてればいいかもわからずに",
+        "meaning": "어떻게 전해야 할지도, 어디에 버려야 할지도 모른 채",
+        "highlightWords": [
+          { "word": "渡す", "reading": "わたす", "meaning": "건네주다" },
+          { "word": "捨てる", "reading": "すてる", "meaning": "버리다" },
+          { "word": "〜ずに", "reading": "〜ずに", "meaning": "~하지 않고 (=ないで)" }
+        ]
+      },
+      {
+        "id": "c04_20",
+        "timestamp": 142.0,
+        "japanese": "君から見えてる景色に",
+        "reading": "きみからみえてるけしきに",
+        "meaning": "너에게서 비치는 풍경에",
+        "highlightWords": [
+          { "word": "景色", "reading": "けしき", "meaning": "경치, 풍경" }
+        ]
+      },
+      {
+        "id": "c04_21",
+        "timestamp": 147.0,
+        "japanese": "ただ怯えているんだ",
+        "reading": "ただおびえているんだ",
+        "meaning": "그저 겁내고 있을 뿐이야",
+        "highlightWords": [
+          { "word": "ただ", "reading": "ただ", "meaning": "그저, 단지" },
+          { "word": "怯える", "reading": "おびえる", "meaning": "겁내다, 무서워하다" }
+        ]
+      },
+      {
+        "id": "c04_22",
+        "timestamp": 152.0,
+        "japanese": "思えばどんな映画を観たって",
+        "reading": "おもえばどんなえいがをみたって",
+        "meaning": "생각해 보면 어떤 영화를 보든",
+        "highlightWords": [
+          { "word": "思う", "reading": "おもう", "meaning": "생각하다" },
+          { "word": "映画", "reading": "えいが", "meaning": "영화" },
+          { "word": "観る", "reading": "みる", "meaning": "(영화, 연극 등을) 보다" }
+        ]
+      },
+      {
+        "id": "c04_23",
+        "timestamp": 155.0,
+        "japanese": "どんな小説や音楽だって",
+        "reading": "どんなしょうせつやおんがくだって",
+        "meaning": "어떤 소설이든 음악이든",
+        "highlightWords": [
+          { "word": "小説", "reading": "しょうせつ", "meaning": "소설" },
+          { "word": "音楽", "reading": "おんがく", "meaning": "음악" }
+        ]
+      },
+      {
+        "id": "c04_24",
+        "timestamp": 159.0,
+        "japanese": "そのヒロインに重ねてしまうのは君だよ",
+        "reading": "そのひろいんにかさねてしまうのはきみだよ",
+        "meaning": "그 히로인에 겹쳐 보이는 건 너야",
+        "highlightWords": [
+          { "word": "重ねる", "reading": "かさねる", "meaning": "겹치다, 포개다" }
+        ]
+      },
+      {
+        "id": "c04_25",
+        "timestamp": 165.0,
+        "japanese": "行ってみたい遠い場所で見たい夜空も",
+        "reading": "いってみたいとおいばしょでみたいよぞらも",
+        "meaning": "가 보고 싶은 먼 곳에서 보고 싶은 밤하늘도",
+        "highlightWords": [
+          { "word": "遠い", "reading": "とおい", "meaning": "멀다" },
+          { "word": "場所", "reading": "ばしょ", "meaning": "장소" },
+          { "word": "夜空", "reading": "よぞら", "meaning": "밤하늘" }
+        ]
+      },
+      {
+        "id": "c04_26",
+        "timestamp": 171.0,
+        "japanese": "隣に描くのはいつでも",
+        "reading": "となりにえがくのはいつでも",
+        "meaning": "내 옆에 그리는 건 언제나",
+        "highlightWords": [
+          { "word": "描く", "reading": "えがく", "meaning": "그리다" },
+          { "word": "いつでも", "reading": "いつでも", "meaning": "언제나, 늘" }
+        ]
+      },
+      {
+        "id": "c04_27",
+        "timestamp": 178.0,
+        "japanese": "見慣れたはずの街がこんなにも",
+        "reading": "みなれたはずのまちがこんなにも",
+        "meaning": "익숙했을 터인 거리가 이렇게나",
+        "highlightWords": [
+          { "word": "見慣れる", "reading": "みなれる", "meaning": "낯익다, 눈에 익다" },
+          { "word": "〜はず", "reading": "〜はず", "meaning": "~일 터 (강한 추측)" }
+        ]
+      },
+      {
+        "id": "c04_28",
+        "timestamp": 188.0,
+        "japanese": "馬鹿だなぁ僕は",
+        "reading": "ばかだなぁぼくは",
+        "meaning": "바보구나, 나는",
+        "highlightWords": [
+          { "word": "馬鹿", "reading": "ばか", "meaning": "바보" }
+        ]
+      },
+      {
+        "id": "c04_29",
+        "timestamp": 197.0,
+        "japanese": "君は誰に会いたくなるんだろう",
+        "reading": "きみはだれにあいたくなるんだろう",
+        "meaning": "너는 누굴 보고 싶어 할까",
+        "highlightWords": [
+          { "word": "誰", "reading": "だれ", "meaning": "누구" },
+          { "word": "会う", "reading": "あう", "meaning": "만나다" },
+          { "word": "〜たくなる", "reading": "〜たくなる", "meaning": "~하고 싶어지다" }
+        ]
+      },
+      {
+        "id": "c04_30",
+        "timestamp": 209.0,
+        "japanese": "僕は やっぱり僕は",
+        "reading": "ぼくは やっぱりぼくは",
+        "meaning": "나는, 역시 나는",
+        "highlightWords": [
+          { "word": "やっぱり", "reading": "やっぱり", "meaning": "역시" }
+        ]
+      },
+      {
+        "id": "c04_31",
+        "timestamp": 239.0,
+        "japanese": "全部君がいい",
+        "reading": "ぜんぶきみがいい",
+        "meaning": "전부 너였으면 좋겠어",
+        "highlightWords": [
+          { "word": "全部", "reading": "ぜんぶ", "meaning": "전부" }
+        ]
+      }
+    ]
+  }
+]

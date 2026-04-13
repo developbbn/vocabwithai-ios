@@ -14,6 +14,7 @@ struct HomeView: View {
     @State private var showQuizSheet: Bool = false
     @State private var showFlashcard: Bool = false
     @State private var showMultipleChoiceType: Bool = false
+    @State private var showSongList: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -37,7 +38,7 @@ struct HomeView: View {
                             onQuizTap: { showQuizSheet = true },
                             onLogTap: { showAddWord = true },
                             onExpressionTap: { showDailyPhrase = true },
-                            onListeningTap: viewModel.navigateToListening
+                            onListeningTap: { showSongList = true }
                         )
                         .padding(.horizontal, 20)
 
@@ -50,6 +51,9 @@ struct HomeView: View {
                 }
             }
             .navigationBarHidden(true)
+            .navigationDestination(isPresented: $showSongList) {
+                SongListView()
+            }
             .navigationDestination(isPresented: $showAddWord) {
                 AddWordView()
             }
@@ -243,9 +247,9 @@ struct FeatureGridView: View {
                 action: onExpressionTap
             )
             FeatureCard(
-                title: "음성듣기",
-                icon: "headphones",
-                iconColor: .gray,
+                title: "노래감상",
+                icon: "music.note",
+                iconColor: .pink,
                 action: onListeningTap
             )
         }

@@ -24,6 +24,11 @@
 		DC406F3C2F86962D00F40A90 /* PromptManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F3B2F86962B00F40A90 /* PromptManager.swift */; };
 		DC406F3E2F86965B00F40A90 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F3D2F86965B00F40A90 /* SettingsView.swift */; };
 		DC406F422F869F5200F40A90 /* MarkdownContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F412F869F5000F40A90 /* MarkdownContentView.swift */; };
+		DC406F442F8D2EFF00F40A90 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F432F8D2EFE00F40A90 /* Song.swift */; };
+		DC406F472F8D2F2C00F40A90 /* SongRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F462F8D2F2A00F40A90 /* SongRepository.swift */; };
+		DC406F4B2F8D2F7D00F40A90 /* songs.JSON in Sources */ = {isa = PBXBuildFile; fileRef = DC406F4A2F8D2F7C00F40A90 /* songs.JSON */; };
+		DC406F4F2F8D2FF500F40A90 /* SongListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F4E2F8D2FF500F40A90 /* SongListView.swift */; };
+		DC406F512F8D301200F40A90 /* SongPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F502F8D301200F40A90 /* SongPlayerView.swift */; };
 		DC7A16E32F3210D200689CAC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E22F3210D200689CAC /* ContentView.swift */; };
 		DC7A16E62F32112400689CAC /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E52F32112400689CAC /* HomeViewModel.swift */; };
 		DC7A16E92F322D7100689CAC /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E82F322D7100689CAC /* Word.swift */; };
@@ -62,6 +67,11 @@
 		DC406F3B2F86962B00F40A90 /* PromptManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptManager.swift; sourceTree = "<group>"; };
 		DC406F3D2F86965B00F40A90 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DC406F412F869F5000F40A90 /* MarkdownContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownContentView.swift; sourceTree = "<group>"; };
+		DC406F432F8D2EFE00F40A90 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
+		DC406F462F8D2F2A00F40A90 /* SongRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongRepository.swift; sourceTree = "<group>"; };
+		DC406F4A2F8D2F7C00F40A90 /* songs.JSON */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = songs.JSON; sourceTree = "<group>"; };
+		DC406F4E2F8D2FF500F40A90 /* SongListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListView.swift; sourceTree = "<group>"; };
+		DC406F502F8D301200F40A90 /* SongPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongPlayerView.swift; sourceTree = "<group>"; };
 		DC7A16E22F3210D200689CAC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DC7A16E52F32112400689CAC /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		DC7A16E82F322D7100689CAC /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -114,6 +124,23 @@
 			path = Quiz;
 			sourceTree = "<group>";
 		};
+		DC406F482F8D2F5D00F40A90 /* Song */ = {
+			isa = PBXGroup;
+			children = (
+				DC406F4E2F8D2FF500F40A90 /* SongListView.swift */,
+				DC406F502F8D301200F40A90 /* SongPlayerView.swift */,
+			);
+			path = Song;
+			sourceTree = "<group>";
+		};
+		DC406F492F8D2F7400F40A90 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DC406F4A2F8D2F7C00F40A90 /* songs.JSON */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		DC7A16E42F3210F300689CAC /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +159,7 @@
 		DC7A16E72F322D4B00689CAC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				DC406F432F8D2EFE00F40A90 /* Song.swift */,
 				DC7A16E82F322D7100689CAC /* Word.swift */,
 				DC832DED2F532F1100ACA109 /* DailyPhrase.swift */,
 				DC1439722F5F018D00EFF80C /* QuizData.swift */,
@@ -151,6 +179,7 @@
 		DC7A16F92F37579100689CAC /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				DC406F462F8D2F2A00F40A90 /* SongRepository.swift */,
 				DC406F3B2F86962B00F40A90 /* PromptManager.swift */,
 				DC7A16FA2F37579C00689CAC /* GeminiService.swift */,
 				DCA8D1282F5DD1230008636B /* ToastManager.swift */,
@@ -185,6 +214,7 @@
 				DCE700132F321078009AC55B /* Views */,
 				DC7A16E42F3210F300689CAC /* ViewModels */,
 				DCE700092F321000009AC55B /* Assets.xcassets */,
+				DC406F492F8D2F7400F40A90 /* Resources */,
 				DCE7000B2F321000009AC55B /* Preview Content */,
 			);
 			path = VocabWithAI;
@@ -201,6 +231,7 @@
 		DCE700132F321078009AC55B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				DC406F482F8D2F5D00F40A90 /* Song */,
 				DC14396A2F5DD7C000EFF80C /* Quiz */,
 				DC7A16F62F37525000689CAC /* Components */,
 				DCE700142F3210A1009AC55B /* HomeView.swift */,
@@ -310,6 +341,7 @@
 				DC14396C2F5DD7D900EFF80C /* QuizSelectionSheet.swift in Sources */,
 				DC7A16E92F322D7100689CAC /* Word.swift in Sources */,
 				DC7A16E62F32112400689CAC /* HomeViewModel.swift in Sources */,
+				DC406F472F8D2F2C00F40A90 /* SongRepository.swift in Sources */,
 				DC832DEE2F532F1100ACA109 /* DailyPhrase.swift in Sources */,
 				DCD6032B2F5C66E70044AC42 /* WordRepository.swift in Sources */,
 				DC406F3C2F86962D00F40A90 /* PromptManager.swift in Sources */,
@@ -321,10 +353,14 @@
 				DC406F2C2F7AC89400F40A90 /* SearchView.swift in Sources */,
 				DC7A16FB2F37579C00689CAC /* GeminiService.swift in Sources */,
 				DC14397B2F6047CE00EFF80C /* DailyStatsManager.swift in Sources */,
+				DC406F512F8D301200F40A90 /* SongPlayerView.swift in Sources */,
 				DC406F422F869F5200F40A90 /* MarkdownContentView.swift in Sources */,
+				DC406F442F8D2EFF00F40A90 /* Song.swift in Sources */,
+				DC406F4B2F8D2F7D00F40A90 /* songs.JSON in Sources */,
 				DC406F362F8138A400F40A90 /* EditWordView.swift in Sources */,
 				DC406F282F7AC79400F40A90 /* SearchViewModel.swift in Sources */,
 				DC406F322F812DC200F40A90 /* PhraseDetailView.swift in Sources */,
+				DC406F4F2F8D2FF500F40A90 /* SongListView.swift in Sources */,
 				DC7A16F82F37526700689CAC /* WordRowView.swift in Sources */,
 				DCE700062F320FFF009AC55B /* VocabWithAIApp.swift in Sources */,
 			);
