@@ -32,6 +32,7 @@ class MultipleChoiceQuizViewModel: ObservableObject {
     @Published var isAnswered: Bool = false
     @Published var isFinished: Bool = false
     @Published var correctCount: Int = 0
+    @Published var answeredCount: Int = 0  // 실제로 답변한 문제 수
 
     /// 틀린 문제 목록 — 결과 화면 "틀린 문제 확인하기"에서 사용
     @Published var wrongQuestions: [QuizQuestion] = []
@@ -49,11 +50,6 @@ class MultipleChoiceQuizViewModel: ObservableObject {
     var currentQuestion: QuizQuestion? {
         guard currentIndex < questions.count else { return nil }
         return questions[currentIndex]
-    }
-
-    /// 실제로 푼 문제 수 (조기 종료 시 currentIndex + 1, 완료 시 totalCount)
-    var answeredCount: Int {
-        isFinished ? min(currentIndex + 1, questions.count) : 0
     }
 
     var totalCount: Int { questions.count }
@@ -104,6 +100,7 @@ class MultipleChoiceQuizViewModel: ObservableObject {
         guard !isAnswered else { return }
         selectedChoice = choice
         isAnswered = true
+        answeredCount += 1  // 답변한 문제 수 증가
         if choice == currentQuestion?.answer {
             correctCount += 1
         } else {
@@ -123,12 +120,8 @@ class MultipleChoiceQuizViewModel: ObservableObject {
         }
     }
 
-    /// 현재까지 푼 결과로 즉시 종료
+    /// 현재까지 답변한 문제로 즉시 종료
     func finishEarly() {
-        // 현재 문제가 답변됐으면 포함, 아니면 제외
-        if !isAnswered && currentIndex < questions.count {
-            // 현재 문제는 미답변 — currentIndex 유지 (answeredCount = currentIndex)
-        }
         isFinished = true
     }
 
@@ -138,6 +131,7 @@ class MultipleChoiceQuizViewModel: ObservableObject {
         isAnswered = false
         isFinished = false
         correctCount = 0
+        answeredCount = 0
         wrongQuestions = []
         buildQuestions()
     }
