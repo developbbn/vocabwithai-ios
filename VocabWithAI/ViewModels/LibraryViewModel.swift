@@ -41,8 +41,9 @@ class LibraryViewModel: ObservableObject {
         repository.$words
             .combineLatest($searchText)
             .map { words, searchText in
-                guard !searchText.isEmpty else { return words }
-                return words.filter {
+                let sorted = words.sorted { $0.createdAt > $1.createdAt }
+                guard !searchText.isEmpty else { return sorted }
+                return sorted.filter {
                     $0.word.localizedCaseInsensitiveContains(searchText) ||
                     $0.meaning.localizedCaseInsensitiveContains(searchText)
                 }
@@ -75,6 +76,7 @@ class LibraryViewModel: ObservableObject {
     // MARK: - Public: 표현
     func loadPhrases() {
         let allPhrases = DailyPhraseViewModel.loadBookmarkedPhrases()
+            .sorted { $0.date > $1.date }
         if searchText.isEmpty {
             phrases = allPhrases
         } else {
