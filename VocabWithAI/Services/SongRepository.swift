@@ -15,7 +15,8 @@ class SongRepository {
     private(set) var songs: [Song] = []
 
     private func load() {
-        guard let url = Bundle.main.url(forResource: "songs", withExtension: "json") else {
+        guard let url = Bundle.main.url(forResource: "songs", withExtension: "JSON") ??
+                        Bundle.main.url(forResource: "songs", withExtension: "json") else {
             print("⚠️ songs.json 번들에서 찾을 수 없음 → Xcode에서 Target Membership 체크 필요")
             return
         }

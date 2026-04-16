@@ -26,9 +26,11 @@
 		DC406F422F869F5200F40A90 /* MarkdownContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F412F869F5000F40A90 /* MarkdownContentView.swift */; };
 		DC406F442F8D2EFF00F40A90 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F432F8D2EFE00F40A90 /* Song.swift */; };
 		DC406F472F8D2F2C00F40A90 /* SongRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F462F8D2F2A00F40A90 /* SongRepository.swift */; };
-		DC406F4B2F8D2F7D00F40A90 /* songs.JSON in Sources */ = {isa = PBXBuildFile; fileRef = DC406F4A2F8D2F7C00F40A90 /* songs.JSON */; };
+		DC406F4B2F8D2F7D00F40A90 /* songs.json in Sources */ = {isa = PBXBuildFile; fileRef = DC406F4A2F8D2F7C00F40A90 /* songs.json */; };
 		DC406F4F2F8D2FF500F40A90 /* SongListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F4E2F8D2FF500F40A90 /* SongListView.swift */; };
 		DC406F512F8D301200F40A90 /* SongPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F502F8D301200F40A90 /* SongPlayerView.swift */; };
+		DC406F522F911C8500F40A90 /* songs.json in Resources */ = {isa = PBXBuildFile; fileRef = DC406F4A2F8D2F7C00F40A90 /* songs.json */; };
+		DC406F572F9120B400F40A90 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = DC406F562F9120B400F40A90 /* YouTubePlayerKit */; };
 		DC7A16E32F3210D200689CAC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E22F3210D200689CAC /* ContentView.swift */; };
 		DC7A16E62F32112400689CAC /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E52F32112400689CAC /* HomeViewModel.swift */; };
 		DC7A16E92F322D7100689CAC /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E82F322D7100689CAC /* Word.swift */; };
@@ -69,9 +71,10 @@
 		DC406F412F869F5000F40A90 /* MarkdownContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownContentView.swift; sourceTree = "<group>"; };
 		DC406F432F8D2EFE00F40A90 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		DC406F462F8D2F2A00F40A90 /* SongRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongRepository.swift; sourceTree = "<group>"; };
-		DC406F4A2F8D2F7C00F40A90 /* songs.JSON */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = songs.JSON; sourceTree = "<group>"; };
+		DC406F4A2F8D2F7C00F40A90 /* songs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = songs.json; sourceTree = "<group>"; };
 		DC406F4E2F8D2FF500F40A90 /* SongListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListView.swift; sourceTree = "<group>"; };
 		DC406F502F8D301200F40A90 /* SongPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongPlayerView.swift; sourceTree = "<group>"; };
+		DC406F542F911F4D00F40A90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DC7A16E22F3210D200689CAC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DC7A16E52F32112400689CAC /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		DC7A16E82F322D7100689CAC /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -98,6 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC406F572F9120B400F40A90 /* YouTubePlayerKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,7 +140,7 @@
 		DC406F492F8D2F7400F40A90 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DC406F4A2F8D2F7C00F40A90 /* songs.JSON */,
+				DC406F4A2F8D2F7C00F40A90 /* songs.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -207,6 +211,7 @@
 		DCE700042F320FFF009AC55B /* VocabWithAI */ = {
 			isa = PBXGroup;
 			children = (
+				DC406F542F911F4D00F40A90 /* Info.plist */,
 				DCD603292F5C66D70044AC42 /* Repositories */,
 				DC7A16F92F37579100689CAC /* Services */,
 				DCE700052F320FFF009AC55B /* VocabWithAIApp.swift */,
@@ -299,6 +304,9 @@
 				Base,
 			);
 			mainGroup = DCE7FFF92F320FFF009AC55B;
+			packageReferences = (
+				DC406F552F9120B400F40A90 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */,
+			);
 			productRefGroup = DCE700032F320FFF009AC55B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -313,6 +321,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC406F522F911C8500F40A90 /* songs.json in Resources */,
 				DCE7000D2F321000009AC55B /* Preview Assets.xcassets in Resources */,
 				DCE7000A2F321000009AC55B /* Assets.xcassets in Resources */,
 			);
@@ -356,7 +365,7 @@
 				DC406F512F8D301200F40A90 /* SongPlayerView.swift in Sources */,
 				DC406F422F869F5200F40A90 /* MarkdownContentView.swift in Sources */,
 				DC406F442F8D2EFF00F40A90 /* Song.swift in Sources */,
-				DC406F4B2F8D2F7D00F40A90 /* songs.JSON in Sources */,
+				DC406F4B2F8D2F7D00F40A90 /* songs.json in Sources */,
 				DC406F362F8138A400F40A90 /* EditWordView.swift in Sources */,
 				DC406F282F7AC79400F40A90 /* SearchViewModel.swift in Sources */,
 				DC406F322F812DC200F40A90 /* PhraseDetailView.swift in Sources */,
@@ -499,6 +508,7 @@
 				DEVELOPMENT_TEAM = TR8654UY46;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VocabWithAI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -528,6 +538,7 @@
 				DEVELOPMENT_TEAM = TR8654UY46;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VocabWithAI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -568,6 +579,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DC406F552F9120B400F40A90 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SvenTiigi/YouTubePlayerKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DC406F562F9120B400F40A90 /* YouTubePlayerKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC406F552F9120B400F40A90 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */;
+			productName = YouTubePlayerKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DCE7FFFA2F320FFF009AC55B /* Project object */;
 }

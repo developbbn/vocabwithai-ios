@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import WebKit
+import YouTubePlayerKit
 
 // MARK: - SongPlayerView
 
@@ -14,43 +14,53 @@ struct SongPlayerView: View {
     let song: Song
     @Environment(\.presentationMode) private var presentationMode
 
-    /// 현재 재생 시간 (초). YouTubePlayerView에서 업데이트
+    @StateObject private var player: YouTubePlayer
     @State private var currentTime: Double = 0
-    @State private var isPlaying: Bool = false
+    private var timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
 
-    /// 현재 시간에 해당하는 카드
+    init(song: Song) {
+        self.song = song
+        _player = StateObject(wrappedValue: YouTubePlayer(
+            source: .video(id: song.youtubeID),
+            configuration: .init(
+                allowsInlineMediaPlayback: true
+            )
+        ))
+    }
+
     private var currentCard: LyricCard? {
         song.cards
             .filter { $0.timestamp <= currentTime }
             .last
     }
 
-    /// 다음 등장할 카드 인덱스 (진행 표시용)
     private var currentCardIndex: Int {
         song.cards.firstIndex(where: { $0.id == currentCard?.id }) ?? 0
     }
+
+    @State private var showInfo = false
 
     var body: some View {
         ZStack {
             Color(.systemBackground).ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // YouTube 플레이어
-                YouTubePlayerView(
-                    youtubeID: song.youtubeID,
-                    currentTime: $currentTime,
-                    isPlaying: $isPlaying
-                )
-                .frame(height: 240)
+                // 네비게이션 바 (유튜브 위)
+                navBar
+                    .padding(.horizontal, 8)
+                    .padding(.top, 12)
+                    .padding(.bottom, 4)
 
-                // 핵심단어 칩 + ON-REPEAT 배지
+                // YouTubePlayerKit 뷰
+                YouTubePlayerView(player)
+                    .frame(height: 220)
+
                 controlBar
                     .padding(.horizontal, 20)
                     .padding(.vertical, 14)
 
                 Divider()
 
-                // 가사 카드 영역
                 cardArea
                     .padding(.horizontal, 24)
                     .padding(.top, 24)
@@ -58,24 +68,105 @@ struct SongPlayerView: View {
                 Spacer()
             }
         }
-        .overlay(alignment: .topLeading) {
+        .navigationBarHidden(true)
+        .onReceive(timer) { _ in
+            Task {
+                if let time = try? await player.getCurrentTime() {
+                    currentTime = time.converted(to: .seconds).value
+                }
+            }
+        }
+        .sheet(isPresented: $showInfo) {
+            songInfoSheet
+        }
+    }
+
+    // MARK: - Nav Bar
+    private var navBar: some View {
+        HStack {
             Button(action: { presentationMode.wrappedValue.dismiss() }) {
                 Image(systemName: "chevron.left")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(.white)
-                    .padding(12)
+                    .foregroundColor(.primary)
+                    .padding(10)
                     .contentShape(Rectangle())
             }
-            .padding(.horizontal, 8)
-            .padding(.top, 12)
+
+            Spacer()
+
+            VStack(spacing: 2) {
+                Text(song.title)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundColor(.primary)
+                Text(song.artist)
+                    .font(.system(size: 12))
+                    .foregroundColor(.secondary)
+            }
+
+            Spacer()
+
+            Button(action: { showInfo = true }) {
+                Image(systemName: "info.circle")
+                    .font(.system(size: 20))
+                    .foregroundColor(.primary)
+                    .padding(10)
+                    .contentShape(Rectangle())
+            }
         }
-        .navigationBarHidden(true)
+    }
+
+    // MARK: - Song Info Sheet
+    private var songInfoSheet: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(song.title)
+                        .font(.system(size: 22, weight: .bold))
+                    Text(song.artist)
+                        .font(.system(size: 15))
+                        .foregroundColor(.secondary)
+                }
+                Spacer()
+                Text(song.jlptLevel)
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundColor(.blue)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(Color.blue.opacity(0.1))
+                    .cornerRadius(8)
+            }
+            .padding(.top, 24)
+
+            Divider()
+
+            VStack(alignment: .leading, spacing: 8) {
+                Text("수록 단어 \(song.cards.count)개")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(.gray)
+
+                ForEach(song.cards) { card in
+                    HStack(alignment: .top, spacing: 12) {
+                        Text(String(format: "%d:%02d", Int(card.timestamp) / 60, Int(card.timestamp) % 60))
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.blue)
+                            .frame(width: 36, alignment: .leading)
+                        Text(card.japanese)
+                            .font(.system(size: 14))
+                            .foregroundColor(.primary)
+                        Spacer()
+                    }
+                    .padding(.vertical, 2)
+                }
+            }
+
+            Spacer()
+        }
+        .padding(.horizontal, 20)
     }
 
     // MARK: - Control Bar
     private var controlBar: some View {
         HStack {
-            // 핵심단어 칩
             HStack(spacing: 6) {
                 Image(systemName: "book.closed.fill")
                     .font(.system(size: 12))
@@ -94,7 +185,6 @@ struct SongPlayerView: View {
 
             Spacer()
 
-            // ON-REPEAT 배지
             Text("ON-REPEAT")
                 .font(.system(size: 11, weight: .bold))
                 .foregroundColor(.blue)
@@ -111,31 +201,25 @@ struct SongPlayerView: View {
     private var cardArea: some View {
         VStack(alignment: .center, spacing: 16) {
             if let card = currentCard {
-                // 일본어 가사 (핵심 단어 강조)
                 highlightedText(card.japanese, highlights: card.highlightWords)
                     .font(.system(size: 26, weight: .bold))
                     .multilineTextAlignment(.center)
                     .lineSpacing(6)
-                    .animation(.easeInOut(duration: 0.3), value: card.id)
 
-                // 히라가나 읽기
                 Text(card.reading)
                     .font(.system(size: 15))
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
 
-                // 한국어 번역
                 Text(card.meaning)
                     .font(.system(size: 14))
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
 
-                // 핵심 단어 칩
                 if !card.highlightWords.isEmpty {
                     highlightWordChips(card.highlightWords)
                 }
 
-                // 카드 진행 도트
                 cardProgressDots
 
             } else {
@@ -215,7 +299,6 @@ struct SongPlayerView: View {
                     }
                 }
             }
-
             if let found = earliest {
                 let before = String(remaining[remaining.startIndex..<found.range.lowerBound])
                 if !before.isEmpty {
@@ -232,119 +315,6 @@ struct SongPlayerView: View {
     }
 }
 
-// MARK: - YouTubePlayerView
-
-/// WKWebView 기반 YouTube IFrame 플레이어.
-/// JavaScript 폴링으로 현재 재생 시간을 2초마다 업데이트한다.
-struct YouTubePlayerView: UIViewRepresentable {
-    let youtubeID: String
-    @Binding var currentTime: Double
-    @Binding var isPlaying: Bool
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
-    func makeUIView(context: Context) -> WKWebView {
-        let config = WKWebViewConfiguration()
-        config.allowsInlineMediaPlayback = true
-        config.mediaTypesRequiringUserActionForPlayback = []
-
-        let userScript = WKUserScript(
-            source: """
-            setInterval(function() {
-                var player = document.getElementById('player');
-                if (player && player.contentWindow) {
-                    player.contentWindow.postMessage('{"event":"command","func":"getCurrentTime"}', '*');
-                }
-                if (window.ytPlayer) {
-                    var t = window.ytPlayer.getCurrentTime();
-                    window.webkit.messageHandlers.timeUpdate.postMessage(t);
-                }
-            }, 500);
-            """,
-            injectionTime: .atDocumentEnd,
-            forMainFrameOnly: false
-        )
-        config.userContentController.addUserScript(userScript)
-        config.userContentController.add(context.coordinator, name: "timeUpdate")
-
-        let webView = WKWebView(frame: .zero, configuration: config)
-        webView.scrollView.isScrollEnabled = false
-        webView.backgroundColor = .black
-
-        let html = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-        * { margin:0; padding:0; }
-        body { background:#000; }
-        #player-container { width:100%; height:100vh; }
-        </style>
-        </head>
-        <body>
-        <div id="player-container">
-            <div id="ytplayer"></div>
-        </div>
-        <script src="https://www.youtube.com/iframe_api"></script>
-        <script>
-        var ytPlayer;
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('ytplayer', {
-                height: '100%',
-                width: '100%',
-                videoId: '\(youtubeID)',
-                playerVars: {
-                    'playsinline': 1,
-                    'controls': 1,
-                    'rel': 0,
-                    'modestbranding': 1
-                },
-                events: {
-                    'onStateChange': function(e) {
-                        window.webkit.messageHandlers.timeUpdate.postMessage(ytPlayer.getCurrentTime());
-                    }
-                }
-            });
-        }
-        setInterval(function() {
-            if (ytPlayer && ytPlayer.getCurrentTime) {
-                window.webkit.messageHandlers.timeUpdate.postMessage(ytPlayer.getCurrentTime());
-            }
-        }, 500);
-        </script>
-        </body>
-        </html>
-        """
-
-        webView.loadHTMLString(html, baseURL: URL(string: "https://www.youtube.com"))
-        return webView
-    }
-
-    func updateUIView(_ uiView: WKWebView, context: Context) {}
-
-    // MARK: - Coordinator
-    class Coordinator: NSObject, WKScriptMessageHandler {
-        var parent: YouTubePlayerView
-
-        init(_ parent: YouTubePlayerView) {
-            self.parent = parent
-        }
-
-        func userContentController(_ userContentController: WKUserContentController,
-                                   didReceive message: WKScriptMessage) {
-            if message.name == "timeUpdate",
-               let time = message.body as? Double {
-                DispatchQueue.main.async {
-                    self.parent.currentTime = time
-                }
-            }
-        }
-    }
-}
-
 // MARK: - Preview
 struct SongPlayerView_Previews: PreviewProvider {
     static var previews: some View {
@@ -354,7 +324,7 @@ struct SongPlayerView_Previews: PreviewProvider {
                 title: "ヒロイン",
                 artist: "back number",
                 thumbnailURL: "",
-                youtubeURL: "https://www.youtube.com/watch?v=eit6sIzS7g8", // 누락된 파라미터 추가
+                youtubeURL: "https://youtu.be/eit6sIzS7g8",
                 youtubeID: "eit6sIzS7g8",
                 jlptLevel: "N3",
                 isRecommended: true,
