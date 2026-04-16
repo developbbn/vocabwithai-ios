@@ -20,7 +20,7 @@ struct SongListView: View {
                     Image(systemName: "music.note.list")
                         .font(.system(size: 48))
                         .foregroundColor(.gray.opacity(0.4))
-                    Text("노래 데이터를 불러오는 중...")
+                    Text("등록된 노래가 없어요")
                         .font(.system(size: 15))
                         .foregroundColor(.gray)
                 }
@@ -64,7 +64,6 @@ struct SongListView: View {
     // MARK: - Header Banner
     private var headerBanner: some View {
         ZStack(alignment: .bottomLeading) {
-            // 배경
             LinearGradient(
                 colors: [Color(red: 0.1, green: 0.2, blue: 0.9), Color(red: 0.2, green: 0.1, blue: 0.7)],
                 startPoint: .topLeading,
@@ -72,7 +71,6 @@ struct SongListView: View {
             )
             .frame(height: 200)
 
-            // 배경 음표 장식
             HStack {
                 Spacer()
                 VStack {
@@ -84,7 +82,6 @@ struct SongListView: View {
             }
             .frame(height: 200)
 
-            // 텍스트
             VStack(alignment: .leading, spacing: 6) {
                 Text("CURATED FOR YOU")
                     .font(.system(size: 12, weight: .semibold))
@@ -107,7 +104,6 @@ struct SongRow: View {
 
     var body: some View {
         HStack(spacing: 16) {
-            // 앨범 이미지
             AsyncImage(url: URL(string: song.thumbnailURL)) { image in
                 image.resizable().scaledToFill()
             } placeholder: {
@@ -118,7 +114,6 @@ struct SongRow: View {
             .cornerRadius(10)
             .clipped()
 
-            // 텍스트
             VStack(alignment: .leading, spacing: 4) {
                 Text(song.title)
                     .font(.system(size: 17, weight: .bold))
@@ -151,7 +146,6 @@ struct SongRow: View {
 
             Spacer()
 
-            // JLPT 레벨 배지
             Text(song.jlptLevel)
                 .font(.system(size: 12, weight: .bold))
                 .foregroundColor(.blue)

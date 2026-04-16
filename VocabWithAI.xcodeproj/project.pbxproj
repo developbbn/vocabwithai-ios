@@ -31,6 +31,7 @@
 		DC406F512F8D301200F40A90 /* SongPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F502F8D301200F40A90 /* SongPlayerView.swift */; };
 		DC406F522F911C8500F40A90 /* songs.json in Resources */ = {isa = PBXBuildFile; fileRef = DC406F4A2F8D2F7C00F40A90 /* songs.json */; };
 		DC406F572F9120B400F40A90 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = DC406F562F9120B400F40A90 /* YouTubePlayerKit */; };
+		DC406F5C2F913FDF00F40A90 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC406F5B2F913FDF00F40A90 /* LaunchScreen.storyboard */; };
 		DC7A16E32F3210D200689CAC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E22F3210D200689CAC /* ContentView.swift */; };
 		DC7A16E62F32112400689CAC /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E52F32112400689CAC /* HomeViewModel.swift */; };
 		DC7A16E92F322D7100689CAC /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E82F322D7100689CAC /* Word.swift */; };
@@ -75,6 +76,7 @@
 		DC406F4E2F8D2FF500F40A90 /* SongListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListView.swift; sourceTree = "<group>"; };
 		DC406F502F8D301200F40A90 /* SongPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongPlayerView.swift; sourceTree = "<group>"; };
 		DC406F542F911F4D00F40A90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DC406F5B2F913FDF00F40A90 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DC7A16E22F3210D200689CAC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DC7A16E52F32112400689CAC /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		DC7A16E82F322D7100689CAC /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 		DCE7FFF92F320FFF009AC55B = {
 			isa = PBXGroup;
 			children = (
+				DC406F5B2F913FDF00F40A90 /* LaunchScreen.storyboard */,
 				DCE700042F320FFF009AC55B /* VocabWithAI */,
 				DCE700032F320FFF009AC55B /* Products */,
 			);
@@ -322,6 +325,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC406F522F911C8500F40A90 /* songs.json in Resources */,
+				DC406F5C2F913FDF00F40A90 /* LaunchScreen.storyboard in Resources */,
 				DCE7000D2F321000009AC55B /* Preview Assets.xcassets in Resources */,
 				DCE7000A2F321000009AC55B /* Assets.xcassets in Resources */,
 			);

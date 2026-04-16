@@ -118,7 +118,7 @@ class DailyPhraseViewModel: ObservableObject {
 
     /// 표현을 UserDefaults 북마크 목록에 저장한다.
     /// - 같은 japanese 값이 이미 있으면 덮어쓰기 (중복 방지)
-    private func saveBookmark(_ phrase: DailyPhrase) {
+    func saveBookmark(_ phrase: DailyPhrase) {
         var bookmarks = loadBookmarks()
         bookmarks.removeAll { $0.japanese == phrase.japanese }
         bookmarks.append(phrase)

@@ -11,7 +11,7 @@ import Foundation
 
 /// 노래 1곡 데이터 모델.
 /// songs.json에서 디코딩되어 SongRepository에 저장된다.
-struct Song: Identifiable, Codable {
+struct Song: Identifiable, Codable, Hashable {
     let id: String
     let title: String
     let artist: String
@@ -26,17 +26,18 @@ struct Song: Identifiable, Codable {
 // MARK: - HighlightWord
 
 /// 카드 내 핵심 단어 1개. 단어 자체 + 읽기 + 뜻을 모두 포함한다.
-struct HighlightWord: Codable {
-    let word: String      // 한자/가나 표기 (예: "似合う")
-    let reading: String   // 히라가나 읽기 (예: "にあう")
-    let meaning: String   // 한국어 뜻 (예: "어울리다")
+struct HighlightWord: Codable, Hashable {
+    let word: String
+    let reading: String
+    let meaning: String
+    let type: String  // "word" → 단어 탭, "phrase" → 표현 탭
 }
 
 // MARK: - LyricCard
 
 /// 특정 재생 시점에 슬라이드되는 학습 카드.
 /// timestamp(초)에 도달하면 자동으로 해당 카드가 표시된다.
-struct LyricCard: Identifiable, Codable {
+struct LyricCard: Identifiable, Codable, Hashable {
     let id: String
     let timestamp: Double        // 카드가 등장하는 재생 시각 (초 단위)
     let japanese: String         // 일본어 가사 (예: "明日の勇気をくれるから")
