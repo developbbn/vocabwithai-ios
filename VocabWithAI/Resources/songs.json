@@ -16,8 +16,18 @@
         "reading": "きみのまいにちに ぼくはにあわないかな",
         "meaning": "너의 매일에 나는 어울리지 않는 걸까",
         "highlightWords": [
-          { "word": "毎日", "reading": "まいにち", "meaning": "매일", "type": "word" },
-          { "word": "似合う", "reading": "にあう", "meaning": "어울리다", "type": "word" }
+          {
+            "word": "毎日",
+            "reading": "まいにち",
+            "meaning": "매일",
+            "type": "word"
+          },
+          {
+            "word": "似合う",
+            "reading": "にあう",
+            "meaning": "어울리다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -27,8 +37,18 @@
         "reading": "しろいそらから ゆきがおちた",
         "meaning": "하얀 하늘에서 눈이 내렸어",
         "highlightWords": [
-          { "word": "空", "reading": "そら", "meaning": "하늘", "type": "word" },
-          { "word": "落ちる", "reading": "おちる", "meaning": "떨어지다, 내리다", "type": "word" }
+          {
+            "word": "空",
+            "reading": "そら",
+            "meaning": "하늘",
+            "type": "word"
+          },
+          {
+            "word": "落ちる",
+            "reading": "おちる",
+            "meaning": "떨어지다, 내리다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -38,9 +58,24 @@
         "reading": "べつにいいさと はきだしたためいきが",
         "meaning": "별로 상관없겠지, 하고 내뱉은 한숨이",
         "highlightWords": [
-          { "word": "別に", "reading": "べつに", "meaning": "별로, 딱히", "type": "word" },
-          { "word": "吐き出す", "reading": "はきだす", "meaning": "내뱉다, 토해내다", "type": "word" },
-          { "word": "ため息", "reading": "ためいき", "meaning": "한숨", "type": "word" }
+          {
+            "word": "別に",
+            "reading": "べつに",
+            "meaning": "별로, 딱히",
+            "type": "word"
+          },
+          {
+            "word": "吐き出す",
+            "reading": "はきだす",
+            "meaning": "내뱉다, 토해내다",
+            "type": "word"
+          },
+          {
+            "word": "ため息",
+            "reading": "ためいき",
+            "meaning": "한숨",
+            "type": "word"
+          }
         ]
       },
       {
@@ -50,9 +85,24 @@
         "reading": "すこしのこって さびしそうにきえた",
         "meaning": "조금 남았다가 쓸쓸한 듯이 사라졌어",
         "highlightWords": [
-          { "word": "残る", "reading": "のこる", "meaning": "남다", "type": "word" },
-          { "word": "寂しい", "reading": "さびしい", "meaning": "쓸쓸하다", "type": "word" },
-          { "word": "消える", "reading": "きえる", "meaning": "사라지다", "type": "word" }
+          {
+            "word": "残る",
+            "reading": "のこる",
+            "meaning": "남다",
+            "type": "word"
+          },
+          {
+            "word": "寂しい",
+            "reading": "さびしい",
+            "meaning": "쓸쓸하다",
+            "type": "word"
+          },
+          {
+            "word": "消える",
+            "reading": "きえる",
+            "meaning": "사라지다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -62,8 +112,18 @@
         "reading": "きみのまちにも ふっているかな",
         "meaning": "네가 있는 거리에도 눈이 내리고 있으려나",
         "highlightWords": [
-          { "word": "街", "reading": "まち", "meaning": "거리, 동네", "type": "word" },
-          { "word": "降る", "reading": "ふる", "meaning": "(눈, 비가) 내리다", "type": "word" }
+          {
+            "word": "街",
+            "reading": "まち",
+            "meaning": "거리, 동네",
+            "type": "word"
+          },
+          {
+            "word": "降る",
+            "reading": "ふる",
+            "meaning": "(눈, 비가) 내리다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -73,8 +133,18 @@
         "reading": "ゆきがきれいとわらうのはきみがいい",
         "meaning": "눈이 예쁘다며 웃는 건 너였으면 좋겠어",
         "highlightWords": [
-          { "word": "綺麗だ", "reading": "きれいだ", "meaning": "예쁘다", "type": "word" },
-          { "word": "笑う", "reading": "わらう", "meaning": "웃다", "type": "word" }
+          {
+            "word": "綺麗だ",
+            "reading": "きれいだ",
+            "meaning": "예쁘다",
+            "type": "word"
+          },
+          {
+            "word": "笑う",
+            "reading": "わらう",
+            "meaning": "웃다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -84,8 +154,18 @@
         "reading": "でもさむいねってうれしそうなのも",
         "meaning": "그래도 춥네~ 라며 기뻐 보이는 것도",
         "highlightWords": [
-          { "word": "嬉しい", "reading": "うれしい", "meaning": "기쁘다", "type": "word" },
-          { "word": "〜そう", "reading": "〜そう", "meaning": "~해 보이다", "type": "phrase" }
+          {
+            "word": "嬉しい",
+            "reading": "うれしい",
+            "meaning": "기쁘다",
+            "type": "word"
+          },
+          {
+            "word": "〜そう",
+            "reading": "〜そう",
+            "meaning": "~해 보이다",
+            "type": "phrase"
+          }
         ]
       },
       {
@@ -95,8 +175,18 @@
         "reading": "ころびそうになってつかんだてのそのさきで",
         "meaning": "넘어질 뻔해서 붙잡은 손 끝에서",
         "highlightWords": [
-          { "word": "転ぶ", "reading": "ころぶ", "meaning": "넘어지다", "type": "word" },
-          { "word": "掴む", "reading": "つかむ", "meaning": "잡다, 쥐다", "type": "word" }
+          {
+            "word": "転ぶ",
+            "reading": "ころぶ",
+            "meaning": "넘어지다",
+            "type": "word"
+          },
+          {
+            "word": "掴む",
+            "reading": "つかむ",
+            "meaning": "잡다, 쥐다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -106,9 +196,24 @@
         "reading": "きづけばあたりは ほとんどがしろくそまって",
         "meaning": "정신을 차려보면 주변은 온통 하얗게 물들어서",
         "highlightWords": [
-          { "word": "気付く", "reading": "きづく", "meaning": "눈치채다, 알아차리다", "type": "word" },
-          { "word": "辺り", "reading": "あたり", "meaning": "부근, 주변", "type": "word" },
-          { "word": "染まる", "reading": "そまる", "meaning": "물들다", "type": "word" }
+          {
+            "word": "気付く",
+            "reading": "きづく",
+            "meaning": "눈치채다, 알아차리다",
+            "type": "word"
+          },
+          {
+            "word": "辺り",
+            "reading": "あたり",
+            "meaning": "부근, 주변",
+            "type": "word"
+          },
+          {
+            "word": "染まる",
+            "reading": "そまる",
+            "meaning": "물들다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -118,8 +223,18 @@
         "reading": "ちらかってたこと わすれてしまいそう",
         "meaning": "어지럽혀져 있던 일들마저 잊어버릴 것 같아",
         "highlightWords": [
-          { "word": "散らかる", "reading": "ちらかる", "meaning": "어질러지다", "type": "word" },
-          { "word": "忘れる", "reading": "わすれる", "meaning": "잊다", "type": "word" }
+          {
+            "word": "散らかる",
+            "reading": "ちらかる",
+            "meaning": "어질러지다",
+            "type": "word"
+          },
+          {
+            "word": "忘れる",
+            "reading": "わすれる",
+            "meaning": "잊다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -129,8 +244,18 @@
         "reading": "いがいとつもったねと",
         "meaning": "의외로 많이 쌓였네, 하고",
         "highlightWords": [
-          { "word": "意外", "reading": "いがい", "meaning": "의외, 뜻밖", "type": "word" },
-          { "word": "積もる", "reading": "つもる", "meaning": "쌓이다", "type": "word" }
+          {
+            "word": "意外",
+            "reading": "いがい",
+            "meaning": "의외, 뜻밖",
+            "type": "word"
+          },
+          {
+            "word": "積もる",
+            "reading": "つもる",
+            "meaning": "쌓이다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -140,8 +265,18 @@
         "reading": "めーるをおくろうとして",
         "meaning": "문자를 보내려다가",
         "highlightWords": [
-          { "word": "送る", "reading": "おくる", "meaning": "보내다", "type": "word" },
-          { "word": "〜ようとする", "reading": "〜ようとする", "meaning": "~하려고 하다", "type": "phrase" }
+          {
+            "word": "送る",
+            "reading": "おくる",
+            "meaning": "보내다",
+            "type": "word"
+          },
+          {
+            "word": "〜ようとする",
+            "reading": "〜ようとする",
+            "meaning": "~하려고 하다",
+            "type": "phrase"
+          }
         ]
       },
       {
@@ -151,8 +286,18 @@
         "reading": "うちかけのまま ぽけっとにいれた",
         "meaning": "치다 만 채 주머니에 넣었어",
         "highlightWords": [
-          { "word": "〜かけ", "reading": "〜かけ", "meaning": "~하다 말다", "type": "phrase" },
-          { "word": "〜まま", "reading": "〜まま", "meaning": "~한 채로", "type": "phrase" }
+          {
+            "word": "〜かけ",
+            "reading": "〜かけ",
+            "meaning": "~하다 말다",
+            "type": "phrase"
+          },
+          {
+            "word": "〜まま",
+            "reading": "〜まま",
+            "meaning": "~한 채로",
+            "type": "phrase"
+          }
         ]
       },
       {
@@ -162,8 +307,18 @@
         "reading": "このまれるような つよくやさしいぼくに",
         "meaning": "네가 좋아할 만한 강하고 다정한 나로",
         "highlightWords": [
-          { "word": "好まれる", "reading": "このまれる", "meaning": "호감을 사다 (好む의 수동)", "type": "word" },
-          { "word": "優しい", "reading": "やさしい", "meaning": "다정하다", "type": "word" }
+          {
+            "word": "好まれる",
+            "reading": "このまれる",
+            "meaning": "호감을 사다 (好む의 수동)",
+            "type": "word"
+          },
+          {
+            "word": "優しい",
+            "reading": "やさしい",
+            "meaning": "다정하다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -173,7 +328,12 @@
         "reading": "かわれないかな",
         "meaning": "변할 순 없는 걸까",
         "highlightWords": [
-          { "word": "変わる", "reading": "かわる", "meaning": "변하다", "type": "word" }
+          {
+            "word": "変わる",
+            "reading": "かわる",
+            "meaning": "변하다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -183,9 +343,24 @@
         "reading": "だしかけたこたえむねがいたくて",
         "meaning": "꺼내려다 말았던 대답에 가슴이 아파서",
         "highlightWords": [
-          { "word": "出す", "reading": "だす", "meaning": "꺼내다", "type": "word" },
-          { "word": "答え", "reading": "こたえ", "meaning": "대답", "type": "word" },
-          { "word": "胸", "reading": "むね", "meaning": "가슴", "type": "word" }
+          {
+            "word": "出す",
+            "reading": "だす",
+            "meaning": "꺼내다",
+            "type": "word"
+          },
+          {
+            "word": "答え",
+            "reading": "こたえ",
+            "meaning": "대답",
+            "type": "word"
+          },
+          {
+            "word": "胸",
+            "reading": "むね",
+            "meaning": "가슴",
+            "type": "word"
+          }
         ]
       },
       {
@@ -195,9 +370,24 @@
         "reading": "わたしかたもどこにすてればいいかもわからずに",
         "meaning": "어떻게 전해야 할지도, 어디에 버려야 할지도 모른 채",
         "highlightWords": [
-          { "word": "渡す", "reading": "わたす", "meaning": "건네주다", "type": "word" },
-          { "word": "捨てる", "reading": "すてる", "meaning": "버리다", "type": "word" },
-          { "word": "〜ずに", "reading": "〜ずに", "meaning": "~하지 않고", "type": "phrase" }
+          {
+            "word": "渡す",
+            "reading": "わたす",
+            "meaning": "건네주다",
+            "type": "word"
+          },
+          {
+            "word": "捨てる",
+            "reading": "すてる",
+            "meaning": "버리다",
+            "type": "word"
+          },
+          {
+            "word": "〜ずに",
+            "reading": "〜ずに",
+            "meaning": "~하지 않고",
+            "type": "phrase"
+          }
         ]
       },
       {
@@ -207,7 +397,12 @@
         "reading": "きみからみえてるけしきに",
         "meaning": "너에게서 비치는 풍경에",
         "highlightWords": [
-          { "word": "景色", "reading": "けしき", "meaning": "풍경, 경치", "type": "word" }
+          {
+            "word": "景色",
+            "reading": "けしき",
+            "meaning": "풍경, 경치",
+            "type": "word"
+          }
         ]
       },
       {
@@ -217,7 +412,12 @@
         "reading": "ただおびえているんだ",
         "meaning": "그저 겁내고 있을 뿐이야",
         "highlightWords": [
-          { "word": "怯える", "reading": "おびえる", "meaning": "겁내다, 무서워하다", "type": "word" }
+          {
+            "word": "怯える",
+            "reading": "おびえる",
+            "meaning": "겁내다, 무서워하다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -227,9 +427,24 @@
         "reading": "おもえばどんなえいがをみたって",
         "meaning": "생각해 보면 어떤 영화를 보든",
         "highlightWords": [
-          { "word": "思う", "reading": "おもう", "meaning": "생각하다", "type": "word" },
-          { "word": "映画", "reading": "えいが", "meaning": "영화", "type": "word" },
-          { "word": "観る", "reading": "みる", "meaning": "(영화를) 보다", "type": "word" }
+          {
+            "word": "思う",
+            "reading": "おもう",
+            "meaning": "생각하다",
+            "type": "word"
+          },
+          {
+            "word": "映画",
+            "reading": "えいが",
+            "meaning": "영화",
+            "type": "word"
+          },
+          {
+            "word": "観る",
+            "reading": "みる",
+            "meaning": "(영화를) 보다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -237,9 +452,14 @@
         "timestamp": 156.0,
         "japanese": "そのヒロインに重ねてしまうのは君だよ",
         "reading": "そのひろいんにかさねてしまうのはきみだよ",
-        "meaning": "그 주인공(히로인)에 겹쳐 보이는 건 너야",
+        "meaning": "그 히로인에 겹쳐 보이는 건 너야",
         "highlightWords": [
-          { "word": "重ねる", "reading": "かさねる", "meaning": "겹치다, 포개다", "type": "word" }
+          {
+            "word": "重ねる",
+            "reading": "かさねる",
+            "meaning": "겹치다, 포개다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -249,9 +469,24 @@
         "reading": "いってみたいとおいばしょでみたいよぞらも",
         "meaning": "가 보고 싶은 먼 곳에서 보고 싶은 밤하늘도",
         "highlightWords": [
-          { "word": "遠い", "reading": "とおい", "meaning": "멀다", "type": "word" },
-          { "word": "場所", "reading": "ばしょ", "meaning": "장소", "type": "word" },
-          { "word": "夜空", "reading": "よぞら", "meaning": "밤하늘", "type": "word" }
+          {
+            "word": "遠い",
+            "reading": "とおい",
+            "meaning": "멀다",
+            "type": "word"
+          },
+          {
+            "word": "場所",
+            "reading": "ばしょ",
+            "meaning": "장소",
+            "type": "word"
+          },
+          {
+            "word": "夜空",
+            "reading": "よぞら",
+            "meaning": "밤하늘",
+            "type": "word"
+          }
         ]
       },
       {
@@ -261,7 +496,12 @@
         "reading": "となりにえがくのはいつでも",
         "meaning": "내 옆에 그리는 건 늘",
         "highlightWords": [
-          { "word": "描く", "reading": "えがく", "meaning": "그리다", "type": "word" }
+          {
+            "word": "描く",
+            "reading": "えがく",
+            "meaning": "그리다",
+            "type": "word"
+          }
         ]
       },
       {
@@ -271,8 +511,18 @@
         "reading": "みなれたはずのまちがこんなにも",
         "meaning": "익숙했을 터인 거리가 이렇게나",
         "highlightWords": [
-          { "word": "見慣れる", "reading": "みなれる", "meaning": "낯익다, 눈에 익다", "type": "word" },
-          { "word": "〜はず", "reading": "〜はず", "meaning": "~일 터이다", "type": "phrase" }
+          {
+            "word": "見慣れる",
+            "reading": "みなれる",
+            "meaning": "낯익다, 눈에 익다",
+            "type": "word"
+          },
+          {
+            "word": "〜はず",
+            "reading": "〜はず",
+            "meaning": "~일 터이다",
+            "type": "phrase"
+          }
         ]
       },
       {
@@ -282,7 +532,12 @@
         "reading": "ばかだなぁぼくは",
         "meaning": "바보구나, 나는",
         "highlightWords": [
-          { "word": "馬鹿", "reading": "ばか", "meaning": "바보", "type": "word" }
+          {
+            "word": "馬鹿",
+            "reading": "ばか",
+            "meaning": "바보",
+            "type": "word"
+          }
         ]
       },
       {
@@ -292,14 +547,28 @@
         "reading": "きみはだれにあいたくなるんだろう",
         "meaning": "너는 누굴 보고 싶어 할까",
         "highlightWords": [
-          { "word": "誰", "reading": "だれ", "meaning": "누구", "type": "word" },
-          { "word": "会う", "reading": "あう", "meaning": "만나다", "type": "word" },
-          { "word": "〜たくなる", "reading": "〜たくなる", "meaning": "~하고 싶어지다", "type": "phrase" }
+          {
+            "word": "誰",
+            "reading": "だれ",
+            "meaning": "누구",
+            "type": "word"
+          },
+          {
+            "word": "会う",
+            "reading": "あう",
+            "meaning": "만나다",
+            "type": "word"
+          },
+          {
+            "word": "〜たくなる",
+            "reading": "〜たくなる",
+            "meaning": "~하고 싶어지다",
+            "type": "phrase"
+          }
         ]
       }
     ]
   },
-  
   {
     "id": "song_05",
     "title": "高嶺の花子さん",
@@ -312,7 +581,7 @@
     "cards": [
       {
         "id": "c05_01",
-        "timestamp": 42.0,
+        "timestamp": 42.2,
         "japanese": "君から見た僕はきっと",
         "reading": "きみからみたぼくはきっと",
         "meaning": "네가 본 나는 분명",
@@ -333,7 +602,7 @@
       },
       {
         "id": "c05_03",
-        "timestamp": 56.0,
+        "timestamp": 55.7,
         "japanese": "たかが知人Bにむけられた",
         "reading": "たかがちじんびーにむけられた",
         "meaning": "고작 지인 B를 향한",
@@ -345,7 +614,7 @@
       },
       {
         "id": "c05_04",
-        "timestamp": 61.0,
+        "timestamp": 60.6,
         "japanese": "笑顔があれならもう 恐ろしい人だ",
         "reading": "えがおがあれならもう おそろしいひとだ",
         "meaning": "미소가 저거라면 정말이지 무서운 사람이야",
@@ -356,10 +625,10 @@
       },
       {
         "id": "c05_05",
-        "timestamp": 68.0,
+        "timestamp": 67.5,
         "japanese": "君を惚れさせる 黒魔術は知らないし",
         "reading": "きみをほれさせる くろまじゅつはしらないし",
-        "meaning": "너를 반하게 할 흑마술은 모르겠고",
+        "meaning": "너を 반하게 할 흑마술은 모르겠고",
         "highlightWords": [
           { "word": "惚れる", "reading": "ほれる", "meaning": "반하다", "type": "word" },
           { "word": "〜させる", "reading": "〜させる", "meaning": "~하게 만들다 (사역형)", "type": "phrase" },
@@ -368,7 +637,7 @@
       },
       {
         "id": "c05_06",
-        "timestamp": 75.0,
+        "timestamp": 74.3,
         "japanese": "海に誘う勇気も車もない",
         "reading": "うみにさそうゆうきもくるまもない",
         "meaning": "바다로 부를 용기도 자동차도 없어",
@@ -379,7 +648,7 @@
       },
       {
         "id": "c05_07",
-        "timestamp": 79.0,
+        "timestamp": 78.4,
         "japanese": "でも見たいとなりで目覚めて",
         "reading": "でもみたいとなりでめざめて",
         "meaning": "하지만 보고 싶어 옆에서 눈 뜨고",
@@ -390,7 +659,7 @@
       },
       {
         "id": "c05_08",
-        "timestamp": 83.0,
+        "timestamp": 82.5,
         "japanese": "おはようと笑う君を",
         "reading": "おはようとわらうきみを",
         "meaning": "좋은 아침이라며 웃는 너를",
@@ -400,7 +669,7 @@
       },
       {
         "id": "c05_09",
-        "timestamp": 85.0,
+        "timestamp": 84.4,
         "japanese": "会いたいんだ 今すぐその角から",
         "reading": "あいたいんだ いますぐそのかどから",
         "meaning": "만나고 싶어 지금 바로 그 모퉁이에서",
@@ -411,7 +680,7 @@
       },
       {
         "id": "c05_10",
-        "timestamp": 89.0,
+        "timestamp": 88.4,
         "japanese": "飛び出してきてくれないか",
         "reading": "とびだしてきてくれないか",
         "meaning": "튀어나와주지 않을래?",
@@ -422,7 +691,7 @@
       },
       {
         "id": "c05_11",
-        "timestamp": 93.0,
+        "timestamp": 92.4,
         "japanese": "夏の魔物に連れ去られ 僕のもとへ",
         "reading": "なつのまものにつれさられ ぼくのもとへ",
         "meaning": "여름의 마물에게 끌려와서 나의 곁으로",
@@ -434,7 +703,7 @@
       },
       {
         "id": "c05_12",
-        "timestamp": 100.0,
+        "timestamp": 99.1,
         "japanese": "生まれた星のもとが 違くたって",
         "reading": "うまれたほしのもとが ちがくたって",
         "meaning": "태어난 별부터 달랐어도",
@@ -445,7 +714,7 @@
       },
       {
         "id": "c05_13",
-        "timestamp": 103.0,
+        "timestamp": 102.3,
         "japanese": "偶然と夏の魔法とやらの力で",
         "reading": "ぐうぜんとなつのまほうとやらのちからで",
         "meaning": "우연과 여름의 마법이라는 이름의 힘으로",
@@ -456,7 +725,7 @@
       },
       {
         "id": "c05_14",
-        "timestamp": 108.0,
+        "timestamp": 106.8,
         "japanese": "僕のものに なるわけないか",
         "reading": "ぼくのものに なるわけないか",
         "meaning": "나의 것으로 될 리는 없으려나",
@@ -466,17 +735,17 @@
       },
       {
         "id": "c05_15",
-        "timestamp": 129.0,
+        "timestamp": 128.5,
         "japanese": "君の恋人になる人は",
         "reading": "きみのこいびとになるひとは",
-        "meaning": "너의 연인이 될 사람은",
+        "meaning": "너の 연인이 될 사람은",
         "highlightWords": [
           { "word": "恋人", "reading": "こいびと", "meaning": "연인", "type": "word" }
         ]
       },
       {
         "id": "c05_16",
-        "timestamp": 135.0,
+        "timestamp": 134.2,
         "japanese": "モデルみたいな人なんだろう",
         "reading": "もでるみたいなひとなんだろう",
         "meaning": "모델 같은 사람이겠지",
@@ -486,7 +755,7 @@
       },
       {
         "id": "c05_17",
-        "timestamp": 143.0,
+        "timestamp": 142.1,
         "japanese": "そいつはきっと 君よりも年上で",
         "reading": "そいつはきっと きみよりもとしうえで",
         "meaning": "그 녀석은 분명 너보다도 연상에",
@@ -497,7 +766,7 @@
       },
       {
         "id": "c05_18",
-        "timestamp": 148.0,
+        "timestamp": 146.5,
         "japanese": "焼けた肌がよく似合う",
         "reading": "やけたはだがよくにあう",
         "meaning": "그을린 피부가 잘 어울리는",
@@ -508,7 +777,7 @@
       },
       {
         "id": "c05_19",
-        "timestamp": 151.0,
+        "timestamp": 149.4,
         "japanese": "洋楽好きな人だ",
         "reading": "ようがくすきなひとだ",
         "meaning": "서양음악을 좋아하는 사람이야",
@@ -518,7 +787,7 @@
       },
       {
         "id": "c05_20",
-        "timestamp": 155.0,
+        "timestamp": 154.2,
         "japanese": "キスをするときも 君は背伸びしている",
         "reading": "きすをするときも きみはせのびしている",
         "meaning": "키스를 할 때도 너는 까치발을 하고 있고",
@@ -528,7 +797,7 @@
       },
       {
         "id": "c05_21",
-        "timestamp": 163.0,
+        "timestamp": 161.2,
         "japanese": "頭をなでられ君が笑います",
         "reading": "あたまをなでられきみがわらいます",
         "meaning": "머리를 쓰다듬어지는 네가 웃고 있어",
@@ -539,7 +808,7 @@
       },
       {
         "id": "c05_22",
-        "timestamp": 166.0,
+        "timestamp": 164.8,
         "japanese": "駄目だ何ひとつ 勝ってない",
         "reading": "だめだなにひとつ かってない",
         "meaning": "안 되겠어 뭐 하나 이길 수 없어",
@@ -550,7 +819,7 @@
       },
       {
         "id": "c05_23",
-        "timestamp": 170.0,
+        "timestamp": 168.3,
         "japanese": "いや待てよ そいつ誰だ",
         "reading": "いやまてよ そいつだれだ",
         "meaning": "아니 잠깐 그 녀석 누구야",
@@ -561,7 +830,7 @@
       },
       {
         "id": "c05_24",
-        "timestamp": 172.0,
+        "timestamp": 170.0,
         "japanese": "会いたいんだ 今すぐその角から",
         "reading": "あいたいんだ いますぐそのかどから",
         "meaning": "만나고 싶어 지금 바로 그 모퉁이에서",
@@ -569,7 +838,7 @@
       },
       {
         "id": "c05_25",
-        "timestamp": 177.0,
+        "timestamp": 174.0,
         "japanese": "飛び出してきてくれないか",
         "reading": "とびだしてきてくれないか",
         "meaning": "튀어나와주지 않을래?",
@@ -577,7 +846,7 @@
       },
       {
         "id": "c05_26",
-        "timestamp": 181.0,
+        "timestamp": 178.0,
         "japanese": "夏の魔物に連れ去られ 僕のもとへ",
         "reading": "なつのまものにつれさられ ぼくのもとへ",
         "meaning": "여름의 마물에게 끌려와서 나의 곁으로",
@@ -585,7 +854,7 @@
       },
       {
         "id": "c05_27",
-        "timestamp": 186.0,
+        "timestamp": 184.6,
         "japanese": "君が他の誰を 気になっていたって",
         "reading": "きみがほかのだれを きになっていたって",
         "meaning": "네가 다른 누군가를 마음에 두고 있어도",
@@ -596,7 +865,7 @@
       },
       {
         "id": "c05_28",
-        "timestamp": 191.0,
+        "timestamp": 188.5,
         "japanese": "偶然とアブラカタブラな力で",
         "reading": "ぐうぜんとあぶらかたぶらなちからで",
         "meaning": "우연과 아브라카타브라 같은 힘으로",
@@ -606,7 +875,7 @@
       },
       {
         "id": "c05_29",
-        "timestamp": 194.0,
+        "timestamp": 192.7,
         "japanese": "僕のものに",
         "reading": "ぼくのものに",
         "meaning": "나의 것으로",
@@ -614,7 +883,7 @@
       },
       {
         "id": "c05_30",
-        "timestamp": 202.0,
+        "timestamp": 201.0,
         "japanese": "この胸の 焦りに身を任せ",
         "reading": "このむねの あせりにみをまかせ",
         "meaning": "이 가슴의 초조함에 몸을 맡기고",
@@ -626,7 +895,7 @@
       },
       {
         "id": "c05_31",
-        "timestamp": 207.0,
+        "timestamp": 205.8,
         "japanese": "君のとこへ走ったとして 実は僕の方が",
         "reading": "きみのとこへはしったとして じつはぼくのほうが",
         "meaning": "너의 곁으로 달려간다 해도 사실은 내 쪽이",
@@ -639,7 +908,7 @@
       },
       {
         "id": "c05_32",
-        "timestamp": 216.0,
+        "timestamp": 214.3,
         "japanese": "悪い意味で 夏の魔法的なもので",
         "reading": "わるいいみで なつのまほうてきなもので",
         "meaning": "나쁜 의미로 여름의 마법 같은 것에",
@@ -651,7 +920,7 @@
       },
       {
         "id": "c05_33",
-        "timestamp": 221.0,
+        "timestamp": 219.5,
         "japanese": "舞い上がってましたって 怖すぎる",
         "reading": "まいあがってましたって こわすぎる",
         "meaning": "들떠버렸는지 너무 무서워",
@@ -662,7 +931,7 @@
       },
       {
         "id": "c05_34",
-        "timestamp": 225.0,
+        "timestamp": 222.9,
         "japanese": "オチばかり浮かんできて",
         "reading": "おちばかりうかんできて",
         "meaning": "뻔한 결말만 떠올라 와",
@@ -673,7 +942,7 @@
       },
       {
         "id": "c05_35",
-        "timestamp": 228.0,
+        "timestamp": 225.8,
         "japanese": "真夏の空の下で 震えながら",
         "reading": "まなつのそらのしたで ふるえながら",
         "meaning": "한여름의 하늘 아래에서 떨면서",
@@ -685,7 +954,7 @@
       },
       {
         "id": "c05_36",
-        "timestamp": 232.0,
+        "timestamp": 230.8,
         "japanese": "君の事を考えます",
         "reading": "きみのことをかんがえます",
         "meaning": "너를 생각하고 있어",
@@ -695,7 +964,7 @@
       },
       {
         "id": "c05_37",
-        "timestamp": 236.0,
+        "timestamp": 234.8,
         "japanese": "好きなアイスの味はきっと",
         "reading": "すきなあいすのあじはきっと",
         "meaning": "좋아하는 아이스크림의 맛은 분명",
@@ -705,7 +974,7 @@
       },
       {
         "id": "c05_38",
-        "timestamp": 242.0,
+        "timestamp": 240.6,
         "japanese": "会いたいんだ 今すぐその角から",
         "reading": "あいたいんだ いますぐそのかどから",
         "meaning": "만나고 싶어 지금 바로 그 모퉁이에서",
@@ -713,7 +982,7 @@
       },
       {
         "id": "c05_39",
-        "timestamp": 247.0,
+        "timestamp": 244.7,
         "japanese": "飛び出してきてくれないか",
         "reading": "とびだしてきてくれないか",
         "meaning": "튀어나와주지 않을래?",
@@ -721,7 +990,7 @@
       },
       {
         "id": "c05_40",
-        "timestamp": 250.0,
+        "timestamp": 248.7,
         "japanese": "夏の魔物に連れ去られ 僕のもとへ",
         "reading": "なつのまものにつれさられ ぼくのもとへ",
         "meaning": "여름의 마물에게 끌려와서 나의 곁으로",
@@ -729,7 +998,7 @@
       },
       {
         "id": "c05_41",
-        "timestamp": 256.0,
+        "timestamp": 255.3,
         "japanese": "生まれた星のもとが 違くたって",
         "reading": "うまれたほしのもとが ちがくたって",
         "meaning": "태어난 별부터 달랐어도",
@@ -737,7 +1006,7 @@
       },
       {
         "id": "c05_42",
-        "timestamp": 260.0,
+        "timestamp": 258.5,
         "japanese": "偶然と夏の魔法とやらの力で",
         "reading": "ぐうぜんとなつのまほうとやらのちからで",
         "meaning": "우연과 여름의 마법이라는 이름의 힘으로",
@@ -745,7 +1014,7 @@
       },
       {
         "id": "c05_43",
-        "timestamp": 265.0,
+        "timestamp": 263.0,
         "japanese": "僕のものに なるわけないか",
         "reading": "ぼくのものに なるわけないか",
         "meaning": "나의 것으로 될 리는 없으려나",
@@ -754,5 +1023,3 @@
     ]
   }
 ]
- 
- 
