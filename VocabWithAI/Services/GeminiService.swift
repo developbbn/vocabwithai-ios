@@ -3,23 +3,28 @@
 //  VocabApp
 //
 //  Created on 2026-02-03
+//  Refactored on 2026-04-27 — Cloud Functions 프록시 전환
 //
 
 import Foundation
 import Combine
+import FirebaseFunctions
+import FirebaseAuth
 
 class GeminiService {
 
     static let shared = GeminiService()
-    private let apiKey: String
-    private let baseURL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent"
 
-    private init() {
-        self.apiKey = "AIzaSyBgYrNzJFhUzaxS27v9nA5VomxpcClk6Kk"
+    private init() {}
+    
+    /// 매번 호출 시 새로 가져옴 (싱글톤 캐시 X)
+    private var functions: Functions {
+        Functions.functions(region: "asia-northeast3")
     }
 
-    // MARK: - Default Prompts
-    // SettingsView에서 편집 화면 초기값으로도 사용됨
+    // MARK: - Default Prompts (SettingsView 편집 화면 초기값으로만 사용)
+    // 실제 프롬프트는 Cloud Functions 안에 있음.
+    // 사용자가 SettingsView에서 커스텀 프롬프트 저장하면 그것만 Functions로 전달.
 
     /// 단어 API 기본 프롬프트 (SettingsView 편집 화면 초기값으로 사용)
     static let defaultWordPrompt = """
@@ -107,6 +112,7 @@ class GeminiService {
     {"summary":"내면에서 솟구치는(勇) 뜨거운 마음의 에너지(気)라는 뜻","kanjiBreakdowns":[{"kanji":"勇","meaning":"날랠 용 / 용감할 용","onyomi":"ユウ (YUU)","kunyomi":"いさ-む (isa-mu) — 용기를 내다, 기운을 내다","radical":"力 (힘 력)","components":[{"char":"甬","meaning":"솟아오를 용","description":"무언가가 솟아오르거나 뚫고 나가는 모양을 나타내는 부분이에요!"},{"char":"力","meaning":"힘 력","description":"글자 그대로 '힘'을 의미해요."}],"fact":"'甬(통할 용)'은 '솟아오르다', '뚫고 나아가다'라는 의미를 나타내고, '力(힘 력)'은 글자 그대로 '힘'을 의미합니다. 이 둘이 합쳐져 마음속에서 강한 힘이 솟아나 어떤 어려움도 뚫고 나아갈 수 있는 '용맹함', '용기'를 표현하게 되었어요.","msg":"두려움 속에서도 내면에서 불끈! 솟아오르는(甬) 강한 힘(力)! 그래! 이게 바로 모든 것을 뚫고 나아갈 '용기(勇)'다! 절대 쫄지 마! 💪🔥🚀"},{"kanji":"気","meaning":"기운 기","onyomi":"キ (KI), ケ (KE)","kunyomi":"いき (iki) — 숨","radical":"气 (기운 기)","components":[{"char":"气","meaning":"기운 기","description":"김이나 수증기가 피어오르는 모양을 본뜬 상형문자예요."}],"fact":"이 한자는 끓는 물에서 피어오르는 김이나 하늘의 구름을 본떠 만든 상형문자입니다. 원래는 '공기', '기체', '수증기' 같은 물리적인 기운을 나타냈으나, 점차 생명체의 '생기', '기운', '정신', 나아가 분위기나 느낌 등의 추상적인 의미로 확장되었답니다!","msg":"보글보글 끓는 물에서 뽀얗게 피어오르는 수증기(气)처럼, 우리의 몸과 마음을 채우는 생명의 '기운(気)'! 🌬️✨ 숨 쉬는 모든 순간이 에너지!"}],"relatedWords":[{"sourceKanji":"勇","words":[{"kanji":"勇者","reading":"ゆうしゃ","meaning":"용사","exampleJP":"勇者が魔王を倒した。","exampleKR":"용사가 마왕을 쓰러뜨렸다."},{"kanji":"勇敢","reading":"ゆうかん","meaning":"용감","exampleJP":"勇敢な行動","exampleKR":"용감한 행동"}]},{"sourceKanji":"気","words":[{"kanji":"元気","reading":"げんき","meaning":"건강, 활기","exampleJP":"お元気ですか。","exampleKR":"잘 지내세요? 건강하세요?"},{"kanji":"天気","reading":"てんき","meaning":"날씨","exampleJP":"明日の天気は晴れだ。","exampleKR":"내일 날씨는 맑음이다."}]}],"examples":[{"jp":"新しいことに挑戦する勇気がほしい。","furigana":"あたらしいことに ちょうせんする ゆうきが ほしい。","kr":"새로운 일에 도전할 용기가 필요해. (가지고 싶어.)","tipEmoji":"✨","tip":"뭔가 망설여질 때, 혹은 친구를 격려할 때 아주 많이 쓰이는 표현! 'ほしい(원하다)'와 찰떡궁합!"},{"jp":"彼には困難に立ち向かう勇気がある。","furigana":"かれには こんなんに たちむかう ゆうきが ある。","kr":"그에게는 곤란에 맞설 용기가 있다.","tipEmoji":"💪","tip":"힘든 상황을 마주했을 때, 누군가의 '용기'를 칭찬하거나 이야기할 때 쓰는 멋진 표현! '立ち向かう(맞서다)'와 함께 쓰면 시너지 폭발!"},{"jp":"正直に話す勇気がなかった。","furigana":"しょうじきに はなす ゆうきが なかった。","kr":"솔직하게 말할 용기가 없었다.","tipEmoji":"💬","tip":"솔직한 고백이나 어려운 말을 해야 할 때, '勇気がない(용기가 없다)'는 표현으로 자신의 솔직한 마음을 나타낼 수 있어요!"}]}
     """
 
+
     /// 표현 API 기본 프롬프트 (SettingsView 편집 화면 초기값으로 사용)
     static let defaultPhrasePrompt = """
     당신은 한국인 학습자를 위한 전문 일본어 강사이자 JLPT 시험 대비 전문가입니다. 인사말, 과도한 친절, 아부성 멘트 등 불필요한 서론/결론은 일절 배제하고, 냉철하고 명쾌하게 핵심만 짚어주는 톤을 유지하세요. 일본어 학습 앱의 "오늘의 표현" 기능에 제공할 JLPT 핵심 문법을 아래 형식을 반드시 지켜서 응답해주세요.
@@ -183,41 +189,48 @@ class GeminiService {
     // MARK: - Generate Word Content
 
     func generateWordContent(for word: String) -> AnyPublisher<WordAIContent, Error> {
-        // 커스텀 프롬프트가 있으면 사용, 없으면 기본값 사용
-        // {word} 플레이스홀더를 실제 단어로 치환
-        let template = PromptManager.shared.wordPrompt() ?? GeminiService.defaultWordPrompt
-        let prompt = template.replacingOccurrences(of: "{word}", with: word)
+        // 커스텀 프롬프트가 있으면 그것만 서버로 전달.
+        // 없으면 nil → 서버의 기본 프롬프트 사용.
+        let customPrompt = PromptManager.shared.wordPrompt()
+
+        var data: [String: Any] = ["word": word]
+        if let customPrompt = customPrompt {
+            data["customPrompt"] = customPrompt
+        }
+        
+        // 🔍 인증 상태 디버그
+        if let user = Auth.auth().currentUser {
+            print("🔐 현재 로그인 사용자: \(user.uid)")
+            user.getIDToken { token, error in
+                if let token = token {
+                    print("🔐 토큰 길이: \(token.count) (앞 30자: \(token.prefix(30)))")
+                } else {
+                    print("🔴 토큰 발급 실패: \(error?.localizedDescription ?? "?")")
+                }
+                }
+            } else {
+                print("🔴 currentUser == nil")
+            }
 
         return Future<WordAIContent, Error> { promise in
-            guard let url = URL(string: "\(self.baseURL)?key=\(self.apiKey)") else {
-                promise(.failure(GeminiError.invalidURL)); return
-            }
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            let requestBody: [String: Any] = ["contents": [["parts": [["text": prompt]]]]]
-            request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
-
-            URLSession.shared.dataTask(with: request) { data, _, error in
-                if let error = error { promise(.failure(error)); return }
-                guard let data = data else { promise(.failure(GeminiError.noData)); return }
-                do {
-                    let geminiResponse = try JSONDecoder().decode(GeminiResponse.self, from: data)
-                    guard let text = geminiResponse.candidates.first?.content.parts.first?.text else {
-                        promise(.failure(GeminiError.invalidResponse)); return
-                    }
-                    print("📦 Raw Response: \(text)")
-                    let result = self.parseWordAIContent(from: text)
-                    print("✅ quizData: \(result.quizData != nil ? "파싱 성공" : "없음")")
-                    promise(.success(result))
-                } catch {
-                    print("🔴 Decoding Error: \(error)")
-                    if let err = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                        print("❌ Error Response: \(err)")
-                    }
+            self.functions.httpsCallable("generateWordContent").call(data) { result, error in
+                if let error = error {
+                    print("🔴 Functions 호출 실패: \(error.localizedDescription)")
                     promise(.failure(error))
+                    return
                 }
-            }.resume()
+
+                guard let dict = result?.data as? [String: Any],
+                      let text = dict["text"] as? String else {
+                    promise(.failure(GeminiError.invalidResponse))
+                    return
+                }
+
+                print("📦 Raw Response: \(text)")
+                let parsed = self.parseWordAIContent(from: text)
+                print("✅ quizData: \(parsed.quizData != nil ? "파싱 성공" : "없음")")
+                promise(.success(parsed))
+            }
         }
         .eraseToAnyPublisher()
     }
@@ -244,14 +257,13 @@ class GeminiService {
         }
 
         // --- CONTENT 파싱 ---
-        // 새 스키마(JSON) 검증 먼저 시도. 실패해도 raw는 그대로 저장 → 뷰에서 fallback.
         let aiContent = String(text[contentRange.upperBound...])
             .trimmingCharacters(in: .whitespacesAndNewlines)
 
         if let decoded = AIContent.decode(from: aiContent) {
             print("✅ AIContent 파싱 성공 — summary:\(decoded.summary != nil ? "O" : "X") / kanji:\(decoded.kanjiBreakdowns.count) / related:\(decoded.relatedWords.count) / ex:\(decoded.examples.count)")
         } else {
-            print("⚠️ AIContent 파싱 실패 — raw 저장 (구 마크다운 또는 포맷 깨짐). 뷰에서 fallback 렌더링됨.")
+            print("⚠️ AIContent 파싱 실패 — raw 저장 (포맷 깨짐)")
         }
 
         return WordAIContent(aiContent: aiContent, quizData: quizData)
@@ -260,45 +272,36 @@ class GeminiService {
     // MARK: - Generate Daily Phrase
 
     func generateDailyPhrase() -> AnyPublisher<DailyPhraseResponse, Error> {
-        let seed = Int.random(in: 100000...999999)
-        // 커스텀 프롬프트가 있으면 사용, 없으면 기본값 사용
-        // {seed} 플레이스홀더를 랜덤 시드로 치환
-        let template = PromptManager.shared.phrasePrompt() ?? GeminiService.defaultPhrasePrompt
-        let prompt = template.replacingOccurrences(of: "{seed}", with: "\(seed)")
+        let customPrompt = PromptManager.shared.phrasePrompt()
+
+        var data: [String: Any] = [:]
+        if let customPrompt = customPrompt {
+            data["customPrompt"] = customPrompt
+        }
 
         return Future<DailyPhraseResponse, Error> { promise in
-            guard let url = URL(string: "\(self.baseURL)?key=\(self.apiKey)") else {
-                promise(.failure(GeminiError.invalidURL)); return
-            }
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            let requestBody: [String: Any] = ["contents": [["parts": [["text": prompt]]]]]
-            request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
-
-            URLSession.shared.dataTask(with: request) { data, _, error in
-                if let error = error { promise(.failure(error)); return }
-                guard let data = data else { promise(.failure(GeminiError.noData)); return }
-                do {
-                    let geminiResponse = try JSONDecoder().decode(GeminiResponse.self, from: data)
-                    guard let text = geminiResponse.candidates.first?.content.parts.first?.text else {
-                        promise(.failure(GeminiError.invalidResponse)); return
-                    }
-                    print("📦 Daily Phrase Raw: \(text)")
-                    guard let result = self.parseDailyPhrase(from: text) else {
-                        print("🔴 Daily Phrase 파싱 실패")
-                        promise(.failure(GeminiError.parsingError)); return
-                    }
-                    print("🟢 Daily Phrase 성공!")
-                    promise(.success(result))
-                } catch {
-                    print("🔴 Decoding Error: \(error)")
-                    if let err = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                        print("❌ Error Response: \(err)")
-                    }
+            self.functions.httpsCallable("generateDailyPhrase").call(data) { result, error in
+                if let error = error {
+                    print("🔴 Functions 호출 실패: \(error.localizedDescription)")
                     promise(.failure(error))
+                    return
                 }
-            }.resume()
+
+                guard let dict = result?.data as? [String: Any],
+                      let text = dict["text"] as? String else {
+                    promise(.failure(GeminiError.invalidResponse))
+                    return
+                }
+
+                print("📦 Daily Phrase Raw: \(text)")
+                guard let parsed = self.parseDailyPhrase(from: text) else {
+                    print("🔴 Daily Phrase 파싱 실패")
+                    promise(.failure(GeminiError.parsingError))
+                    return
+                }
+                print("🟢 Daily Phrase 성공!")
+                promise(.success(parsed))
+            }
         }
         .eraseToAnyPublisher()
     }
@@ -371,22 +374,6 @@ struct WordAIContent: Codable {
     let quizData: QuizData?
 }
 
-struct GeminiResponse: Codable {
-    let candidates: [Candidate]
-}
-
-struct Candidate: Codable {
-    let content: Content
-}
-
-struct Content: Codable {
-    let parts: [Part]
-}
-
-struct Part: Codable {
-    let text: String
-}
-
 struct DailyPhraseResponse: Codable {
     let japanese: String
     let reading: String
@@ -397,15 +384,11 @@ struct DailyPhraseResponse: Codable {
 }
 
 enum GeminiError: Error, LocalizedError {
-    case invalidURL
-    case noData
     case invalidResponse
     case parsingError
 
     var errorDescription: String? {
         switch self {
-        case .invalidURL: return "잘못된 URL입니다"
-        case .noData: return "데이터를 받지 못했습니다"
         case .invalidResponse: return "응답이 올바르지 않습니다"
         case .parsingError: return "데이터 파싱에 실패했습니다"
         }
