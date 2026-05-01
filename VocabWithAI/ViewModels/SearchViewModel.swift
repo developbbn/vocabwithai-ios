@@ -48,6 +48,7 @@ struct RecentSearch: Codable, Identifiable {
 }
 
 // MARK: - SearchViewModel
+@MainActor
 class SearchViewModel: ObservableObject {
 
     // MARK: - Input

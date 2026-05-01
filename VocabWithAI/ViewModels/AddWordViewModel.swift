@@ -68,6 +68,7 @@ class AddWordViewModel: ObservableObject {
     }
 
     // MARK: - Actions
+    @MainActor
     func registerWord() {
         let trimmedWord = word.trimmingCharacters(in: .whitespaces)
         let trimmedMeaning = meaning.trimmingCharacters(in: .whitespaces)

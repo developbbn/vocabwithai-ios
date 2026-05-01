@@ -16,7 +16,7 @@ class EditWordViewModel: ObservableObject {
     @Published var memo: String
 
     private let originalWord: Word
-    var originalId: UUID { originalWord.id }
+    var originalId: String { originalWord.id }
 
     // MARK: - Init
     init(word: Word) {
@@ -34,6 +34,7 @@ class EditWordViewModel: ObservableObject {
     }
 
     // MARK: - Save
+    @MainActor
     func save() {
         let updated = Word(
             id:            originalWord.id,

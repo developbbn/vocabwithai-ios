@@ -23,6 +23,7 @@ struct QuizQuestion {
 }
 
 // MARK: - MultipleChoiceQuizViewModel
+@MainActor
 class MultipleChoiceQuizViewModel: ObservableObject {
 
     // MARK: - Published

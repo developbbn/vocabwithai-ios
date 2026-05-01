@@ -6,15 +6,20 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 @main
 struct VocabWithAIApp: App {
-    // 앱 시작 시 WordRepository 초기화 (싱글톤 생성 + UserDefaults 로드)
-    private let wordRepository = WordRepository.shared
+
+    
+    init() {
+        FirebaseApp.configure() //파이어베이스 초기화
+    }
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+                .environmentObject(AuthManager.shared)
         }
     }
 }

@@ -18,10 +18,6 @@ struct WordDetailView: View {
         repository.words.first(where: { $0.id == word.id }) ?? word
     }
 
-    /// aiContent가 새 JSON 스키마면 디코드, 아니면 nil (→ 마크다운 fallback).
-    private var decodedContent: AIContent? {
-        AIContent.decode(from: currentWord.aiContent)
-    }
 
     private var isLoading: Bool {
         repository.loadingWordIds.contains(currentWord.id)
@@ -129,12 +125,10 @@ struct WordDetailView: View {
     /// 4) aiContent 아예 없음 → 안내 placeholder
     @ViewBuilder
     private var aiContentArea: some View {
-        if let content = decodedContent {
+        if let content = currentWord.aiContent {
             structuredSections(content)
         } else if isLoading {
             aiLoadingView
-        } else if let raw = currentWord.aiContent, !raw.isEmpty {
-            markdownFallback(raw)
         } else {
             noAIContent
         }
@@ -156,27 +150,6 @@ struct WordDetailView: View {
         }
     }
 
-    // MARK: AI Content — Fallback (구 마크다운 데이터)
-
-    private func markdownFallback(_ raw: String) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 8) {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(.themeBlue)
-                Text("AI Learning")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.themeTextPrimary)
-            }
-
-            MarkdownContentView(content: raw)
-                .padding(18)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.themeCardBackground)
-                .cornerRadius(ThemeRadius.large)
-                .themeCardShadow()
-        }
-    }
 
     // MARK: AI Content — Loading
 

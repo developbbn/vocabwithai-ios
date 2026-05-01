@@ -3,33 +3,87 @@
 //  VocabWithAI
 //
 //  Created on 2026-03-07
+//  Refactored on 2026-04-27 — Firestore 전환
 //
 
 import Foundation
 import Combine
+import FirebaseFirestore
+import FirebaseAuth
 
-// MARK: - WordRepository
-/// 단어 저장소 + 백그라운드 AI 작업을 담당하는 싱글톤
-/// ViewModel이 아닌 Repository가 AI 작업 수명을 관리 → 뷰가 사라져도 작업 유지
+@MainActor
 class WordRepository: ObservableObject {
 
     // MARK: - Singleton
     static let shared = WordRepository()
-    private init() {
-        load()
-    }
+    private init() {}
 
     // MARK: - Published State
     @Published private(set) var words: [Word] = []
-    /// 현재 AI 생성 중인 단어 ID 집합. WordDetailView 로딩 표시에 사용
-    @Published private(set) var loadingWordIds: Set<UUID> = []
+    @Published private(set) var loadingWordIds: Set<String> = []
 
     // MARK: - Private
-    private let storageKey = "savedWords"
+    private let db = Firestore.firestore()
+    private var listener: ListenerRegistration?
     private var cancellables = Set<AnyCancellable>()
+
+    /// 현재 로그인 사용자의 words 컬렉션 참조. 미로그인 시 nil.
+    private var wordsCollection: CollectionReference? {
+        guard let uid = Auth.auth().currentUser?.uid else { return nil }
+        return db.collection("users").document(uid).collection("words")
+    }
+
+    // MARK: - Lifecycle (AuthManager가 호출)
+
+    /// 로그인 직후 호출. 실시간 리스너 시작.
+    func startListening() {
+        guard let collection = wordsCollection else {
+            print("⚠️ startListening: 미로그인 상태")
+            return
+        }
+
+        // 기존 리스너 정리
+        stopListening()
+
+        listener = collection
+            .order(by: "createdAt", descending: true)
+            .addSnapshotListener { [weak self] snapshot, error in
+                guard let self else { return }
+
+                if let error = error {
+                    print("🔴 Firestore 리스너 에러: \(error.localizedDescription)")
+                    return
+                }
+
+                guard let documents = snapshot?.documents else {
+                    self.words = []
+                    return
+                }
+
+                let decoded: [Word] = documents.compactMap { doc in
+                    try? doc.data(as: Word.self)
+                }
+
+                self.words = decoded
+                print("📡 Firestore 동기화: \(decoded.count)개 단어")
+            }
+    }
+
+    /// 로그아웃 시 호출. 리스너 정리 + 로컬 상태 초기화.
+    func stopListening() {
+        listener?.remove()
+        listener = nil
+        words = []
+        loadingWordIds = []
+    }
 
     // MARK: - Public: 단어 등록
     func registerWord(word: String, meaning: String, pronunciation: String, memo: String) {
+        guard let collection = wordsCollection else {
+            print("⚠️ registerWord: 미로그인 상태")
+            return
+        }
+
         let newWord = Word(
             word: word,
             meaning: meaning,
@@ -38,67 +92,112 @@ class WordRepository: ObservableObject {
             aiContent: nil
         )
 
-        // 1. 즉시 저장
-        words.append(newWord)
-        save()
-        print("✅ 단어 즉시 저장 완료: \(word)")
+        Task {
+            do {
+                try collection.document(newWord.id).setData(from: newWord)
+                print("✅ 단어 저장 완료: \(word)")
 
-        // 일일 통계 카운트
-        DispatchQueue.main.async {
-            DailyStatsManager.shared.incrementWordCount()
+                DailyStatsManager.shared.incrementWordCount()
+
+                // 백그라운드 AI 생성
+                generateAIContent(for: newWord)
+            } catch {
+                print("🔴 단어 저장 실패: \(error.localizedDescription)")
+                ToastManager.shared.show("저장에 실패했어요")
+            }
         }
-
-        // 2. 백그라운드 AI 생성
-        generateAIContent(for: newWord)
     }
 
     // MARK: - Public: AI 콘텐츠 재생성
-    /// aiContent, quizData를 초기화하고 AI를 다시 요청한다.
-    /// WordDetailView 새로고침 버튼에서 호출
     func regenerateAIContent(for word: Word) {
-        guard let index = words.firstIndex(where: { $0.id == word.id }) else { return }
-        words[index].aiContent = nil
-        words[index].quizData  = nil
-        save()
-        generateAIContent(for: words[index])
-        print("🔄 AI 재생성 시작: \(word.word)")
+        guard let collection = wordsCollection else { return }
+
+        Task {
+            do {
+                try await collection.document(word.id).updateData([
+                    "aiContent": NSNull(),
+                    "quizData": NSNull()
+                ])
+                print("🔄 AI 재생성 시작: \(word.word)")
+
+                var refreshed = word
+                refreshed.aiContent = nil
+                refreshed.quizData = nil
+                generateAIContent(for: refreshed)
+            } catch {
+                print("🔴 재생성 초기화 실패: \(error.localizedDescription)")
+                ToastManager.shared.show("재생성에 실패했어요")
+            }
+        }
     }
 
     // MARK: - Public: 단어 수정
     func updateWord(_ updated: Word) {
-        guard let index = words.firstIndex(where: { $0.id == updated.id }) else { return }
-        let wordChanged = words[index].word != updated.word
+        guard let collection = wordsCollection else { return }
+        guard let original = words.first(where: { $0.id == updated.id }) else { return }
 
-        // 단어가 바뀌면 AI 콘텐츠 초기화 후 재생성
+        let wordChanged = original.word != updated.word
+
         var wordToSave = updated
         if wordChanged {
             wordToSave.aiContent = nil
-            wordToSave.quizData  = nil
+            wordToSave.quizData = nil
         }
 
-        words[index] = wordToSave
-        save()
-        print("✏️ 단어 수정 완료: \(updated.word)")
+        Task {
+            do {
+                try collection.document(wordToSave.id).setData(from: wordToSave)
+                print("✏️ 단어 수정 완료: \(updated.word)")
 
-        if wordChanged {
-            generateAIContent(for: wordToSave)
+                if wordChanged {
+                    generateAIContent(for: wordToSave)
+                }
+            } catch {
+                print("🔴 단어 수정 실패: \(error.localizedDescription)")
+                ToastManager.shared.show("수정에 실패했어요")
+            }
         }
     }
 
     // MARK: - Public: 단어 삭제
     func deleteWord(_ word: Word) {
-        words.removeAll { $0.id == word.id }
-        save()
+        guard let collection = wordsCollection else { return }
+
+        Task {
+            do {
+                try await collection.document(word.id).delete()
+                print("🗑️ 단어 삭제 완료: \(word.word)")
+            } catch {
+                print("🔴 단어 삭제 실패: \(error.localizedDescription)")
+                ToastManager.shared.show("삭제에 실패했어요")
+            }
+        }
     }
 
     func deleteAllWords() {
-        words.removeAll()
-        save()
+        guard let collection = wordsCollection else { return }
+        let ids = words.map { $0.id }
+
+        Task {
+            let batch = db.batch()
+            for id in ids {
+                batch.deleteDocument(collection.document(id))
+            }
+            do {
+                try await batch.commit()
+                print("🗑️ 전체 삭제 완료")
+            } catch {
+                print("🔴 전체 삭제 실패: \(error.localizedDescription)")
+                ToastManager.shared.show("삭제에 실패했어요")
+            }
+        }
     }
 
     func deleteWords(at offsets: IndexSet) {
-        words.remove(atOffsets: offsets)
-        save()
+        let targets = offsets.map { words[$0] }
+        for word in targets {
+            deleteWord(word)
+        }
     }
 
     // MARK: - Private: 백그라운드 AI 생성
@@ -109,40 +208,48 @@ class WordRepository: ObservableObject {
         GeminiService.shared.generateWordContent(for: word.word)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
+                guard let self else { return }
                 if case .failure(let error) = completion {
                     print("🔴 AI 에러 (\(word.word)): \(error.localizedDescription)")
                 }
-                self?.loadingWordIds.remove(word.id)
+                self.loadingWordIds.remove(word.id)
             } receiveValue: { [weak self] result in
                 guard let self else { return }
                 print("🟢 AI 성공: \(word.word) / quizData: \(result.quizData != nil ? "✅" : "❌")")
                 self.updateAIContent(wordId: word.id, result: result)
                 self.loadingWordIds.remove(word.id)
-                // 전역 토스트 표시 → 어떤 화면에 있어도 노출
                 ToastManager.shared.show("「\(word.word)」 AI 분석 완료! ✨")
             }
             .store(in: &cancellables)
     }
 
-    // MARK: - Private: AI 결과 업데이트
-    private func updateAIContent(wordId: UUID, result: WordAIContent) {
-        guard let index = words.firstIndex(where: { $0.id == wordId }) else { return }
-        words[index].aiContent = result.aiContent
-        words[index].quizData = result.quizData
-        save()
-        print("💾 AI 콘텐츠 업데이트: \(words[index].word)")
-    }
+    // MARK: - Private: AI 결과 Firestore 업데이트
+    private func updateAIContent(wordId: String, result: WordAIContent) {
+        guard let collection = wordsCollection else { return }
 
-    // MARK: - Private: UserDefaults 저장/로드
-    private func save() {
-        if let encoded = try? JSONEncoder().encode(words) {
-            UserDefaults.standard.set(encoded, forKey: storageKey)
+        let aiContent = AIContent.decode(from: result.aiContent)
+
+        Task {
+            do {
+                var updateData: [String: Any] = [:]
+
+                if let aiContent = aiContent,
+                   let encoded = try? Firestore.Encoder().encode(aiContent) {
+                    updateData["aiContent"] = encoded
+                }
+
+                if let quizData = result.quizData,
+                   let encoded = try? Firestore.Encoder().encode(quizData) {
+                    updateData["quizData"] = encoded
+                }
+
+                guard !updateData.isEmpty else { return }
+
+                try await collection.document(wordId).updateData(updateData)
+                print("💾 AI 콘텐츠 Firestore 업데이트 완료")
+            } catch {
+                print("🔴 AI 콘텐츠 업데이트 실패: \(error.localizedDescription)")
+            }
         }
-    }
-
-    private func load() {
-        guard let data = UserDefaults.standard.data(forKey: storageKey),
-              let decoded = try? JSONDecoder().decode([Word].self, from: data) else { return }
-        words = decoded
     }
 }

@@ -334,10 +334,8 @@ struct SearchResultRow: View {
 
     // MARK: - 하이라이팅
     private func highlightedText(_ text: String, query: String) -> Text {
-        let lower = text.lowercased()
-        let queryLower = query.lowercased()
-
-        guard let range = lower.range(of: queryLower) else {
+        guard !query.isEmpty,
+              let range = text.range(of: query, options: .caseInsensitive) else {
             return Text(text)
         }
 

@@ -95,18 +95,29 @@ struct HomeView: View {
 // MARK: - Header View
 struct HeaderView: View {
     let userName: String
+
+    @EnvironmentObject var authManager: AuthManager
     @State private var showDeleteConfirm = false
+    @State private var showLogoutConfirm = false
+    @State private var logoutErrorMessage: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Circle()
-                    .fill(Color.gray.opacity(0.2))
-                    .frame(width: 46, height: 46)
-                    .overlay(
-                        Image(systemName: "person.fill")
-                            .foregroundColor(.gray)
-                    )
+                // 프로필 Circle — 탭하면 로그아웃 알림
+                Button(action: { showLogoutConfirm = true }) {
+                    Circle()
+                        .fill(Color.gray.opacity(0.2))
+                        .frame(width: 46, height: 46)
+                        .overlay(
+                            Image(systemName: "person.fill")
+                                .foregroundColor(.gray)
+                        )
+                        .overlay(
+                            Circle().stroke(Color.blue.opacity(0.3), lineWidth: 1)
+                        )
+                }
+                .buttonStyle(.plain)
 
                 Text("\(userName)님, 오늘도 즐겁게 시작해볼까요? ✨")
                     .font(.system(size: 15, weight: .medium))
@@ -143,6 +154,27 @@ struct HeaderView: View {
         } message: {
             Text("저장된 모든 단어가 삭제됩니다. (테스트용)")
         }
+        .confirmationDialog(
+            authManager.currentUser?.email ?? "계정",
+            isPresented: $showLogoutConfirm,
+            titleVisibility: .visible
+        ) {
+            Button("로그아웃", role: .destructive) {
+                handleLogout()
+            }
+            Button("취소", role: .cancel) {}
+        } message: {
+            Text("정말 로그아웃하시겠어요?")
+        }
+        .alert("로그아웃 실패", isPresented: .constant(logoutErrorMessage != nil)) {
+            Button("확인", role: .cancel) {
+                logoutErrorMessage = nil
+            }
+        } message: {
+            if let message = logoutErrorMessage {
+                Text(message)
+            }
+        }
     }
 
     private func deleteAllWords() {
@@ -150,6 +182,17 @@ struct HeaderView: View {
         DailyStatsManager.shared.resetData()
         DailyPhraseViewModel.shared.resetData()
         print("🗑️ 모든 단어 삭제 완료")
+    }
+
+    private func handleLogout() {
+        do {
+            try authManager.signOut()
+            print("👋 로그아웃 완료")
+            // 성공 시 RootView가 자동으로 LoginView로 전환
+        } catch {
+            logoutErrorMessage = "로그아웃 중 오류가 발생했습니다. 다시 시도해주세요."
+            print("❌ 로그아웃 실패: \(error)")
+        }
     }
 }
 
@@ -327,5 +370,6 @@ struct RecentlyLearnedView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            .environmentObject(AuthManager.shared)
     }
 }

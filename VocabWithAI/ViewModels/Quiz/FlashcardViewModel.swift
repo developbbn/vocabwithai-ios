@@ -9,6 +9,7 @@ import Foundation
 import AVFoundation
 import Combine
 
+@MainActor
 class FlashcardViewModel: ObservableObject {
 
     // MARK: - Published

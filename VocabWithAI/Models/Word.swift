@@ -8,27 +8,30 @@
 import Foundation
 
 struct Word: Identifiable, Codable {
-    let id: UUID
+    /// Firestore docID와 동일하게 사용되는 식별자.
+    /// 클라이언트에서 `UUID().uuidString`으로 생성.
+    var id: String
     var word: String
     var meaning: String
     var pronunciation: String
     var memo: String
     var createdAt: Date
-    
-    // AI 생성 콘텐츠 (마크다운 형식)
-    var aiContent: String?
 
-    // AI 생성 퀴즈 선지 데이터
+    /// AI 생성 학습 콘텐츠 (구조화).
+    /// 단어 등록 직후엔 nil이고, 백그라운드 AI 호출 완료 후 채워짐.
+    var aiContent: AIContent?
+
+    /// AI 생성 퀴즈 선지 데이터.
     var quizData: QuizData?
 
     init(
-        id: UUID = UUID(),
+        id: String = UUID().uuidString,
         word: String = "",
         meaning: String = "",
         pronunciation: String = "",
         memo: String = "",
         createdAt: Date = Date(),
-        aiContent: String? = nil,
+        aiContent: AIContent? = nil,
         quizData: QuizData? = nil
     ) {
         self.id = id

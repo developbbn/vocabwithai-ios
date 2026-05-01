@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 
+@MainActor
 class LibraryViewModel: ObservableObject {
 
     // MARK: - Published Properties
@@ -36,6 +37,7 @@ class LibraryViewModel: ObservableObject {
     }
 
     // MARK: - Combine Bindings
+    @MainActor
     private func setupBindings() {
         // WordRepository의 words를 직접 구독 → 항상 최신 상태 유지
         repository.$words

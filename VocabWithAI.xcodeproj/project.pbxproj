@@ -40,6 +40,16 @@
 		DC406F692F96655D00F40A90 /* RelatedWordsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F682F96655D00F40A90 /* RelatedWordsSection.swift */; };
 		DC406F6B2F96659400F40A90 /* ExamplesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F6A2F96659400F40A90 /* ExamplesSection.swift */; };
 		DC406F6D2F966C8600F40A90 /* WordSummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F6C2F966C8600F40A90 /* WordSummaryCard.swift */; };
+		DC406F732F97CC9C00F40A90 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC406F722F97CC9C00F40A90 /* GoogleService-Info.plist */; };
+		DC406F762F97CDA600F40A90 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DC406F752F97CDA500F40A90 /* FirebaseAuth */; };
+		DC406F782F97CDA600F40A90 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DC406F772F97CDA600F40A90 /* FirebaseFirestore */; };
+		DC406F7A2F97CDA600F40A90 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = DC406F792F97CDA600F40A90 /* FirebaseFunctions */; };
+		DC406F7C2F990E8100F40A90 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F7B2F990E7800F40A90 /* AuthManager.swift */; };
+		DC406F7F2F9D22F100F40A90 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F7E2F9D22F100F40A90 /* LoginView.swift */; };
+		DC406F832F9D27B600F40A90 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F822F9D27B600F40A90 /* SignUpView.swift */; };
+		DC406F852F9D299000F40A90 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F842F9D298F00F40A90 /* LoginViewModel.swift */; };
+		DC406F872F9D29EE00F40A90 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F862F9D29ED00F40A90 /* SignUpViewModel.swift */; };
+		DC406F892F9E4D1A00F40A90 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F882F9E4D1A00F40A90 /* RootView.swift */; };
 		DC7A16E32F3210D200689CAC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E22F3210D200689CAC /* ContentView.swift */; };
 		DC7A16E62F32112400689CAC /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E52F32112400689CAC /* HomeViewModel.swift */; };
 		DC7A16E92F322D7100689CAC /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E82F322D7100689CAC /* Word.swift */; };
@@ -93,6 +103,13 @@
 		DC406F682F96655D00F40A90 /* RelatedWordsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelatedWordsSection.swift; sourceTree = "<group>"; };
 		DC406F6A2F96659400F40A90 /* ExamplesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamplesSection.swift; sourceTree = "<group>"; };
 		DC406F6C2F966C8600F40A90 /* WordSummaryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordSummaryCard.swift; sourceTree = "<group>"; };
+		DC406F722F97CC9C00F40A90 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DC406F7B2F990E7800F40A90 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		DC406F7E2F9D22F100F40A90 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		DC406F822F9D27B600F40A90 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		DC406F842F9D298F00F40A90 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		DC406F862F9D29ED00F40A90 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		DC406F882F9E4D1A00F40A90 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		DC7A16E22F3210D200689CAC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DC7A16E52F32112400689CAC /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		DC7A16E82F322D7100689CAC /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -120,6 +137,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC406F572F9120B400F40A90 /* YouTubePlayerKit in Frameworks */,
+				DC406F762F97CDA600F40A90 /* FirebaseAuth in Frameworks */,
+				DC406F782F97CDA600F40A90 /* FirebaseFirestore in Frameworks */,
+				DC406F7A2F97CDA600F40A90 /* FirebaseFunctions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +199,17 @@
 			path = "단어상세";
 			sourceTree = "<group>";
 		};
+		DC406F7D2F9D228A00F40A90 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				DC406F862F9D29ED00F40A90 /* SignUpViewModel.swift */,
+				DC406F842F9D298F00F40A90 /* LoginViewModel.swift */,
+				DC406F7E2F9D22F100F40A90 /* LoginView.swift */,
+				DC406F822F9D27B600F40A90 /* SignUpView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 		DC7A16E42F3210F300689CAC /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +249,7 @@
 		DC7A16F92F37579100689CAC /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				DC406F7B2F990E7800F40A90 /* AuthManager.swift */,
 				DC406F462F8D2F2A00F40A90 /* SongRepository.swift */,
 				DC406F3B2F86962B00F40A90 /* PromptManager.swift */,
 				DC7A16FA2F37579C00689CAC /* GeminiService.swift */,
@@ -249,7 +281,6 @@
 				DC406F542F911F4D00F40A90 /* Info.plist */,
 				DCD603292F5C66D70044AC42 /* Repositories */,
 				DC7A16F92F37579100689CAC /* Services */,
-				DCE700052F320FFF009AC55B /* VocabWithAIApp.swift */,
 				DC7A16E72F322D4B00689CAC /* Models */,
 				DCE700132F321078009AC55B /* Views */,
 				DC7A16E42F3210F300689CAC /* ViewModels */,
@@ -271,6 +302,7 @@
 		DCE700132F321078009AC55B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				DC406F7D2F9D228A00F40A90 /* Auth */,
 				DC406F612F96643D00F40A90 /* 단어상세 */,
 				DC406F482F8D2F5D00F40A90 /* Song */,
 				DC14396A2F5DD7C000EFF80C /* Quiz */,
@@ -283,6 +315,7 @@
 				DC406F312F812DC200F40A90 /* PhraseDetailView.swift */,
 				DC406F352F8138A400F40A90 /* EditWordView.swift */,
 				DC406F3D2F86965B00F40A90 /* SettingsView.swift */,
+				DC406F882F9E4D1A00F40A90 /* RootView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -290,6 +323,8 @@
 		DCE7FFF92F320FFF009AC55B = {
 			isa = PBXGroup;
 			children = (
+				DCE700052F320FFF009AC55B /* VocabWithAIApp.swift */,
+				DC406F722F97CC9C00F40A90 /* GoogleService-Info.plist */,
 				DC406F5B2F913FDF00F40A90 /* LaunchScreen.storyboard */,
 				DCE700042F320FFF009AC55B /* VocabWithAI */,
 				DCE700032F320FFF009AC55B /* Products */,
@@ -342,6 +377,7 @@
 			mainGroup = DCE7FFF92F320FFF009AC55B;
 			packageReferences = (
 				DC406F552F9120B400F40A90 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */,
+				DC406F742F97CDA500F40A90 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = DCE700032F320FFF009AC55B /* Products */;
 			projectDirPath = "";
@@ -359,6 +395,7 @@
 			files = (
 				DC406F522F911C8500F40A90 /* songs.json in Resources */,
 				DC406F5C2F913FDF00F40A90 /* LaunchScreen.storyboard in Resources */,
+				DC406F732F97CC9C00F40A90 /* GoogleService-Info.plist in Resources */,
 				DCE7000D2F321000009AC55B /* Preview Assets.xcassets in Resources */,
 				DCE7000A2F321000009AC55B /* Assets.xcassets in Resources */,
 			);
@@ -377,6 +414,7 @@
 				DC406F3E2F86965B00F40A90 /* SettingsView.swift in Sources */,
 				DC1439772F5F0A0C00EFF80C /* MultipleChoiceQuizViewModel.swift in Sources */,
 				DC7A16F52F37515C00689CAC /* WordDetailView.swift in Sources */,
+				DC406F852F9D299000F40A90 /* LoginViewModel.swift in Sources */,
 				DC406F6D2F966C8600F40A90 /* WordSummaryCard.swift in Sources */,
 				DC7A16EF2F374FCB00689CAC /* LibraryViewModel.swift in Sources */,
 				DC7A16EB2F322D9200689CAC /* AddWordViewModel.swift in Sources */,
@@ -401,19 +439,24 @@
 				DC1439792F5F0A3C00EFF80C /* MultipleChoiceQuizView.swift in Sources */,
 				DC1439712F5DDB0200EFF80C /* FlashcardViewModel.swift in Sources */,
 				DC7A16ED2F322DAC00689CAC /* AddWordView.swift in Sources */,
+				DC406F7F2F9D22F100F40A90 /* LoginView.swift in Sources */,
 				DC406F6B2F96659400F40A90 /* ExamplesSection.swift in Sources */,
 				DC406F2C2F7AC89400F40A90 /* SearchView.swift in Sources */,
 				DC406F602F9662E500F40A90 /* AIContent.swift in Sources */,
 				DC7A16FB2F37579C00689CAC /* GeminiService.swift in Sources */,
 				DC14397B2F6047CE00EFF80C /* DailyStatsManager.swift in Sources */,
+				DC406F832F9D27B600F40A90 /* SignUpView.swift in Sources */,
 				DC406F512F8D301200F40A90 /* SongPlayerView.swift in Sources */,
 				DC406F422F869F5200F40A90 /* MarkdownContentView.swift in Sources */,
 				DC406F5E2F9662A500F40A90 /* Theme.swift in Sources */,
 				DC406F442F8D2EFF00F40A90 /* Song.swift in Sources */,
 				DC406F4B2F8D2F7D00F40A90 /* songs.json in Sources */,
 				DC406F362F8138A400F40A90 /* EditWordView.swift in Sources */,
+				DC406F7C2F990E8100F40A90 /* AuthManager.swift in Sources */,
+				DC406F872F9D29EE00F40A90 /* SignUpViewModel.swift in Sources */,
 				DC406F282F7AC79400F40A90 /* SearchViewModel.swift in Sources */,
 				DC406F322F812DC200F40A90 /* PhraseDetailView.swift in Sources */,
+				DC406F892F9E4D1A00F40A90 /* RootView.swift in Sources */,
 				DC406F4F2F8D2FF500F40A90 /* SongListView.swift in Sources */,
 				DC7A16F82F37526700689CAC /* WordRowView.swift in Sources */,
 				DCE700062F320FFF009AC55B /* VocabWithAIApp.swift in Sources */,
@@ -564,7 +607,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.VocabWithAI.VocabWithAI;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tpqsll.VocabWithAI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -594,7 +637,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.VocabWithAI.VocabWithAI;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tpqsll.VocabWithAI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -634,6 +677,14 @@
 				minimumVersion = 2.0.5;
 			};
 		};
+		DC406F742F97CDA500F40A90 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.12.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -641,6 +692,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DC406F552F9120B400F40A90 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */;
 			productName = YouTubePlayerKit;
+		};
+		DC406F752F97CDA500F40A90 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC406F742F97CDA500F40A90 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		DC406F772F97CDA600F40A90 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC406F742F97CDA500F40A90 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		DC406F792F97CDA600F40A90 /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC406F742F97CDA500F40A90 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
