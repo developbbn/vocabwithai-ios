@@ -31,5 +31,8 @@ module.exports = {
     "indent": ["error", 2],
     "max-len": "off",
     "eol-last": "off",
+    "require-jsdoc": "off",
+    "valid-jsdoc": "off",
+    "no-multi-spaces": "off",
   },
 };

@@ -198,19 +198,6 @@ class GeminiService {
             data["customPrompt"] = customPrompt
         }
         
-        // 🔍 인증 상태 디버그
-        if let user = Auth.auth().currentUser {
-            print("🔐 현재 로그인 사용자: \(user.uid)")
-            user.getIDToken { token, error in
-                if let token = token {
-                    print("🔐 토큰 길이: \(token.count) (앞 30자: \(token.prefix(30)))")
-                } else {
-                    print("🔴 토큰 발급 실패: \(error?.localizedDescription ?? "?")")
-                }
-                }
-            } else {
-                print("🔴 currentUser == nil")
-            }
 
         return Future<WordAIContent, Error> { promise in
             self.functions.httpsCallable("generateWordContent").call(data) { result, error in
