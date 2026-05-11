@@ -102,36 +102,35 @@ struct HeaderView: View {
     @State private var logoutErrorMessage: String?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                // 프로필 Circle — 탭하면 로그아웃 알림
-                Button(action: { showLogoutConfirm = true }) {
-                    Circle()
-                        .fill(Color.gray.opacity(0.2))
-                        .frame(width: 46, height: 46)
-                        .overlay(
-                            Image(systemName: "person.fill")
-                                .foregroundColor(.gray)
-                        )
-                        .overlay(
-                            Circle().stroke(Color.blue.opacity(0.3), lineWidth: 1)
-                        )
-                }
-                .buttonStyle(.plain)
+        HStack(alignment: .top, spacing: 12) {
+            // 프로필 Circle — 탭하면 로그아웃 알림
+            Button(action: { showLogoutConfirm = true }) {
+                Circle()
+                    .fill(Color.gray.opacity(0.2))
+                    .frame(width: 46, height: 46)
+                    .overlay(
+                        Image(systemName: "person.fill")
+                            .foregroundColor(.gray)
+                    )
+            }
+            .buttonStyle(.plain)
 
-                Text("\(userName)님, 오늘도 즐겁게 시작해볼까요? ✨")
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(.primary)
+            Text("\(userName)님,\n오늘도 즐겁게 시작해볼까요?\n✨")
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundColor(.primary)
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 4)
 
-                Spacer()
+            Spacer()
 
+            HStack(spacing: 12) {
                 // Delete Button (테스트용)
                 Button(action: { showDeleteConfirm = true }) {
                     Image(systemName: "trash.fill")
                         .font(.system(size: 18))
                         .foregroundColor(.red.opacity(0.6))
                 }
-                .padding(.trailing, 8)
 
                 Button(action: {}) {
                     Image(systemName: "bell.fill")
@@ -139,8 +138,7 @@ struct HeaderView: View {
                         .foregroundColor(.black)
                 }
             }
-
-            Spacer()
+            .padding(.top, 8)
         }
         .confirmationDialog(
             "모든 단어를 삭제하시겠어요?",
@@ -205,23 +203,17 @@ struct StatCardsView: View {
             StatCard(
                 label: "오늘의 단어",
                 value: "\(stats.wordCount)개",
-                subLabel: "완료",
-                valueColor: .blue,
-                isDone: false
+                subLabel: "완료"
             )
             StatCard(
                 label: "푼 퀴즈",
                 value: "\(stats.quizCount)개",
-                subLabel: "통과",
-                valueColor: Color(red: 0.55, green: 0.2, blue: 0.9),
-                isDone: false
+                subLabel: "통과"
             )
             StatCard(
                 label: "표현 학습",
                 value: stats.expressionDone ? "✅" : "❌",
-                subLabel: stats.expressionDone ? "완료" : "미완료",
-                valueColor: .green,
-                isDone: false
+                subLabel: stats.expressionDone ? "완료" : "미완료"
             )
         }
     }
@@ -231,17 +223,15 @@ struct StatCard: View {
     let label: String
     let value: String?
     let subLabel: String
-    let valueColor: Color
-    let isDone: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 4) {
             Text(label)
-                .font(.system(size: 12, weight: .medium))
-                .foregroundColor(valueColor)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(.primary)
 
             Text(value ?? "")
-                .font(.system(size: 24, weight: .bold))
+                .font(.system(size: 26, weight: .bold))
                 .foregroundColor(.primary)
 
             Text(subLabel)
@@ -280,13 +270,13 @@ struct FeatureGridView: View {
             FeatureCard(
                 title: "단어등록",
                 icon: "plus.circle.fill",
-                iconColor: .blue,
+                iconColor: .green,
                 action: onLogTap
             )
             FeatureCard(
                 title: "오늘의 표현",
                 icon: "message.fill",
-                iconColor: .blue,
+                iconColor: .orange,
                 action: onExpressionTap
             )
             FeatureCard(
@@ -308,40 +298,40 @@ struct FeatureCard: View {
 
     var body: some View {
         Button(action: action) {
-            VStack(alignment: .leading) {
-                Spacer()
-                HStack {
+            ZStack(alignment: .topLeading) {
+                // Background
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color.gray.opacity(0.1))
+
+                // Title at top-left
+                Text(title)
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundColor(.black)
+                    .padding(.leading, 20)
+                    .padding(.top, 20)
+
+                // Icon at bottom-right
+                VStack {
                     Spacer()
-                    Circle()
-                        .fill(Color.white)
-                        .frame(width: 60, height: 60)
-                        .overlay(
-                            Image(systemName: icon)
-                                .font(.system(size: 28))
-                                .foregroundColor(iconColor)
-                        )
+                    HStack {
+                        Spacer()
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 60, height: 60)
+                            .overlay(
+                                Image(systemName: icon)
+                                    .font(.system(size: 28))
+                                    .foregroundColor(iconColor)
+                            )
+                            .padding(.trailing, 16)
+                            .padding(.bottom, 16)
+                    }
                 }
-                .padding(.trailing, 16)
-                .padding(.bottom, 16)
             }
             .frame(height: 160)
             .frame(maxWidth: .infinity)
-            .background(Color.gray.opacity(0.1))
-            .cornerRadius(20)
-            .overlay(
-                VStack {
-                    HStack {
-                        Text(title)
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundColor(.black)
-                            .padding(.leading, 20)
-                            .padding(.top, 20)
-                        Spacer()
-                    }
-                    Spacer()
-                }
-            )
         }
+        .buttonStyle(.plain)
     }
 }
 
@@ -353,13 +343,13 @@ struct RecentlyLearnedView: View {
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.gray)
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
-                    ForEach(0..<3) { _ in
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.white)
-                            .frame(width: 140, height: 80)
-                    }
+            HStack(spacing: 12) {
+                ForEach(0..<3) { _ in
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.white)
+                        .frame(height: 80)
+                        .frame(maxWidth: .infinity)
+                        .shadow(color: .black.opacity(0.03), radius: 4, x: 0, y: 2)
                 }
             }
         }
