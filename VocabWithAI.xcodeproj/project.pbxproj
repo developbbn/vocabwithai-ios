@@ -50,6 +50,7 @@
 		DC406F852F9D299000F40A90 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F842F9D298F00F40A90 /* LoginViewModel.swift */; };
 		DC406F872F9D29EE00F40A90 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F862F9D29ED00F40A90 /* SignUpViewModel.swift */; };
 		DC406F892F9E4D1A00F40A90 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F882F9E4D1A00F40A90 /* RootView.swift */; };
+		DC406F8B2FACC62500F40A90 /* PhraseInsightParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F8A2FACC62500F40A90 /* PhraseInsightParser.swift */; };
 		DC7A16E32F3210D200689CAC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E22F3210D200689CAC /* ContentView.swift */; };
 		DC7A16E62F32112400689CAC /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E52F32112400689CAC /* HomeViewModel.swift */; };
 		DC7A16E92F322D7100689CAC /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E82F322D7100689CAC /* Word.swift */; };
@@ -110,6 +111,7 @@
 		DC406F842F9D298F00F40A90 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		DC406F862F9D29ED00F40A90 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		DC406F882F9E4D1A00F40A90 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		DC406F8A2FACC62500F40A90 /* PhraseInsightParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhraseInsightParser.swift; sourceTree = "<group>"; };
 		DC7A16E22F3210D200689CAC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DC7A16E52F32112400689CAC /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		DC7A16E82F322D7100689CAC /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 		DC7A16E72F322D4B00689CAC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				DC406F8A2FACC62500F40A90 /* PhraseInsightParser.swift */,
 				DC406F5F2F9662E400F40A90 /* AIContent.swift */,
 				DC406F432F8D2EFE00F40A90 /* Song.swift */,
 				DC7A16E82F322D7100689CAC /* Word.swift */,
@@ -410,6 +413,7 @@
 			files = (
 				DCE700152F3210A1009AC55B /* HomeView.swift in Sources */,
 				DC7A16E32F3210D200689CAC /* ContentView.swift in Sources */,
+				DC406F8B2FACC62500F40A90 /* PhraseInsightParser.swift in Sources */,
 				DC406F692F96655D00F40A90 /* RelatedWordsSection.swift in Sources */,
 				DC406F3E2F86965B00F40A90 /* SettingsView.swift in Sources */,
 				DC1439772F5F0A0C00EFF80C /* MultipleChoiceQuizViewModel.swift in Sources */,
@@ -597,6 +601,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VocabWithAI/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "단어칩";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -627,6 +632,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VocabWithAI/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "단어칩";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

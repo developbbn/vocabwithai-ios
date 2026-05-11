@@ -3,35 +3,29 @@
 //  VocabWithAI
 //
 //  Created on 2026-03-30
-//
-//  DailyPhraseView를 대체. 두 가지 모드로 동작:
-//  1. phrase == nil  → 오늘의 표현 로드 (HomeView 진입)
-//  2. phrase != nil  → 전달받은 표현 표시 (검색/서재 진입)
+//  Redesigned on 2026-05-07
 //
 
 import SwiftUI
 
+// ============================================================
+// MARK: - Main View
+// ============================================================
+
 struct PhraseDetailView: View {
 
-    /// 외부에서 표현을 넘길 때 사용. nil이면 오늘의 표현 모드
     var phrase: DailyPhrase? = nil
 
     @ObservedObject private var viewModel = DailyPhraseViewModel.shared
     @Environment(\.presentationMode) private var presentationMode
 
-    // 현재 표시할 표현 — 외부 phrase 우선, 없으면 viewModel.currentPhrase
-    private var displayPhrase: DailyPhrase? {
-        phrase ?? viewModel.currentPhrase
-    }
-
-    // 오늘의 표현 모드 여부
+    private var displayPhrase: DailyPhrase? { phrase ?? viewModel.currentPhrase }
     private var isTodayMode: Bool { phrase == nil }
 
     var body: some View {
         ZStack {
             Color(.systemGroupedBackground).ignoresSafeArea()
 
-            // 상태 분기
             if let p = displayPhrase {
                 contentView(phrase: p)
             } else if viewModel.isLoading {
@@ -42,8 +36,9 @@ struct PhraseDetailView: View {
         }
         .overlay(alignment: .top) {
             customNavBar
-                .padding(.horizontal, 20)
-                .padding(.top, 12)
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+                .background(Color(.systemGroupedBackground))
         }
         .navigationBarHidden(true)
         .onAppear {
@@ -57,213 +52,590 @@ struct PhraseDetailView: View {
         }
     }
 
-    // MARK: - Custom Nav Bar
+    // MARK: Nav Bar
 
     private var customNavBar: some View {
         HStack {
             Button(action: { presentationMode.wrappedValue.dismiss() }) {
                 Image(systemName: "chevron.left")
-                    .font(.system(size: 20, weight: .semibold))
+                    .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(.black)
-                    .padding(12)
-                    .contentShape(Rectangle())
+                    .frame(width: 36, height: 36)
             }
+
             Spacer()
+
+            Text("문법 표현")
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundColor(.black)
+
+            Spacer()
+
+            HStack(spacing: 0) {
+                if isTodayMode {
+                    Button(action: {
+                        viewModel.currentPhrase = nil
+                        viewModel.generateTodayPhrase()
+                    }) {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundColor(.black)
+                            .frame(width: 36, height: 36)
+                    }
+                }
+                if isTodayMode, let p = displayPhrase {
+                    Button(action: { viewModel.toggleBookmark() }) {
+                        Image(systemName: p.isBookmarked ? "bookmark.fill" : "bookmark")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundColor(p.isBookmarked ? .blue : .black)
+                            .frame(width: 36, height: 36)
+                    }
+                }
+            }
         }
-        .background(Color(.systemGroupedBackground))
     }
 
-    // MARK: - Loading View
+    // MARK: Loading / Error
 
     private var loadingView: some View {
-        VStack(spacing: 20) {
-            ProgressView().scaleEffect(1.5)
+        VStack(spacing: 16) {
+            ProgressView().scaleEffect(1.3)
             Text("오늘의 표현을 가져오는 중...")
-                .font(.system(size: 16))
+                .font(.system(size: 14))
                 .foregroundColor(.gray)
         }
     }
 
-    // MARK: - Error View
-
     private func errorView(message: String) -> some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 16) {
             Image(systemName: "exclamationmark.triangle")
-                .font(.system(size: 50))
+                .font(.system(size: 40))
                 .foregroundColor(.orange)
             Text(message)
-                .font(.system(size: 16))
+                .font(.system(size: 14))
                 .foregroundColor(.gray)
+                .multilineTextAlignment(.center)
             Button(action: { viewModel.generateTodayPhrase() }) {
                 Text("다시 시도")
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(.system(size: 15, weight: .semibold))
                     .foregroundColor(.white)
-                    .padding(.horizontal, 30)
-                    .padding(.vertical, 12)
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 10)
                     .background(Color.blue)
-                    .cornerRadius(10)
+                    .cornerRadius(8)
             }
         }
         .padding()
     }
 
-    // MARK: - Content View
+    // MARK: Main Content
 
     private func contentView(phrase: DailyPhrase) -> some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
+            VStack(alignment: .leading, spacing: 16) {
+                Spacer().frame(height: 60)
 
-                // Date Header + 새로고침 (오늘의 표현 모드일 때만)
-                dateHeader(phrase: phrase)
-                    .padding(.top, 80)
+                PhraseGrammarHeader(phrase: phrase)
 
-                // 타이틀
-                Text(isTodayMode ? "오늘의 표현" : "표현 상세")
-                    .font(.system(size: 32, weight: .bold))
-                    .foregroundColor(.black)
+                PhraseSampleCard(
+                    japanese: phrase.exampleSentence,
+                    furigana: phrase.exampleFurigana ?? "",
+                    korean: phrase.exampleKorean ?? phrase.meaning,
+                    highlightWord: phrase.japanese
+                )
 
-                // 표현 카드
-                phraseCard(phrase: phrase)
-
-                // AI Insight
                 if let aiInsight = phrase.aiInsight, !aiInsight.isEmpty {
-                    aiInsightSection(content: aiInsight)
+                    let parsed = PhraseInsightParser.parse(aiInsight, mainGrammar: phrase.japanese)
+
+                    InsightMeaningSection(parsed: parsed)
+
+                    if !parsed.connections.isEmpty {
+                        InsightConnectionSection(connections: parsed.connections)
+                    }
+
+                    if !parsed.practiceSentences.isEmpty {
+                        InsightPracticeSection(sentences: parsed.practiceSentences)
+                    }
                 }
 
                 Spacer(minLength: 40)
             }
-            .padding(.horizontal, 20)
-        }
-    }
-
-    // MARK: - Date Header
-
-    private func dateHeader(phrase: DailyPhrase) -> some View {
-        HStack {
-            Text(phrase.dateString)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(.blue)
-            Spacer()
-            // 새로고침 — 오늘의 표현 모드에서만 표시
-            if isTodayMode {
-                Button(action: {
-                    viewModel.currentPhrase = nil
-                    viewModel.generateTodayPhrase()
-                }) {
-                    Image(systemName: "arrow.clockwise")
-                        .font(.system(size: 22, weight: .semibold))
-                        .foregroundColor(.blue)
-                }
-            }
-        }
-    }
-
-    // MARK: - Phrase Card
-
-    private func phraseCard(phrase: DailyPhrase) -> some View {
-        VStack(spacing: 0) {
-            // 카드 헤더
-            HStack {
-                // 북마크 — 오늘의 표현 모드에서만 토글 가능
-                Button(action: {
-                    if isTodayMode { viewModel.toggleBookmark() }
-                }) {
-                    Image(systemName: phrase.isBookmarked ? "bookmark.fill" : "bookmark")
-                        .font(.system(size: 24))
-                        .foregroundColor(phrase.isBookmarked ? .blue : .gray.opacity(0.4))
-                }
-                .disabled(!isTodayMode)
-
-                Spacer()
-
-                Text("PHRASE")
-                    .font(.system(size: 12, weight: .bold))
-                    .foregroundColor(.blue)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(Color.blue.opacity(0.1))
-                    .cornerRadius(6)
-            }
-            .padding(.horizontal, 24)
-            .padding(.top, 24)
-
-            // 메인 콘텐츠
-            VStack(spacing: 16) {
-                Text(phrase.reading)
-                    .font(.system(size: 18))
-                    .foregroundColor(.gray)
-
-                Text(phrase.japanese)
-                    .font(.system(size: 36, weight: .bold))
-                    .foregroundColor(.black)
-                    .multilineTextAlignment(.center)
-
-                Divider()
-                    .frame(width: 60)
-                    .padding(.vertical, 8)
-
-                Text(phrase.meaning)
-                    .font(.system(size: 22, weight: .semibold))
-                    .foregroundColor(.black)
-                    .multilineTextAlignment(.center)
-
-                Text(phrase.contextUsage)
-                    .font(.system(size: 15))
-                    .foregroundColor(.gray)
-                    .multilineTextAlignment(.center)
-                    .lineSpacing(4)
-                    .padding(.top, 8)
-            }
-            .padding(.horizontal, 24)
-            .padding(.vertical, 32)
-        }
-        .background(Color.white)
-        .cornerRadius(20)
-        .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 2)
-    }
-
-    // MARK: - AI Insight Section
-
-    private func aiInsightSection(content: String) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 8) {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.blue)
-                Text("AI Insight")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.black)
-            }
-
-            MarkdownContentView(content: content)
-                .padding(20)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.blue.opacity(0.05))
-                .cornerRadius(16)
+            .padding(.horizontal, 16)
         }
     }
 }
 
-// MARK: - Preview
-struct PhraseDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        // 오늘의 표현 모드
-        NavigationStack {
-            PhraseDetailView()
-        }
-        .previewDisplayName("오늘의 표현 모드")
+// ============================================================
+// MARK: - 그래머 헤더 카드
+// ============================================================
 
-        // 특정 표현 모드
+struct PhraseGrammarHeader: View {
+    let phrase: DailyPhrase
+
+    private let purpleColor = Color(red: 0.40, green: 0.30, blue: 0.85)
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            // GRAMMAR 뱃지
+            HStack(spacing: 6) {
+                Text("文")
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundColor(purpleColor)
+                    .frame(width: 18, height: 18)
+                    .background(Color.white)
+                    .clipShape(Circle())
+                Text("GRAMMAR")
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundColor(.white)
+                    .tracking(1.2)
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background(purpleColor)
+            .clipShape(Capsule())
+
+            // 핵심 문법
+            Text(phrase.japanese)
+                .font(.system(size: 44, weight: .bold))
+                .foregroundColor(.black)
+                .padding(.top, 4)
+
+            // 히라가나
+            Text(phrase.reading)
+                .font(.system(size: 17, weight: .medium))
+                .foregroundColor(.blue)
+
+            // 한국어 의미
+            Text(phrase.meaning)
+                .font(.system(size: 22, weight: .semibold))
+                .foregroundColor(.black)
+
+            // 컨텍스트 박스
+            HStack(alignment: .top, spacing: 10) {
+                Image(systemName: "info.circle.fill")
+                    .font(.system(size: 15))
+                    .foregroundColor(.blue)
+                    .padding(.top, 1)
+                Text(phrase.contextUsage)
+                    .font(.system(size: 14))
+                    .foregroundColor(.black.opacity(0.75))
+                    .lineSpacing(3)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(12)
+            .background(Color.blue.opacity(0.05))
+            .cornerRadius(10)
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.white)
+        .cornerRadius(20)
+        .shadow(color: .black.opacity(0.04), radius: 6, x: 0, y: 2)
+    }
+}
+
+// ============================================================
+// MARK: - 대표 예문 카드 (검은 배경)
+// ============================================================
+
+struct PhraseSampleCard: View {
+    let japanese: String
+    let furigana: String
+    let korean: String
+    let highlightWord: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            // 상단: 인용 점 + 라벨
+            HStack(alignment: .top) {
+                Text("\u{201C}\u{201C}")
+                    .font(.system(size: 24, weight: .black))
+                    .foregroundColor(.white.opacity(0.4))
+                    .offset(y: -4)
+                Spacer()
+                Text("대표 예문")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(.white.opacity(0.5))
+                    .tracking(1.5)
+            }
+
+            // 일본어 (highlightWord만 노랗게)
+            Text(highlightedDarkText(japanese, highlight: highlightWord))
+                .font(.system(size: 22, weight: .bold))
+                .lineSpacing(6)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            // 히라가나 (있을 때만)
+            if !furigana.isEmpty {
+                Text(furigana)
+                    .font(.system(size: 13))
+                    .foregroundColor(.white.opacity(0.4))
+                    .lineSpacing(3)
+            }
+
+            Rectangle()
+                .fill(Color.white.opacity(0.15))
+                .frame(height: 1)
+
+            // 한국어
+            Text(korean)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(.white.opacity(0.85))
+                .lineSpacing(3)
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color(red: 0.10, green: 0.13, blue: 0.20))
+        .cornerRadius(20)
+    }
+
+    private func highlightedDarkText(_ japanese: String, highlight: String) -> AttributedString {
+        var attr = AttributedString(japanese)
+        attr.foregroundColor = .white
+
+        let cleanWord = highlight
+            .replacingOccurrences(of: "〜", with: "")
+            .replacingOccurrences(of: "~", with: "")
+
+        if !cleanWord.isEmpty, let range = attr.range(of: cleanWord) {
+            attr[range].foregroundColor = Color.yellow
+        }
+        return attr
+    }
+}
+
+// ============================================================
+// MARK: - 섹션 헤더 (재사용)
+// ============================================================
+
+struct InsightSectionHeader: View {
+    let icon: String
+    let title: String
+    let number: String
+    let subtitle: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 8) {
+                Text(icon)
+                    .font(.system(size: 20))
+                Text(title)
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundColor(.black)
+            }
+            HStack(spacing: 8) {
+                Text(number)
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(.gray)
+                    .tracking(1.5)
+                Text(subtitle)
+                    .font(.system(size: 13))
+                    .foregroundColor(.gray)
+            }
+        }
+        .padding(.top, 8)
+    }
+}
+
+// ============================================================
+// MARK: - Section 01: 의미와 특징
+// ============================================================
+
+struct InsightMeaningSection: View {
+    let parsed: ParsedInsight
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            InsightSectionHeader(
+                icon: "📒",
+                title: "의미와 특징",
+                number: "01",
+                subtitle: "감 잡히게 풀어드릴게요"
+            )
+
+            if !parsed.meaning.isEmpty {
+                InsightSubCard(title: "의미", content: parsed.meaning, accentColor: nil)
+            }
+
+            if !parsed.analogy.isEmpty {
+                InsightSubCard(title: "비유", content: parsed.analogy, accentColor: .blue)
+            }
+
+            if !parsed.nuance.isEmpty {
+                InsightSubCard(title: "뉘앙스", content: parsed.nuance, accentColor: nil)
+            }
+
+            if let warning = parsed.warning {
+                InsightWarningBox(content: warning)
+            }
+        }
+    }
+}
+
+struct InsightSubCard: View {
+    let title: String
+    let content: String
+    let accentColor: Color?
+
+    var body: some View {
+        HStack(spacing: 0) {
+            if let accent = accentColor {
+                Rectangle()
+                    .fill(accent)
+                    .frame(width: 3)
+            }
+
+            VStack(alignment: .leading, spacing: 8) {
+                Text(title)
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(.gray)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(5)
+
+                Text(content)
+                    .font(.system(size: 15))
+                    .foregroundColor(.black.opacity(0.85))
+                    .lineSpacing(4)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(16)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.white)
+        .cornerRadius(12)
+    }
+}
+
+struct InsightWarningBox: View {
+    let content: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 14))
+                .foregroundColor(.orange)
+                .padding(.top, 2)
+            Text(content)
+                .font(.system(size: 13))
+                .foregroundColor(.black.opacity(0.8))
+                .lineSpacing(3)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(14)
+        .background(Color.orange.opacity(0.10))
+        .cornerRadius(10)
+    }
+}
+
+// ============================================================
+// MARK: - Section 02: 접속 방법
+// ============================================================
+
+struct InsightConnectionSection: View {
+    let connections: [GrammarConnection]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            InsightSectionHeader(
+                icon: "🧩",
+                title: "접속 방법",
+                number: "02",
+                subtitle: "이렇게 붙여서 만들어요"
+            )
+
+            ForEach(connections) { conn in
+                InsightConnectionCard(connection: conn)
+            }
+        }
+    }
+}
+
+struct InsightConnectionCard: View {
+    let connection: GrammarConnection
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(spacing: 8) {
+                Text(connection.partOfSpeech)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.blue)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .background(Color.blue.opacity(0.1))
+                    .cornerRadius(6)
+                Text(connection.formula)
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(.black)
+                Spacer()
+            }
+
+            if !connection.examples.isEmpty {
+                VStack(spacing: 6) {
+                    ForEach(connection.examples) { ex in
+                        HStack {
+                            Text(ex.from)
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.black.opacity(0.7))
+                            Spacer()
+                            Image(systemName: "arrow.right")
+                                .font(.system(size: 13))
+                                .foregroundColor(.blue.opacity(0.6))
+                            Spacer()
+                            Text(ex.to)
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(.blue)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 12)
+                        .background(Color.gray.opacity(0.06))
+                        .cornerRadius(10)
+                    }
+                }
+            }
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.white)
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.03), radius: 4, x: 0, y: 1)
+    }
+}
+
+// ============================================================
+// MARK: - Section 03: 실전 통문장
+// ============================================================
+
+struct InsightPracticeSection: View {
+    let sentences: [PracticeSentence]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            InsightSectionHeader(
+                icon: "🎯",
+                title: "실전 통문장",
+                number: "03",
+                subtitle: "실제 상황에서 이렇게 쓰여요"
+            )
+
+            ForEach(Array(sentences.enumerated()), id: \.element.id) { index, sentence in
+                InsightPracticeCard(number: index + 1, sentence: sentence)
+            }
+        }
+    }
+}
+
+struct InsightPracticeCard: View {
+    let number: Int
+    let sentence: PracticeSentence
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 8) {
+                Text("\(number)")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(.white)
+                    .frame(width: 20, height: 20)
+                    .background(Color.blue)
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                Text(sentence.category)
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(.blue)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(Color.blue.opacity(0.1))
+                    .cornerRadius(6)
+                Spacer()
+            }
+
+            Text(sentence.title)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(.black.opacity(0.85))
+
+            Text(highlightedLightText(sentence.japanese, highlight: sentence.highlightWord))
+                .font(.system(size: 19, weight: .bold))
+                .lineSpacing(5)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text(sentence.furigana)
+                .font(.system(size: 13))
+                .foregroundColor(.gray)
+                .lineSpacing(3)
+
+            Rectangle()
+                .fill(Color.gray.opacity(0.15))
+                .frame(height: 1)
+                .padding(.vertical, 2)
+
+            Text(sentence.korean)
+                .font(.system(size: 14))
+                .foregroundColor(.black.opacity(0.7))
+                .lineSpacing(3)
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.white)
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.03), radius: 4, x: 0, y: 1)
+    }
+
+    private func highlightedLightText(_ japanese: String, highlight: String) -> AttributedString {
+        var attr = AttributedString(japanese)
+        attr.foregroundColor = .black
+
+        let cleanWord = highlight
+            .replacingOccurrences(of: "〜", with: "")
+            .replacingOccurrences(of: "~", with: "")
+
+        if !cleanWord.isEmpty, let range = attr.range(of: cleanWord) {
+            attr[range].backgroundColor = Color.yellow.opacity(0.45)
+            attr[range].foregroundColor = Color.blue
+        }
+        return attr
+    }
+}
+
+// ============================================================
+// MARK: - Preview
+// ============================================================
+
+struct PhraseDetailView_Previews: PreviewProvider {
+    static let sampleInsight = """
+    # 1. 「〜次第」의 의미와 특징
+    ## 의미: ~하는 대로, ~하자마자
+    ## 비유: 스위치를 누르면 불이 즉시 켜지는 것처럼, 어떤 일이 끝나면 지체 없이 다음 행동이 이어지는 상황. 완료 후 즉시 행동을 강조.
+    ## 뉘앙스와 주의점: 주로 동사의 ます형에 접속하여 '어떤 일이 완료되면 바로 다음 행동을 한다'는 의미로 사용.
+    *명사에 접속하는 「〜次第」는 '〜에 따라, ~에 달려 있다'는 다른 의미를 가지므로 혼동에 주의.
+
+    # 2. 품사별 조립 방법 (접속)
+    ## 동사: ます형 + 次第 (예: できます ➔ でき次第, 終わります ➔ 終わり次第)
+
+    # 3. 실전 통문장
+    ## 업무 상황에서의 즉시 보고 (동사 결합)
+    ### 한자: 資料がまとまり次第、会議を始めます。
+    ### 히라가나: しりょうがまとまりしだい、かいぎをはじまります。
+    ### 한글: 자료가 정리되는 대로, 회의를 시작하겠습니다.
+
+    ## 서비스 제공 시의 즉시 안내 (동사 결합)
+    ### 한자: 商品が届き次第、お客様にご連絡いたします。
+    ### 히라가나: しょうひんがとどきしだい、おきゃくさまにごれんらくいたします。
+    ### 한글: 상품이 도착하는 대로, 고객님께 연락드리겠습니다.
+    """
+
+    static var previews: some View {
         NavigationStack {
             PhraseDetailView(phrase: DailyPhrase(
-                japanese: "〜にしては",
-                reading: "にしては",
-                meaning: "~치고는, ~인 것에 비해서",
-                exampleSentence: "彼は新人にしては、仕事が早い。",
-                contextUsage: "기대와 다른 결과를 나타낼 때 사용",
-                aiInsight: "## 의미\n기대와 다른 결과\n## 예문\n- 彼は新人にしては仕事が早い。"
+                japanese: "〜次第",
+                reading: "しだい",
+                meaning: "~하는 대로, ~하자마자",
+                exampleSentence: "会議の準備ができ次第、ご連絡いたします。",
+                exampleFurigana: "かいぎのじゅんびができしだい、ごれんらくいたします。",
+                exampleKorean: "회의 준비가 되는 대로, 연락드리겠습니다.",
+                contextUsage: "특정 동작이나 상황이 완료되는 즉시, 다음 행동을 하겠다고 전달할 때 사용합니다. 주로 공적인 상황에서 사용됩니다.",
+                aiInsight: sampleInsight
             ))
         }
-        .previewDisplayName("특정 표현 모드")
+        .previewDisplayName("새 디자인")
     }
 }

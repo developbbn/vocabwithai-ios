@@ -1021,5 +1021,324 @@
         "highlightWords": []
       }
     ]
+  },
+  {
+    "id": "song_06",
+    "title": "残響散歌",
+    "artist": "Aimer",
+    "youtubeURL": "https://youtu.be/tLQLa6lM3Us",
+    "thumbnailURL": "https://i.ytimg.com/vi/tLQLa6lM3Us/hqdefault.jpg",
+    "youtubeID": "tLQLa6lM3Us",
+    "jlptLevel": "N4-N1",
+    "isRecommended": false,
+    "cards": [
+      {
+        "id": "c06_01",
+        "timestamp": 20.6,
+        "japanese": "誰が袖に咲く幻花",
+        "reading": "たがそでにさくげんか",
+        "meaning": "누군가가 소매에 피는 환상의 꽃",
+        "highlightWords": [
+          { "word": "誰が袖", "reading": "たがそで", "meaning": "누군가의 소매", "type": "word" },
+          { "word": "咲く", "reading": "さく", "meaning": "피다", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_02",
+        "timestamp": 23.6,
+        "japanese": "ただそこに藍を落とした",
+        "reading": "ただそこにあいをおとした",
+        "meaning": "그저 그 곳에 쪽빛을 떨어뜨렸어",
+        "highlightWords": [
+          { "word": "藍", "reading": "あい", "meaning": "쪽빛, 남색", "type": "word" },
+          { "word": "落とす", "reading": "おとす", "meaning": "떨어뜨리다", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_03",
+        "timestamp": 26.3,
+        "japanese": "派手に色を溶かす夜に銀朱の月を添えて",
+        "reading": "はでにいろをとかすよるにぎんしゅのつきをそえて",
+        "meaning": "화려하게 색을 녹이는 밤에 은주홍색의 달을 곁들여",
+        "highlightWords": [
+          { "word": "派手だ", "reading": "はでだ", "meaning": "화려하다", "type": "word" },
+          { "word": "溶かす", "reading": "とかす", "meaning": "녹이다", "type": "word" },
+          { "word": "添える", "reading": "そえる", "meaning": "곁들이다, 첨가하다", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_04",
+        "timestamp": 31.2,
+        "japanese": "転がるように風を切って",
+        "reading": "ころがるようにかぜをきって",
+        "meaning": "넘어지듯이 바람을 가르며",
+        "highlightWords": [
+          { "word": "転がる", "reading": "ころがる", "meaning": "구르다, 넘어지다", "type": "word" },
+          { "word": "風を切る", "reading": "かぜをきる", "meaning": "바람을 가르다", "type": "phrase" },
+          { "word": "〜ように", "reading": "〜ように", "meaning": "~처럼, ~듯이", "type": "phrase" }
+        ]
+      },
+      {
+        "id": "c06_05",
+        "timestamp": 34.2,
+        "japanese": "躓くごとに強くなった",
+        "reading": "つまずくごとにつよくなった",
+        "meaning": "좌절할(넘어질) 때마다 강해졌어",
+        "highlightWords": [
+          { "word": "躓く", "reading": "つまずく", "meaning": "발이 걸려 넘어지다, 좌절하다", "type": "word" },
+          { "word": "〜ごとに", "reading": "〜ごとに", "meaning": "~할 때마다", "type": "phrase" }
+        ]
+      },
+      {
+        "id": "c06_06",
+        "timestamp": 36.8,
+        "japanese": "光も痛みも怒りも全部抱きしめて",
+        "reading": "ひかりもいたみもいかりもぜんぶだきしめて",
+        "meaning": "빛도 아픔도 분노도 전부 끌어안고서",
+        "highlightWords": [
+          { "word": "痛み", "reading": "いたみ", "meaning": "아픔, 통증", "type": "word" },
+          { "word": "怒り", "reading": "いかり", "meaning": "분노", "type": "word" },
+          { "word": "抱きしめる", "reading": "だきしめる", "meaning": "끌어안다", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_07",
+        "timestamp": 42.5,
+        "japanese": "選ばれなければ選べばいい",
+        "reading": "えらばれなければえらべばいい",
+        "meaning": "선택받지 못한다면 선택하면 돼",
+        "highlightWords": [
+          { "word": "選ぶ", "reading": "えらぶ", "meaning": "선택하다", "type": "word" },
+          { "word": "〜ばいい", "reading": "〜ばいい", "meaning": "~하면 된다", "type": "phrase" }
+        ]
+      },
+      {
+        "id": "c06_08",
+        "timestamp": 47.3,
+        "japanese": "声よ轟け夜のその向こうへ",
+        "reading": "こえよとどろけよるのそのむこうへ",
+        "meaning": "목소리여 울려라 밤의 그 저편으로",
+        "highlightWords": [
+          { "word": "轟く", "reading": "とどろく", "meaning": "울려 퍼지다, 다울리다", "type": "word" },
+          { "word": "向こう", "reading": "むこう", "meaning": "저편, 건너편", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_09",
+        "timestamp": 50.0,
+        "japanese": "涙で滲んでたあんなに遠くの景色まで響き渡れ",
+        "reading": "なみだでにじんでたあんなにとおくのけしきまでひびきわたれ",
+        "meaning": "눈물로 얼룩졌던 저만치 머나먼 풍경까지 울려퍼져라",
+        "highlightWords": [
+          { "word": "滲む", "reading": "にじむ", "meaning": "번지다, 얼룩지다", "type": "word" },
+          { "word": "景色", "reading": "けしき", "meaning": "풍경, 경치", "type": "word" },
+          { "word": "響き渡る", "reading": "ひびきわたる", "meaning": "울려 퍼지다", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_10",
+        "timestamp": 57.6,
+        "japanese": "何を奏でて？誰に届けたくて？",
+        "reading": "なにをかなでて？だれにとどけたくて？",
+        "meaning": "무엇을 연주하려고? 누구한테 전하고 싶어서?",
+        "highlightWords": [
+          { "word": "奏でる", "reading": "かなでる", "meaning": "연주하다", "type": "word" },
+          { "word": "届ける", "reading": "とどける", "meaning": "전하다, 보내다", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_11",
+        "timestamp": 62.0,
+        "japanese": "不確かなままでいい",
+        "reading": "ふたしかなままでいい",
+        "meaning": "확실하지 않아도 좋아",
+        "highlightWords": [
+          { "word": "不確かだ", "reading": "ふたしかだ", "meaning": "불확실하다", "type": "word" },
+          { "word": "〜ままで", "reading": "〜ままで", "meaning": "~인 채로", "type": "phrase" }
+        ]
+      },
+      {
+        "id": "c06_12",
+        "timestamp": 65.0,
+        "japanese": "どんなに暗い感情もどんなに長い葛藤も",
+        "reading": "どんなにくらいかんじょうもどんなにながいかっとうも",
+        "meaning": "아무리 어두운 감정도 아무리 기나긴 갈등도",
+        "highlightWords": [
+          { "word": "感情", "reading": "かんじょう", "meaning": "감정", "type": "word" },
+          { "word": "葛藤", "reading": "かっとう", "meaning": "갈등", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_13",
+        "timestamp": 69.9,
+        "japanese": "歌と散れ残響",
+        "reading": "うたとちれざんきょう",
+        "meaning": "노래와 흩어져라 잔향",
+        "highlightWords": [
+          { "word": "散る", "reading": "ちる", "meaning": "지다, 흩어지다", "type": "word" },
+          { "word": "残響", "reading": "ざんきょう", "meaning": "잔향", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_14",
+        "timestamp": 83.4,
+        "japanese": "ただ一人舞う千夜",
+        "reading": "ただひとりまうせんや",
+        "meaning": "그저 홀로 춤추는 천날밤",
+        "highlightWords": [
+          { "word": "舞う", "reading": "まう", "meaning": "춤추다, 흩날리다", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_15",
+        "timestamp": 86.3,
+        "japanese": "違えない帯を結べば",
+        "reading": "たがえないおびをむすべば",
+        "meaning": "올바로 띠를 묶는다면",
+        "highlightWords": [
+          { "word": "帯", "reading": "おび", "meaning": "띠", "type": "word" },
+          { "word": "結ぶ", "reading": "むすぶ", "meaning": "묶다, 맺다", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_16",
+        "timestamp": 88.9,
+        "japanese": "派手な色も負かす様に深紅の香こそあはれ",
+        "reading": "はでないろもまかすようにしんくのかこそあわれ",
+        "meaning": "화려한 색도 이길 만큼 진홍의 향은 감탄스러워",
+        "highlightWords": [
+          { "word": "負かす", "reading": "まかす", "meaning": "이기다, 패배시키다", "type": "word" },
+          { "word": "深紅", "reading": "しんく", "meaning": "진홍", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_17",
+        "timestamp": 93.7,
+        "japanese": "この先どんなつらい時も",
+        "reading": "このさきどんなつらいときも",
+        "meaning": "앞으로 얼마나 괴로울 때라도",
+        "highlightWords": [
+          { "word": "つらい", "reading": "つらい", "meaning": "괴롭다, 힘들다", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_18",
+        "timestamp": 96.6,
+        "japanese": "口先よりも胸を張って",
+        "reading": "くちさきよりもむねをはって",
+        "meaning": "투덜거리기보단 가슴을 펴고",
+        "highlightWords": [
+          { "word": "口先", "reading": "くちさき", "meaning": "입에 발린 소리, 말뿐임", "type": "word" },
+          { "word": "胸を張る", "reading": "むねをはる", "meaning": "가슴을 펴다, 당당히 굴다", "type": "phrase" }
+        ]
+      },
+      {
+        "id": "c06_19",
+        "timestamp": 99.4,
+        "japanese": "抱いた夢の灯りを全部辿るだけ",
+        "reading": "いだいたゆめのあかりをぜんぶたどるだけ",
+        "meaning": "품어왔던 꿈의 등불을 전부 더듬어갈 뿐",
+        "highlightWords": [
+          { "word": "抱く", "reading": "いだく", "meaning": "품다", "type": "word" },
+          { "word": "辿る", "reading": "たどる", "meaning": "더듬다, 길을 따라가다", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_20",
+        "timestamp": 104.8,
+        "japanese": "逃げ出すためここまで来たんじゃないだろ？",
+        "reading": "にげだすためここまできたんじゃないだろ？",
+        "meaning": "도망치기 위해 여기까지 온 것은 아니잖아?",
+        "highlightWords": [
+          { "word": "逃げ出す", "reading": "にげだす", "meaning": "도망치다", "type": "word" },
+          { "word": "〜んじゃないだろ", "reading": "〜んじゃないだろ", "meaning": "~한 것은 아니잖아", "type": "phrase" }
+        ]
+      },
+      {
+        "id": "c06_21",
+        "timestamp": 129.3,
+        "japanese": "選ばれなければ選べばいい",
+        "reading": "えらばれなければえらべばいい",
+        "meaning": "선택받지 못한다면 선택하면 돼",
+        "highlightWords": []
+      },
+      {
+        "id": "c06_22",
+        "timestamp": 132.6,
+        "japanese": "声をからして燃える花のように",
+        "reading": "こえをからしてもえるはなのように",
+        "meaning": "목이 쉬도록 불타는 꽃처럼",
+        "highlightWords": [
+          { "word": "声を枯らす", "reading": "こえをからす", "meaning": "목이 쉬게 하다", "type": "phrase" },
+          { "word": "燃える", "reading": "もえる", "meaning": "불타다", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_23",
+        "timestamp": 135.5,
+        "japanese": "闇間を照らしたら",
+        "reading": "やみまをてらしたら",
+        "meaning": "어둠 속을 비춘다면",
+        "highlightWords": [
+          { "word": "照らす", "reading": "てらす", "meaning": "비추다", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_24",
+        "timestamp": 137.9,
+        "japanese": "曖昧過ぎる正解も譜面にして",
+        "reading": "あいまいすぎるせいかいもふめんにして",
+        "meaning": "애매하기만 한 정답도 악보로 삼아서",
+        "highlightWords": [
+          { "word": "曖昧", "reading": "あいまい", "meaning": "애매함", "type": "word" },
+          { "word": "〜すぎる", "reading": "〜すぎる", "meaning": "너무 ~하다", "type": "phrase" },
+          { "word": "正解", "reading": "せいかい", "meaning": "정답", "type": "word" },
+          { "word": "譜面", "reading": "ふめん", "meaning": "악보", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_25",
+        "timestamp": 141.5,
+        "japanese": "夜を数えて朝を描く様な",
+        "reading": "よるをかぞえてあさをえがくような",
+        "meaning": "밤을 헤아리고 아침을 그리는 듯한",
+        "highlightWords": [
+          { "word": "数える", "reading": "かぞえる", "meaning": "세다, 헤아리다", "type": "word" },
+          { "word": "描く", "reading": "えがく", "meaning": "그리다", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_26",
+        "timestamp": 144.3,
+        "japanese": "鮮やかな音を鳴らす",
+        "reading": "あざやかなねをならす",
+        "meaning": "선명한 소리를 내",
+        "highlightWords": [
+          { "word": "鮮やかだ", "reading": "あざやかだ", "meaning": "선명하다, 뚜렷하다", "type": "word" },
+          { "word": "鳴らす", "reading": "ならす", "meaning": "소리를 내다, 울리다", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_27",
+        "timestamp": 146.3,
+        "japanese": "どんなに深い後悔もどんなに高い限界も",
+        "reading": "どんなにふかいこうかいもどんなにたかいげんかいも",
+        "meaning": "아무리 깊은 후회라도 아무리 높은 한계라도",
+        "highlightWords": [
+          { "word": "後悔", "reading": "こうかい", "meaning": "후회", "type": "word" },
+          { "word": "限界", "reading": "げんかい", "meaning": "한계", "type": "word" }
+        ]
+      },
+      {
+        "id": "c06_28",
+        "timestamp": 151.1,
+        "japanese": "掻き消して残響",
+        "reading": "かきけしてざんきょう",
+        "meaning": "지워버려라 잔향",
+        "highlightWords": [
+          { "word": "掻き消す", "reading": "かきけす", "meaning": "지워 없애다, 싹 지우다", "type": "word" }
+        ]
+      }
+    ]
   }
 ]

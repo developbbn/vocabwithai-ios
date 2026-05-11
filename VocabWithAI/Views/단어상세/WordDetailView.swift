@@ -24,85 +24,52 @@ struct WordDetailView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 28) {
-
-                // 단어 카드 (상단 Hero)
-                WordHeroCard(word: currentWord)
-                    .padding(.top, 70)
-
-                // AI 콘텐츠
-                aiContentArea
-
-                // 메모
-                if !currentWord.memo.isEmpty {
-                    userMemoSection
-                }
-
-                Spacer(minLength: 40)
-            }
-            .padding(.horizontal, 20)
-        }
-        .background(Color.themeBackground.ignoresSafeArea())
-        .overlay(alignment: .topLeading) {
+        VStack {
             customNavBar
                 .padding(.horizontal, 16)
                 .padding(.top, 12)
+            
+            ScrollView {
+                VStack(alignment: .leading, spacing: 28) {
+
+                    // 단어 카드 (상단 Hero)
+                    WordHeroCard(word: currentWord)
+                        .padding(.top, 70)
+
+                    // AI 콘텐츠
+                    aiContentArea
+
+                    // 메모
+                    if !currentWord.memo.isEmpty {
+                        userMemoSection
+                    }
+
+                    Spacer(minLength: 40)
+                }
+                .padding(.horizontal, 20)
+            }
+            .navigationBarHidden(true)
         }
-        .navigationBarHidden(true)
+        .background(Color.themeBackground.ignoresSafeArea())
+
     }
+    
 
     // MARK: - Nav Bar
 
     private var customNavBar: some View {
-        HStack {
-            // 뒤로가기
-            Button(action: { presentationMode.wrappedValue.dismiss() }) {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.themeTextPrimary)
-                    .frame(width: 36, height: 36)
-                    .background(
-                        Circle()
-                            .fill(Color.themeCardBackground)
-                            .shadow(color: .black.opacity(0.04), radius: 6, x: 0, y: 2)
-                    )
-                    .contentShape(Rectangle())
-            }
-
-            Spacer()
-
+        
+        ZStack {
             // 타이틀
             Text("단어 상세")
-                .font(.system(size: 16, weight: .semibold))
+                .font(.system(size: 20, weight: .bold))
                 .foregroundColor(.themeTextPrimary)
-
-            Spacer()
-
-            HStack(spacing: 8) {
-                // 새로고침
-                Button(action: {
-                    WordRepository.shared.regenerateAIContent(for: currentWord)
-                }) {
-                    Image(systemName: "arrow.clockwise")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(isLoading ? .themeTextTertiary : .themeTextPrimary)
-                        .frame(width: 36, height: 36)
-                        .background(
-                            Circle()
-                                .fill(Color.themeCardBackground)
-                                .shadow(color: .black.opacity(0.04), radius: 6, x: 0, y: 2)
-                        )
-                        .contentShape(Rectangle())
-                }
-                .disabled(isLoading)
-
-                // 편집
-                NavigationLink(destination: EditWordView(word: currentWord, onDelete: {
-                    presentationMode.wrappedValue.dismiss()
-                })) {
-                    Image(systemName: "pencil")
-                        .font(.system(size: 14, weight: .semibold))
+            
+            HStack {
+                // 뒤로가기
+                Button(action: { presentationMode.wrappedValue.dismiss() }) {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(.themeTextPrimary)
                         .frame(width: 36, height: 36)
                         .background(
@@ -112,8 +79,44 @@ struct WordDetailView: View {
                         )
                         .contentShape(Rectangle())
                 }
+
+                Spacer()
+
+                    // 새로고침
+                    Button(action: {
+                        WordRepository.shared.regenerateAIContent(for: currentWord)
+                    }) {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(isLoading ? .themeTextTertiary : .themeTextPrimary)
+                            .frame(width: 36, height: 36)
+                            .background(
+                                Circle()
+                                    .fill(Color.themeCardBackground)
+                                    .shadow(color: .black.opacity(0.04), radius: 6, x: 0, y: 2)
+                            )
+                            .contentShape(Rectangle())
+                    }
+                    .disabled(isLoading)
+
+                    // 편집
+                    NavigationLink(destination: EditWordView(word: currentWord, onDelete: {
+                        presentationMode.wrappedValue.dismiss()
+                    })) {
+                        Image(systemName: "pencil")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(.themeTextPrimary)
+                            .frame(width: 36, height: 36)
+                            .background(
+                                Circle()
+                                    .fill(Color.themeCardBackground)
+                                    .shadow(color: .black.opacity(0.04), radius: 6, x: 0, y: 2)
+                            )
+                            .contentShape(Rectangle())
+                    }
             }
         }
+
     }
 
     // MARK: - AI Content Area
