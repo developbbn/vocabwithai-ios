@@ -237,6 +237,7 @@ class WordRepository: ObservableObject {
                    let encoded = try? Firestore.Encoder().encode(aiContent) {
                     updateData["aiContent"] = encoded
                 }
+                }
 
                 if let quizData = result.quizData,
                    let encoded = try? Firestore.Encoder().encode(quizData) {

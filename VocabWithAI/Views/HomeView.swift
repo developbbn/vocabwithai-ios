@@ -25,7 +25,7 @@ struct HomeView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         // Header
-                        HeaderView(userName: viewModel.userName)
+                        HeaderView()
                             .padding(.horizontal, 20)
                             .padding(.top, 20)
 
@@ -92,19 +92,69 @@ struct HomeView: View {
     }
 }
 
+// MARK: - Header Confirmation
+
+/// HomeView 헤더에서 띄울 수 있는 확인 종류.
+/// enum 기반 단일 sheet 로 처리해서 multiple .sheet/.confirmationDialog 충돌 버그 회피.
+private enum HeaderConfirmation: Identifiable {
+    case logout
+    case deleteAllWords  // 테스트용 (DEBUG 빌드에서만 트리거됨)
+
+    var id: Self { self }
+
+    var title: String {
+        switch self {
+        case .logout:         return "정말 로그아웃 하시겠어요?"
+        case .deleteAllWords: return "모든 단어를 삭제할까요?"
+        }
+    }
+
+    var message: String {
+        switch self {
+        case .logout:         return "다시 로그인이 필요해요."
+        case .deleteAllWords: return "저장된 모든 단어가 삭제됩니다. (테스트용)"
+        }
+    }
+
+    var confirmLabel: String {
+        switch self {
+        case .logout:         return "로그아웃"
+        case .deleteAllWords: return "전체 삭제"
+        }
+    }
+
+    var confirmColor: Color {
+        switch self {
+        case .logout:         return .black
+        case .deleteAllWords: return .red
+        }
+    }
+
+    var sheetHeight: CGFloat { 240 }
+}
+
 // MARK: - Header View
 struct HeaderView: View {
-    let userName: String
 
     @EnvironmentObject var authManager: AuthManager
-    @State private var showDeleteConfirm = false
-    @State private var showLogoutConfirm = false
+
+    @State private var activeConfirmation: HeaderConfirmation?
     @State private var logoutErrorMessage: String?
+
+    private var displayName: String {
+        if let name = authManager.currentUser?.displayName, !name.isEmpty {
+            return name
+        }
+        if let email = authManager.currentUser?.email {
+            return String(email.prefix(while: { $0 != "@" }))
+        }
+        return "사용자"
+    }
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            // 프로필 Circle — 탭하면 로그아웃 알림
-            Button(action: { showLogoutConfirm = true }) {
+            // 프로필 Circle — 탭하면 로그아웃 확인 시트
+            Button(action: { activeConfirmation = .logout }) {
                 Circle()
                     .fill(Color.gray.opacity(0.2))
                     .frame(width: 46, height: 46)
@@ -115,7 +165,7 @@ struct HeaderView: View {
             }
             .buttonStyle(.plain)
 
-            Text("\(userName)님,\n오늘도 즐겁게 시작해볼까요?\n✨")
+            Text("\(displayName)님,\n오늘도 즐겁게 시작해볼까요?\n✨")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundColor(.primary)
                 .multilineTextAlignment(.leading)
@@ -125,12 +175,14 @@ struct HeaderView: View {
             Spacer()
 
             HStack(spacing: 12) {
-                // Delete Button (테스트용)
-                Button(action: { showDeleteConfirm = true }) {
+                #if DEBUG
+                // 테스트용 — DEBUG 빌드에서만 보임 (App Store Release 빌드엔 자동 제거)
+                Button(action: { activeConfirmation = .deleteAllWords }) {
                     Image(systemName: "trash.fill")
                         .font(.system(size: 18))
                         .foregroundColor(.red.opacity(0.6))
                 }
+                #endif
 
                 Button(action: {}) {
                     Image(systemName: "bell.fill")
@@ -140,38 +192,49 @@ struct HeaderView: View {
             }
             .padding(.top, 8)
         }
-        .confirmationDialog(
-            "모든 단어를 삭제하시겠어요?",
-            isPresented: $showDeleteConfirm,
-            titleVisibility: .visible
-        ) {
-            Button("전체 삭제", role: .destructive) {
-                deleteAllWords()
-            }
-            Button("취소", role: .cancel) {}
-        } message: {
-            Text("저장된 모든 단어가 삭제됩니다. (테스트용)")
+        // 단일 sheet (logout / deleteAllWords 둘 다 처리) - 커스텀 바텀 시트
+        .sheet(item: $activeConfirmation) { confirmation in
+            ConfirmationBottomSheet(
+                title: confirmation.title,
+                message: confirmation.message,
+                confirmLabel: confirmation.confirmLabel,
+                confirmColor: confirmation.confirmColor,
+                onConfirm: {
+                    handleConfirmationAction(for: confirmation)
+                }
+            )
+            .presentationDetents([.height(confirmation.sheetHeight)])
+            .presentationDragIndicator(.visible)
+            .presentationCornerRadius(28)
         }
-        .confirmationDialog(
-            authManager.currentUser?.email ?? "계정",
-            isPresented: $showLogoutConfirm,
-            titleVisibility: .visible
+        // 에러 알림 — .constant 대신 정상 binding 사용
+        .alert(
+            "로그아웃 실패",
+            isPresented: Binding(
+                get: { logoutErrorMessage != nil },
+                set: { if !$0 { logoutErrorMessage = nil } }
+            )
         ) {
-            Button("로그아웃", role: .destructive) {
-                handleLogout()
-            }
-            Button("취소", role: .cancel) {}
+            Button("확인", role: .cancel) {}
         } message: {
-            Text("정말 로그아웃하시겠어요?")
+            Text(logoutErrorMessage ?? "")
         }
-        .alert("로그아웃 실패", isPresented: .constant(logoutErrorMessage != nil)) {
-            Button("확인", role: .cancel) {
-                logoutErrorMessage = nil
-            }
-        } message: {
-            if let message = logoutErrorMessage {
-                Text(message)
-            }
+    }
+
+    // MARK: - Actions
+
+    /// 바텀 시트의 "확인" 액션 처리.
+    /// 시트를 먼저 닫고 후속 액션 실행 (시트 닫히는 애니메이션과 충돌 방지).
+    private func handleConfirmationAction(for confirmation: HeaderConfirmation) {
+        activeConfirmation = nil
+
+        switch confirmation {
+        case .logout:
+            // RootView 가 전체 화면 교체해줘서 애니메이션 충돌 없음
+            handleLogout()
+        case .deleteAllWords:
+            // 화면 전환 없이 데이터만 삭제 → 시트 닫히는 거랑 충돌 없음
+            deleteAllWords()
         }
     }
 

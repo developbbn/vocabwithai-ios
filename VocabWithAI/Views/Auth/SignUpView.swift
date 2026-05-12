@@ -4,6 +4,7 @@
 //
 //  Created on 2026-04-22
 //  Refactored to MVVM on 2026-04-22
+//  Added nickname field on 2026-05-12
 //
 //  이메일/비밀번호로 회원가입하는 화면.
 //
@@ -21,6 +22,7 @@ struct SignUpView: View {
 
                 titleSection
 
+                nicknameSection
                 emailSection
                 passwordSection
                 passwordConfirmSection
@@ -70,6 +72,40 @@ struct SignUpView: View {
             .foregroundColor(.themeTextPrimary)
             .padding(.top, 50)
             .padding(.bottom, 12)
+    }
+
+    // MARK: - Nickname Section
+
+    private var nicknameSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("닉네임")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(.themeTextPrimary)
+
+            HStack(spacing: 10) {
+                Image(systemName: "person")
+                    .font(.system(size: 14))
+                    .foregroundColor(.themeTextTertiary)
+
+                TextField("사용할 닉네임을 입력해주세요", text: $viewModel.nickname)
+                    .font(.system(size: 15))
+                    .autocorrectionDisabled(true)
+                    .textInputAutocapitalization(.never)
+            }
+            .padding(14)
+            .background(Color.themeCardBackground)
+            .cornerRadius(ThemeRadius.medium)
+            .overlay(
+                RoundedRectangle(cornerRadius: ThemeRadius.medium)
+                    .stroke(Color.themeBorder, lineWidth: 1)
+            )
+
+            // 검증 칩 (비밀번호 룰 체크리스트와 동일한 패턴 재활용)
+            HStack(spacing: 12) {
+                ruleChip(text: "2~20자", isValid: viewModel.isNicknameValid)
+            }
+            .padding(.top, 4)
+        }
     }
 
     // MARK: - Email Section

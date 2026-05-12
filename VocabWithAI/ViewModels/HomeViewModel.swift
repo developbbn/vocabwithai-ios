@@ -10,7 +10,6 @@ import Combine
 
 class HomeViewModel: ObservableObject {
     // MARK: - Published Properties
-    @Published var userName: String = "젠인나오야"
     @Published var todayProgress: Double = 0.70
     @Published var studiedWordsCount: Int = 12
     @Published var remainingWordsCount: Int = 42
