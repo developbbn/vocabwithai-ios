@@ -51,6 +51,7 @@
 		DC406F872F9D29EE00F40A90 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F862F9D29ED00F40A90 /* SignUpViewModel.swift */; };
 		DC406F892F9E4D1A00F40A90 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F882F9E4D1A00F40A90 /* RootView.swift */; };
 		DC406F8B2FACC62500F40A90 /* PhraseInsightParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F8A2FACC62500F40A90 /* PhraseInsightParser.swift */; };
+		DC406F8D2FB379D200F40A90 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC406F8C2FB379D200F40A90 /* ProfileEditView.swift */; };
 		DC7A16E32F3210D200689CAC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E22F3210D200689CAC /* ContentView.swift */; };
 		DC7A16E62F32112400689CAC /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E52F32112400689CAC /* HomeViewModel.swift */; };
 		DC7A16E92F322D7100689CAC /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7A16E82F322D7100689CAC /* Word.swift */; };
@@ -112,6 +113,7 @@
 		DC406F862F9D29ED00F40A90 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		DC406F882F9E4D1A00F40A90 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		DC406F8A2FACC62500F40A90 /* PhraseInsightParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhraseInsightParser.swift; sourceTree = "<group>"; };
+		DC406F8C2FB379D200F40A90 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		DC7A16E22F3210D200689CAC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DC7A16E52F32112400689CAC /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		DC7A16E82F322D7100689CAC /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 				DC406F352F8138A400F40A90 /* EditWordView.swift */,
 				DC406F3D2F86965B00F40A90 /* SettingsView.swift */,
 				DC406F882F9E4D1A00F40A90 /* RootView.swift */,
+				DC406F8C2FB379D200F40A90 /* ProfileEditView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -449,6 +452,7 @@
 				DC406F602F9662E500F40A90 /* AIContent.swift in Sources */,
 				DC7A16FB2F37579C00689CAC /* GeminiService.swift in Sources */,
 				DC14397B2F6047CE00EFF80C /* DailyStatsManager.swift in Sources */,
+				DC406F8D2FB379D200F40A90 /* ProfileEditView.swift in Sources */,
 				DC406F832F9D27B600F40A90 /* SignUpView.swift in Sources */,
 				DC406F512F8D301200F40A90 /* SongPlayerView.swift in Sources */,
 				DC406F422F869F5200F40A90 /* MarkdownContentView.swift in Sources */,

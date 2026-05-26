@@ -10,8 +10,6 @@ import FirebaseAuth
 
 // MARK: - Active Confirmation
 
-/// 같은 view 에 여러 sheet/dialog 를 stack 하면 SwiftUI 가
-/// action 을 놓치는 알려진 버그가 있어서 enum 기반 단일 sheet 로 처리.
 private enum ActiveConfirmation: Identifiable {
     case logout
     case deleteAccount
@@ -39,7 +37,6 @@ private enum ActiveConfirmation: Identifiable {
         }
     }
 
-    /// 확인 버튼 색상
     var confirmColor: Color {
         switch self {
         case .logout:        return .black
@@ -47,11 +44,10 @@ private enum ActiveConfirmation: Identifiable {
         }
     }
 
-    /// 시트 높이 (제목/메시지 길이에 맞춰 조정)
     var sheetHeight: CGFloat {
         switch self {
-        case .logout:        return 200
-        case .deleteAccount: return 200
+        case .logout:        return 240
+        case .deleteAccount: return 280
         }
     }
 }
@@ -64,79 +60,85 @@ struct SettingsView: View {
 
     @State private var activeConfirmation: ActiveConfirmation?
     @State private var showPasswordSheet = false
+    @State private var showProfileEdit = false
     @State private var notificationEnabled = false   // 항상 false (준비 중)
     @State private var infoMessage: String?
     @State private var errorMessage: String?
 
     var body: some View {
-        ZStack {
-            Color(.systemGroupedBackground)
-                .ignoresSafeArea()
+        NavigationStack {
+            ZStack {
+                Color(.systemGroupedBackground)
+                    .ignoresSafeArea()
 
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
 
-                    // Large Title
-                    Text("설정")
-                        .font(.system(size: 34, weight: .bold))
-                        .padding(.horizontal, 20)
-                        .padding(.top, 8)
+                        Text("설정")
+                            .font(.system(size: 34, weight: .bold))
+                            .padding(.horizontal, 20)
+                            .padding(.top, 8)
 
-                    // Profile Card
-                    profileCard
-                        .padding(.horizontal, 20)
+                        profileCard
+                            .padding(.horizontal, 20)
 
-                    Section_Notification
-                    Section_Account
-                    Section_AppInfo
-                    Section_Danger
+                        Section_Notification
+                        Section_Account
+                        Section_AppInfo
+                        Section_Danger
 
-                    Spacer(minLength: 60)
+                        Spacer(minLength: 60)
+                    }
                 }
             }
-        }
-        // 단일 sheet (logout / delete 둘 다 처리) - 커스텀 바텀 시트
-        .sheet(item: $activeConfirmation) { confirmation in
-            ConfirmationBottomSheet(
-                title: confirmation.title,
-                message: confirmation.message,
-                confirmLabel: confirmation.confirmLabel,
-                confirmColor: confirmation.confirmColor,
-                onConfirm: {
-                    handleConfirmationAction(for: confirmation)
-                }
-            )
-            .presentationDetents([.height(confirmation.sheetHeight)])
-            .presentationDragIndicator(.visible)
-            .presentationCornerRadius(28)
-        }
-        // 안내 알림 (준비 중인 기능 등)
-        .alert(
-            "알림",
-            isPresented: Binding(
-                get: { infoMessage != nil },
-                set: { if !$0 { infoMessage = nil } }
-            )
-        ) {
-            Button("확인", role: .cancel) {}
-        } message: {
-            Text(infoMessage ?? "")
-        }
-        // 에러 알림
-        .alert(
-            "오류",
-            isPresented: Binding(
-                get: { errorMessage != nil },
-                set: { if !$0 { errorMessage = nil } }
-            )
-        ) {
-            Button("확인", role: .cancel) {}
-        } message: {
-            Text(errorMessage ?? "")
-        }
-        // 계정 삭제 비밀번호 입력 시트
-        .sheet(isPresented: $showPasswordSheet) {
-            AccountDeletionSheet(isPresented: $showPasswordSheet)
+            .navigationBarHidden(true)
+            // 프로필 수정 화면으로 push
+            .navigationDestination(isPresented: $showProfileEdit) {
+                ProfileEditView()
+            }
+            // 단일 sheet (logout / delete) - 커스텀 바텀 시트
+            .sheet(item: $activeConfirmation) { confirmation in
+                ConfirmationBottomSheet(
+                    title: confirmation.title,
+                    message: confirmation.message,
+                    confirmLabel: confirmation.confirmLabel,
+                    confirmColor: confirmation.confirmColor,
+                    onConfirm: {
+                        handleConfirmationAction(for: confirmation)
+                    }
+                )
+                .presentationDetents([.height(confirmation.sheetHeight)])
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(28)
+            }
+            // 안내 알림
+            .alert(
+                "알림",
+                isPresented: Binding(
+                    get: { infoMessage != nil },
+                    set: { if !$0 { infoMessage = nil } }
+                )
+            ) {
+                Button("확인", role: .cancel) {}
+            } message: {
+                Text(infoMessage ?? "")
+            }
+            // 에러 알림
+            .alert(
+                "오류",
+                isPresented: Binding(
+                    get: { errorMessage != nil },
+                    set: { if !$0 { errorMessage = nil } }
+                )
+            ) {
+                Button("확인", role: .cancel) {}
+            } message: {
+                Text(errorMessage ?? "")
+            }
+            // 계정 삭제 비밀번호 입력 시트
+            .sheet(isPresented: $showPasswordSheet) {
+                AccountDeletionSheet(isPresented: $showPasswordSheet)
+            }
         }
     }
 
@@ -144,7 +146,6 @@ struct SettingsView: View {
 
     private var profileCard: some View {
         HStack(spacing: 14) {
-            // 아바타
             Circle()
                 .fill(Color.blue)
                 .frame(width: 56, height: 56)
@@ -154,7 +155,6 @@ struct SettingsView: View {
                         .foregroundColor(.white)
                 )
 
-            // 이름 / 이메일
             VStack(alignment: .leading, spacing: 4) {
                 Text(displayName)
                     .font(.system(size: 17, weight: .bold))
@@ -169,10 +169,8 @@ struct SettingsView: View {
 
             Spacer()
 
-            // 수정 버튼
-            Button(action: {
-                infoMessage = "프로필 편집은 곧 추가될 기능입니다."
-            }) {
+            // 수정 버튼 → ProfileEditView 로 push
+            Button(action: { showProfileEdit = true }) {
                 Text("수정")
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundColor(.blue)
@@ -299,18 +297,13 @@ struct SettingsView: View {
 
     // MARK: - Actions
 
-    /// 바텀 시트의 "확인" 액션 처리.
-    /// 시트를 먼저 닫고, 후속 액션을 실행. (시트 → 시트 전환 시 애니메이션 충돌 방지)
     private func handleConfirmationAction(for confirmation: ActiveConfirmation) {
         activeConfirmation = nil
 
         switch confirmation {
         case .logout:
-            // RootView 가 전체 화면 교체해줘서 애니메이션 충돌 없음
             handleLogout()
-
         case .deleteAccount:
-            // 시트 → 시트 전환은 애니메이션 종료 후 진행해야 안전
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                 showPasswordSheet = true
             }
@@ -328,8 +321,6 @@ struct SettingsView: View {
 
 // MARK: - Confirmation Bottom Sheet
 
-/// 재사용 가능한 바텀 시트 형 확인 모달.
-/// 제목 + 부제 + 취소/확인 버튼. 확인 버튼 색은 케이스별로 다르게.
 struct ConfirmationBottomSheet: View {
 
     let title: String
@@ -343,7 +334,6 @@ struct ConfirmationBottomSheet: View {
     var body: some View {
         VStack(spacing: 0) {
 
-            // 제목 + 메시지
             VStack(spacing: 8) {
                 Text(title)
                     .font(.system(size: 18, weight: .bold))
@@ -361,9 +351,7 @@ struct ConfirmationBottomSheet: View {
             .padding(.bottom, 28)
             .frame(maxWidth: .infinity)
 
-            // 버튼 그룹
             HStack(spacing: 12) {
-                // 취소
                 Button(action: { dismiss() }) {
                     Text("취소")
                         .font(.system(size: 16, weight: .semibold))
@@ -375,7 +363,6 @@ struct ConfirmationBottomSheet: View {
                 }
                 .buttonStyle(.plain)
 
-                // 확인
                 Button(action: onConfirm) {
                     Text(confirmLabel)
                         .font(.system(size: 16, weight: .semibold))
@@ -388,15 +375,15 @@ struct ConfirmationBottomSheet: View {
                 .buttonStyle(.plain)
             }
             .padding(.horizontal, 20)
-//            .padding(.bottom, 15)
+            .padding(.bottom, 28)
 
+            Spacer(minLength: 0)
         }
     }
 }
 
 // MARK: - Reusable Components
 
-/// 섹션 라벨 + 컨텐츠 묶음
 private struct SettingsSection<Content: View>: View {
     let title: String
     var titleColor: Color = .secondary
@@ -415,7 +402,6 @@ private struct SettingsSection<Content: View>: View {
     }
 }
 
-/// 흰색 카드 컨테이너 (그림자 포함)
 private struct SettingsCard<Content: View>: View {
     @ViewBuilder var content: () -> Content
 
@@ -428,7 +414,6 @@ private struct SettingsCard<Content: View>: View {
     }
 }
 
-/// 둥근 사각형 안에 SF Symbol 아이콘
 private struct IconBox: View {
     let icon: String
     let foreground: Color
@@ -446,7 +431,6 @@ private struct IconBox: View {
     }
 }
 
-/// 네비게이션 가능한 행 (아이콘 + 텍스트 + 우측 화살표)
 private struct SettingsNavRowContent: View {
     let icon: String
     let iconColor: Color
@@ -472,7 +456,6 @@ private struct SettingsNavRowContent: View {
     }
 }
 
-/// "준비 중" 뱃지
 private struct PreparingBadge: View {
     var body: some View {
         Text("준비 중")
@@ -487,8 +470,6 @@ private struct PreparingBadge: View {
 
 // MARK: - Account Deletion Sheet
 
-/// 비밀번호 재입력 → 계정 삭제 진행 → 결과 표시까지 처리하는 모달.
-/// 성공 시 RootView 가 isLoggedIn=false 감지해서 LoginView 로 자동 전환.
 struct AccountDeletionSheet: View {
 
     @Binding var isPresented: Bool

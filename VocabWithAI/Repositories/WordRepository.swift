@@ -4,6 +4,7 @@
 //
 //  Created on 2026-03-07
 //  Refactored on 2026-04-27 — Firestore 전환
+//  Updated on 2026-05-12 — 세션 격리 강화 (cancellables 정리)
 //
 
 import Foundation
@@ -69,12 +70,20 @@ class WordRepository: ObservableObject {
             }
     }
 
-    /// 로그아웃 시 호출. 리스너 정리 + 로컬 상태 초기화.
+    /// 로그아웃 시 호출. 리스너 정리 + 로컬 상태 초기화 + 진행 중인 비동기 콜백 차단.
+    ///
+    /// 마지막 `cancellables.removeAll()` 이 중요한 이유:
+    /// - test00 이 단어 등록 → AI 생성 중 (네트워크 대기) → 즉시 로그아웃 → test01 로그인
+    /// - 이때 cancellable 이 살아있으면 늦게 도착한 Gemini 응답이 `updateAIContent` 호출
+    /// - `wordsCollection` 은 동적으로 currentUser 참조하므로 → test01 컬렉션에 쓰일 수 있음
+    /// - 따라서 세션 종료 시 진행 중인 모든 작업을 명시적으로 취소해야 안전.
     func stopListening() {
         listener?.remove()
         listener = nil
         words = []
         loadingWordIds = []
+        cancellables.removeAll()
+        print("🔌 WordRepository 세션 종료: 리스너/캐시/콜백 모두 정리")
     }
 
     // MARK: - Public: 단어 등록
@@ -236,7 +245,6 @@ class WordRepository: ObservableObject {
                 if let aiContent = aiContent,
                    let encoded = try? Firestore.Encoder().encode(aiContent) {
                     updateData["aiContent"] = encoded
-                }
                 }
 
                 if let quizData = result.quizData,
