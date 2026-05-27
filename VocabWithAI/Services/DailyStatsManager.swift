@@ -28,13 +28,18 @@ class DailyStatsManager: ObservableObject {
 
     // MARK: - Public Actions
     func incrementWordCount() {
-        wordCount += 1
-        UserDefaults.standard.set(wordCount, forKey: wordCountKey)
+        // 메인 스레드로 직렬화 → 동시 등록 시 카운트 유실(레이스) 방지
+        DispatchQueue.main.async {
+            self.wordCount += 1
+            UserDefaults.standard.set(self.wordCount, forKey: self.wordCountKey)
+        }
     }
 
     func incrementQuizCount() {
-        quizCount += 1
-        UserDefaults.standard.set(quizCount, forKey: quizCountKey)
+        DispatchQueue.main.async {
+            self.quizCount += 1
+            UserDefaults.standard.set(self.quizCount, forKey: self.quizCountKey)
+        }
     }
 
     func resetData() {
