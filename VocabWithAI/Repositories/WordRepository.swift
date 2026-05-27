@@ -220,6 +220,10 @@ class WordRepository: ObservableObject {
                 guard let self else { return }
                 if case .failure(let error) = completion {
                     print("🔴 AI 에러 (\(word.word)): \(error.localizedDescription)")
+                    if let gError = error as? GeminiError,
+                       case .rateLimitExceeded = gError {
+                        ToastManager.shared.show(gError.localizedDescription)
+                    }
                 }
                 self.loadingWordIds.remove(word.id)
             } receiveValue: { [weak self] result in

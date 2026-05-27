@@ -12,11 +12,27 @@
 import {onCall, HttpsError} from "firebase-functions/v2/https";
 import {defineSecret} from "firebase-functions/params";
 import {GoogleGenerativeAI} from "@google/generative-ai";
+import {initializeApp} from "firebase-admin/app";
+import {getFirestore} from "firebase-admin/firestore";
+
+initializeApp();
+const db = getFirestore();
 
 const GEMINI_API_KEY = defineSecret("GEMINI_API_KEY");
 
 const PRIMARY_MODEL = "gemini-2.5-flash";
 const FALLBACK_MODEL = "gemini-2.0-flash";
+
+// 계정별 일일 AI 호출 한도 & 면제 계정(내 계정 / 데모 계정)
+const DAILY_LIMIT = 30;
+const EXEMPT_EMAILS = ["test00@gmail.com", "appletest@gmail.com"];
+
+// 앱에 돌려줄 사용량 정보
+interface UsageInfo {
+  used: number; // 오늘 사용한 횟수
+  limit: number; // 일일 한도
+  unlimited: boolean; // 면제 계정 여부
+}
 
 // ============================================================
 // generateWordContent
@@ -34,6 +50,10 @@ export const generateWordContent = onCall(
       throw new HttpsError("unauthenticated", "로그인이 필요합니다.");
     }
 
+    const usage = await enforceRateLimit(
+      request.auth.uid, request.auth.token.email,
+    );
+
     const word = request.data?.word as string | undefined;
     const customPrompt = request.data?.customPrompt as string | undefined;
 
@@ -49,7 +69,7 @@ export const generateWordContent = onCall(
       const text = await generateWithFallback(genAI, prompt);
 
       console.log(`✅ generateWordContent 성공: ${word} (uid: ${request.auth.uid})`);
-      return {text};
+      return {text, usage};
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Unknown error";
       console.error(`🔴 Gemini 호출 실패: ${message}`);
@@ -74,6 +94,10 @@ export const generateDailyPhrase = onCall(
       throw new HttpsError("unauthenticated", "로그인이 필요합니다.");
     }
 
+    const usage = await enforceRateLimit(
+      request.auth.uid, request.auth.token.email,
+    );
+
     const customPrompt = request.data?.customPrompt as string | undefined;
     const seed = Math.floor(Math.random() * 900000) + 100000;
     const template = customPrompt || DEFAULT_PHRASE_PROMPT;
@@ -84,7 +108,7 @@ export const generateDailyPhrase = onCall(
       const text = await generateWithFallback(genAI, prompt);
 
       console.log(`✅ generateDailyPhrase 성공 (uid: ${request.auth.uid})`);
-      return {text};
+      return {text, usage};
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Unknown error";
       console.error(`🔴 Gemini 호출 실패: ${message}`);
@@ -96,6 +120,47 @@ export const generateDailyPhrase = onCall(
 // ============================================================
 // Helpers
 // ============================================================
+
+/**
+ * 계정별 일일 AI 호출 한도 체크 + 증가. 면제 계정은 통과.
+ * KST 자정 기준으로 카운트가 리셋된다.
+ * @param uid 사용자 uid
+ * @param email 사용자 이메일 (면제 판별용)
+ */
+async function enforceRateLimit(
+  uid: string,
+  email?: string,
+): Promise<UsageInfo> {
+  const unlimited = !!(email && EXEMPT_EMAILS.includes(email));
+
+  // KST(UTC+9) 기준 오늘 날짜로 키 생성 → 자정에 자동 리셋
+  const kst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  const today = kst.toISOString().slice(0, 10); // "YYYY-MM-DD"
+  const ref = db.collection("usage").doc(`${uid}_${today}`);
+
+  let newCount = 0;
+  await db.runTransaction(async (tx) => {
+    const snap = await tx.get(ref);
+    const count = snap.exists ? ((snap.data()?.count as number) ?? 0) : 0;
+
+    // 면제 계정이 아닌데 한도 초과면 차단 (면제 계정은 세기만 하고 통과)
+    if (!unlimited && count >= DAILY_LIMIT) {
+      console.log(`🚫 한도 초과: ${count}/${DAILY_LIMIT} (uid: ${uid})`);
+      throw new HttpsError(
+        "resource-exhausted",
+        `오늘 AI 사용 한도(${DAILY_LIMIT}회)를 모두 사용했어요. ` +
+          "내일 다시 이용해주세요.",
+      );
+    }
+
+    newCount = count + 1;
+    tx.set(ref, {count: newCount, date: today, uid}, {merge: true});
+  });
+
+  const mark = unlimited ? " ♾️(무제한)" : "";
+  console.log(`📊 AI 호출 ${newCount}/${DAILY_LIMIT}회 (uid: ${uid})${mark}`);
+  return {used: newCount, limit: DAILY_LIMIT, unlimited};
+}
 
 /**
  * Primary 모델로 호출. 503/429면 재시도. 그래도 실패하면 fallback 모델로 1회 시도.

@@ -205,6 +205,30 @@ class GeminiService {
 
     // MARK: - Generate Word Content
 
+    /// Functions 에러를 앱 에러로 매핑.
+    /// 한도 초과(resource-exhausted)면 rateLimitExceeded로 변환, 그 외엔 원본 유지.
+    private func mapFunctionsError(_ error: Error) -> Error {
+        let nsError = error as NSError
+        if nsError.domain == FunctionsErrorDomain,
+           nsError.code == FunctionsErrorCode.resourceExhausted.rawValue {
+            return GeminiError.rateLimitExceeded
+        }
+        return error
+    }
+
+    /// 서버가 돌려준 usage로 "오늘 N/30회 사용" 토스트를 1초간 표시.
+    /// 면제 계정(unlimited)은 표시하지 않음.
+    private func showUsageToast(from dict: [String: Any]) {
+        guard let usage = dict["usage"] as? [String: Any] else { return }
+        let used = usage["used"] as? Int ?? 0
+        let limit = usage["limit"] as? Int ?? 0
+        let unlimited = usage["unlimited"] as? Bool ?? false
+        let message = unlimited
+            ? "오늘 \(used)회 사용 (무제한 ♾️)"
+            : "오늘 \(used)/\(limit)회 사용"
+        ToastManager.shared.show(message, duration: 2.5)
+    }
+
     func generateWordContent(for word: String) -> AnyPublisher<WordAIContent, Error> {
         // 커스텀 프롬프트가 있으면 그것만 서버로 전달.
         // 없으면 nil → 서버의 기본 프롬프트 사용.
@@ -220,7 +244,7 @@ class GeminiService {
             self.functions.httpsCallable("generateWordContent").call(data) { result, error in
                 if let error = error {
                     print("🔴 Functions 호출 실패: \(error.localizedDescription)")
-                    promise(.failure(error))
+                    promise(.failure(self.mapFunctionsError(error)))
                     return
                 }
 
@@ -229,6 +253,8 @@ class GeminiService {
                     promise(.failure(GeminiError.invalidResponse))
                     return
                 }
+
+                self.showUsageToast(from: dict)
 
                 print("📦 Raw Response: \(text)")
                 let parsed = self.parseWordAIContent(from: text)
@@ -287,7 +313,7 @@ class GeminiService {
             self.functions.httpsCallable("generateDailyPhrase").call(data) { result, error in
                 if let error = error {
                     print("🔴 Functions 호출 실패: \(error.localizedDescription)")
-                    promise(.failure(error))
+                    promise(.failure(self.mapFunctionsError(error)))
                     return
                 }
 
@@ -296,6 +322,8 @@ class GeminiService {
                     promise(.failure(GeminiError.invalidResponse))
                     return
                 }
+
+                self.showUsageToast(from: dict)
 
                 print("📦 Daily Phrase Raw: \(text)")
                 guard let parsed = self.parseDailyPhrase(from: text) else {
@@ -396,11 +424,14 @@ struct DailyPhraseResponse: Codable {
 enum GeminiError: Error, LocalizedError {
     case invalidResponse
     case parsingError
+    case rateLimitExceeded
 
     var errorDescription: String? {
         switch self {
         case .invalidResponse: return "응답이 올바르지 않습니다"
         case .parsingError: return "데이터 파싱에 실패했습니다"
+        case .rateLimitExceeded:
+            return "오늘 AI 사용 한도를 모두 사용했어요. 내일 다시 이용해주세요."
         }
     }
 }

@@ -142,6 +142,13 @@ class DailyPhraseViewModel: ObservableObject {
 
     /// Gemini API를 호출해 새로운 오늘의 표현을 가져온다.
     func generateTodayPhrase() {
+        // 이미 생성 중이면 중복 호출 무시
+        // (새로고침/onAppear/홈 프리로드가 겹쳐도 한 번만 나가게)
+        guard !isLoading else {
+            print("⚠️ 이미 생성 중 — 중복 호출 무시")
+            return
+        }
+
         isLoading = true
         errorMessage = nil
 
@@ -154,7 +161,12 @@ class DailyPhraseViewModel: ObservableObject {
 
                 if case .failure(let error) = completion {
                     print("🔴 오늘의 표현 에러: \(error.localizedDescription)")
-                    self?.errorMessage = "표현을 불러오는데 실패했습니다."
+                    if let gError = error as? GeminiError,
+                       case .rateLimitExceeded = gError {
+                        self?.errorMessage = gError.localizedDescription
+                    } else {
+                        self?.errorMessage = "표현을 불러오는데 실패했습니다."
+                    }
                 }
             } receiveValue: { [weak self] response in
                 guard let self else { return }
