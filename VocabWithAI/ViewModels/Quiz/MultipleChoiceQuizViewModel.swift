@@ -3,6 +3,7 @@
 //  VocabWithAI
 //
 //  Created on 2026-03-07
+//  Updated on 2026-05-12 — "모르겠어요" 선지 추가 (오답 처리)
 //
 
 import Foundation
@@ -97,6 +98,8 @@ class MultipleChoiceQuizViewModel: ObservableObject {
     }
 
     // MARK: - Actions
+
+    /// 선지 선택 (정상 4지선다)
     func select(_ choice: String) {
         guard !isAnswered else { return }
         selectedChoice = choice
@@ -109,13 +112,25 @@ class MultipleChoiceQuizViewModel: ObservableObject {
             if let q = currentQuestion { wrongQuestions.append(q) }
         }
 
-        // 선지 선택 시 단어 정보 토스트 표시
-        if let w = currentQuestion?.word {
-            var lines = [w.word]
-            if !w.pronunciation.isEmpty { lines.append(w.pronunciation) }
-            lines.append(w.meaning)
-            ToastManager.shared.show(lines: lines, duration: 2.0)
+        showCurrentWordToast()
+    }
+
+    /// "모르겠어요" 선택 — 오답 처리 + 정답 공개.
+    /// `selectedChoice = nil` 로 두면 ChoiceRow 가 정답만 강조 표시함.
+    func markUnknown() {
+        guard !isAnswered else { return }
+
+        selectedChoice = nil
+        isAnswered = true
+        answeredCount += 1
+        // correctCount 증가 X (오답이므로)
+
+        if let q = currentQuestion {
+            wrongQuestions.append(q)
         }
+
+        // 학습 효과를 위해 정답·뜻 토스트 표시
+        showCurrentWordToast()
     }
 
     func next() {
@@ -144,6 +159,18 @@ class MultipleChoiceQuizViewModel: ObservableObject {
         answeredCount = 0
         wrongQuestions = []
         buildQuestions()
+    }
+
+    // MARK: - Private Helpers
+
+    /// 현재 문제의 단어 정보를 토스트로 표시.
+    /// `select` / `markUnknown` 양쪽에서 공유.
+    private func showCurrentWordToast() {
+        guard let w = currentQuestion?.word else { return }
+        var lines = [w.word]
+        if !w.pronunciation.isEmpty { lines.append(w.pronunciation) }
+        lines.append(w.meaning)
+        ToastManager.shared.show(lines: lines, duration: 2.0)
     }
 
     // MARK: - Private: 문제 생성

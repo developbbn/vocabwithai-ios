@@ -3,6 +3,9 @@
 //  VocabWithAI
 //
 //  Created on 2026-03-07
+//  Updated on 2026-05-12 — "모르겠어요" 버튼 추가
+//  Updated on 2026-05-12 — "모르겠어요" 버튼 색상 회색→옅은 노란색
+//  Updated on 2026-05-12 — 문제 카드에 i 아이콘 추가 (WordDetailView 풀팝업)
 //
 
 import SwiftUI
@@ -11,6 +14,7 @@ struct MultipleChoiceQuizView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: MultipleChoiceQuizViewModel
     @State private var showExitConfirm = false
+    @State private var showWordDetail = false   // i 아이콘 → 풀팝업 제어
 
     init(mode: MultipleChoiceMode) {
         _viewModel = StateObject(wrappedValue: MultipleChoiceQuizViewModel(mode: mode))
@@ -72,6 +76,41 @@ struct MultipleChoiceQuizView: View {
                 .ignoresSafeArea(edges: .bottom)
                 .transition(.move(edge: .bottom))
                 .animation(.spring(response: 0.35, dampingFraction: 0.8), value: showExitConfirm)
+            }
+        }
+        // 단어 상세 풀팝업 (X 누르면 닫힘, 퀴즈는 그대로 진행)
+        .fullScreenCover(isPresented: $showWordDetail) {
+            wordDetailPopup
+        }
+    }
+
+    // MARK: - 단어 상세 풀팝업
+    private var wordDetailPopup: some View {
+        NavigationStack {
+            Group {
+                if let word = viewModel.currentQuestion?.word {
+                    WordDetailView(word: word)
+                } else {
+                    VStack(spacing: 12) {
+                        Image(systemName: "exclamationmark.triangle")
+                            .font(.system(size: 40))
+                            .foregroundColor(.gray.opacity(0.5))
+                        Text("단어 정보를 불러올 수 없습니다")
+                            .font(.system(size: 16))
+                            .foregroundColor(.gray)
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: { showWordDetail = false }) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.primary)
+                            .padding(8)
+                            .background(Circle().fill(Color.gray.opacity(0.12)))
+                    }
+                }
             }
         }
     }
@@ -188,11 +227,11 @@ struct MultipleChoiceQuizView: View {
         }
     }
 
-    // MARK: - 문제 카드
+    // MARK: - 문제 카드 (i 아이콘 추가됨)
     private var questionCard: some View {
         VStack(spacing: 12) {
             Text(viewModel.currentQuestion?.prompt ?? "")
-                .font(.system(size: 64, weight: .bold))
+                .font(.system(size: 120, weight: .bold))
                 .minimumScaleFactor(0.4)
                 .lineLimit(1)
                 .padding(.vertical, 32)
@@ -204,11 +243,24 @@ struct MultipleChoiceQuizView: View {
         }
         .frame(maxWidth: .infinity)
         .background(Color.white)
+        .overlay(alignment: .topTrailing) {
+            // 단어 상세 보기 i 아이콘
+            Button(action: {
+                guard viewModel.currentQuestion != nil else { return }
+                showWordDetail = true
+            }) {
+                Image(systemName: "info.circle")
+                    .font(.system(size: 22))
+                    .foregroundColor(.blue.opacity(0.6))
+                    .padding(14)
+                    .contentShape(Rectangle())  // 패딩 영역까지 탭 가능
+            }
+        }
         .cornerRadius(20)
         .shadow(color: .black.opacity(0.05), radius: 12, x: 0, y: 2)
     }
 
-    // MARK: - 선지 목록
+    // MARK: - 선지 목록 (4지선다 + "모르겠어요")
     private var choiceList: some View {
         VStack(spacing: 10) {
             ForEach(viewModel.currentQuestion?.choices ?? [], id: \.self) { choice in
@@ -218,7 +270,36 @@ struct MultipleChoiceQuizView: View {
                     action: { viewModel.select(choice) }
                 )
             }
+
+            // "모르겠어요" 보조 버튼 — 4지선다와 시각적으로 명확히 구분
+            unknownButton
+                .padding(.top, 4)
         }
+    }
+
+    // MARK: - "모르겠어요" 버튼 (옅은 노란색)
+    private var unknownButton: some View {
+        Button(action: { viewModel.markUnknown() }) {
+            HStack(spacing: 6) {
+                Image(systemName: "questionmark.circle")
+                    .font(.system(size: 14))
+                    .foregroundColor(.orange)
+                Text("모르겠어요")
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundColor(.orange)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 48)
+            .background(Color.yellow.opacity(0.15))
+            .cornerRadius(14)
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(Color.orange.opacity(0.35), lineWidth: 1)
+            )
+            .opacity(viewModel.isAnswered ? 0.5 : 1.0)
+        }
+        .disabled(viewModel.isAnswered)
+        .animation(.easeInOut(duration: 0.2), value: viewModel.isAnswered)
     }
 
     // MARK: - 다음으로 버튼
