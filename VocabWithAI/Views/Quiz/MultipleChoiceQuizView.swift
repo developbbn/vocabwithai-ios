@@ -90,7 +90,7 @@ struct MultipleChoiceQuizView: View {
             Group {
                 if let word = viewModel.currentQuestion?.word {
                     WordDetailView(word: word)
-                } else {
+                } else { 
                     VStack(spacing: 12) {
                         Image(systemName: "exclamationmark.triangle")
                             .font(.system(size: 40))
