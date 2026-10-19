@@ -235,7 +235,6 @@ struct HeaderView: View {
     private func deleteAllWords() {
         WordRepository.shared.deleteAllWords()
         DailyStatsManager.shared.resetData()
-        DailyPhraseViewModel.shared.resetData()
         print("🗑️ 모든 단어 삭제 완료")
     }
 

@@ -203,7 +203,6 @@ struct SearchView: View {
                                 onTap: {
                                     switch result {
                                     case .word(let w):   viewModel.saveResultAsRecentSearch(w.word)
-                                    case .phrase(let p): viewModel.saveResultAsRecentSearch(p.japanese)
                                     }
                                 }
                             )
@@ -327,8 +326,6 @@ struct SearchResultRow: View {
         switch result {
         case .word(let w):
             WordDetailView(word: w)
-        case .phrase(let p):
-            PhraseDetailView(phrase: p)
         }
     }
 
@@ -351,28 +348,24 @@ struct SearchResultRow: View {
     private var mainText: String {
         switch result {
         case .word(let w):   return w.word
-        case .phrase(let p): return p.japanese
         }
     }
 
     private var subText: String {
         switch result {
         case .word(let w):   return w.meaning
-        case .phrase(let p): return p.meaning
         }
     }
 
     private var badgeLabel: String {
         switch result {
         case .word:   return "단어"
-        case .phrase: return "표현"
         }
     }
 
     private var badgeColor: Color {
         switch result {
         case .word:   return .blue
-        case .phrase: return .orange
         }
     }
 }

@@ -10,13 +10,12 @@ import Combine
 
 // MARK: - 검색 필터 탭
 enum SearchFilter: CaseIterable {
-    case all, word, phrase
+    case all, word
 
     var label: String {
         switch self {
         case .all:    return "전체"
         case .word:   return "단어"
-        case .phrase: return "표현"
         }
     }
 }
@@ -24,12 +23,10 @@ enum SearchFilter: CaseIterable {
 // MARK: - 검색 결과 통합 타입
 enum SearchResult: Identifiable {
     case word(Word)
-    case phrase(DailyPhrase)
 
     var id: String {
         switch self {
         case .word(let w):   return "word-\(w.id)"
-        case .phrase(let p): return "phrase-\(p.id)"
         }
     }
 }
@@ -68,11 +65,6 @@ class SearchViewModel: ObservableObject {
         case .word:
             return results.filter {
                 if case .word = $0 { return true }
-                return false
-            }
-        case .phrase:
-            return results.filter {
-                if case .phrase = $0 { return true }
                 return false
             }
         }
@@ -122,15 +114,7 @@ class SearchViewModel: ObservableObject {
             }
             .map { .word($0) }
 
-        // 표현 검색: 북마크된 표현에서만 (japanese / meaning)
-        let phraseResults: [SearchResult] = DailyPhraseViewModel.loadBookmarkedPhrases()
-            .filter {
-                $0.japanese.lowercased().contains(lowercased) ||
-                $0.meaning.lowercased().contains(lowercased)
-            }
-            .map { .phrase($0) }
-
-        results = wordResults + phraseResults
+        results = wordResults
     }
 
     // MARK: - 검색 확정 (키보드 검색 버튼 누를 때)

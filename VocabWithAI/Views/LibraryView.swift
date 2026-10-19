@@ -33,17 +33,12 @@ struct LibraryView: View {
                     // Content based on selected tab
                     if viewModel.selectedTab == .word {
                         wordListSection
-                    } else {
-                        phraseListSection  // ← 추가
                     }
                 }
                 
                 // AI 완료 토스트 제거 → ContentView 전역 토스트로 이동
             }
             .navigationBarHidden(true)
-        }
-        .onAppear {
-            viewModel.loadPhrases()
         }
     }
     
@@ -95,35 +90,6 @@ struct LibraryView: View {
                             WordRowView(word: word, onDelete: {
                                 viewModel.deleteWord(word)
                             })
-                            
-                            Divider()
-                                .padding(.leading, 20)
-                        }
-                    }
-                    .background(Color.white)
-                    .cornerRadius(12)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 8)
-                }
-            }
-        }
-    }
-    
-    // MARK: - Phrase List Section  ← 추가
-    private var phraseListSection: some View {
-        Group {
-            if viewModel.phrases.isEmpty {
-                emptyState(message: "북마크한 표현이 없어요")
-            } else {
-                ScrollView {
-                    VStack(spacing: 0) {
-                        ForEach(viewModel.phrases) { phrase in
-                            NavigationLink(destination: PhraseDetailView(phrase: phrase)) {
-                                PhraseRowView(phrase: phrase, onDelete: {
-                                    viewModel.deletePhrase(phrase)
-                                })
-                            }
-                            .buttonStyle(PlainButtonStyle())
                             
                             Divider()
                                 .padding(.leading, 20)

@@ -46,12 +46,14 @@ final class AuthManager: ObservableObject {
         }
 
         await MainActor.run {
+            
             clearAllUserSessions()
 
             self.currentUser = Auth.auth().currentUser
             self.isLoggedIn = true
-
+            
             startAllUserListeners()
+
         }
     }
 
@@ -61,12 +63,10 @@ final class AuthManager: ObservableObject {
         let result = try await Auth.auth().signIn(withEmail: email, password: password)
 
         await MainActor.run {
-            clearAllUserSessions()
 
             self.currentUser = result.user
             self.isLoggedIn = true
 
-            startAllUserListeners()
         }
     }
 
@@ -76,7 +76,6 @@ final class AuthManager: ObservableObject {
         try Auth.auth().signOut()
 
         DispatchQueue.main.async {
-            self.clearAllUserSessions()
 
             self.currentUser = nil
             self.isLoggedIn = false
@@ -121,10 +120,6 @@ final class AuthManager: ObservableObject {
         let credential = EmailAuthProvider.credential(withEmail: email, password: password)
         try await user.reauthenticate(with: credential)
 
-        await MainActor.run {
-            self.clearAllUserSessions()
-        }
-
         try await deleteFirestoreData(for: uid)
 
         try await user.delete()
@@ -140,13 +135,11 @@ final class AuthManager: ObservableObject {
     @MainActor
     private func startAllUserListeners() {
         WordRepository.shared.startListening()
-        DailyPhraseViewModel.shared.startListening()
     }
 
     @MainActor
     private func clearAllUserSessions() {
         WordRepository.shared.stopListening()
-        DailyPhraseViewModel.shared.clearSession()
         DailyStatsManager.shared.resetData()
     }
 

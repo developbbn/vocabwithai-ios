@@ -33,7 +33,6 @@ class LibraryViewModel: ObservableObject {
     init(repository: WordRepository = .shared) {
         self.repository = repository
         setupBindings()
-        loadPhrases()
     }
 
     // MARK: - Combine Bindings
@@ -52,18 +51,6 @@ class LibraryViewModel: ObservableObject {
             }
             .receive(on: DispatchQueue.main)
             .assign(to: &$words)
-
-        // 탭 변경 시 표현 탭이면 다시 로드
-        $selectedTab
-            .filter { $0 == .expression }
-            .sink { [weak self] _ in self?.loadPhrases() }
-            .store(in: &cancellables)
-
-        // 검색어 변경 시 표현도 필터링
-        $searchText
-            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
-            .sink { [weak self] _ in self?.loadPhrases() }
-            .store(in: &cancellables)
     }
 
     // MARK: - Public: 단어 삭제
@@ -73,21 +60,6 @@ class LibraryViewModel: ObservableObject {
 
     func deleteWords(at offsets: IndexSet) {
         repository.deleteWords(at: offsets)
-    }
-
-    // MARK: - Public: 표현
-    func loadPhrases() {
-        let allPhrases = DailyPhraseViewModel.loadBookmarkedPhrases()
-            .sorted { $0.date > $1.date }
-        if searchText.isEmpty {
-            phrases = allPhrases
-        } else {
-            phrases = allPhrases.filter {
-                $0.japanese.localizedCaseInsensitiveContains(searchText) ||
-                $0.reading.localizedCaseInsensitiveContains(searchText) ||
-                $0.meaning.localizedCaseInsensitiveContains(searchText)
-            }
-        }
     }
 
     func deletePhrase(_ phrase: DailyPhrase) {
