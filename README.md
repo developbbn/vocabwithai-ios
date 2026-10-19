@@ -5,9 +5,9 @@ AI가 만들어주는 일본어 단어장
 
 # 📱 스크린샷
 
-![홈, 단어 상세, 한자 분해](docs/screenshots/main.png)
+![홈, 단어 상세, 한자 분해](<img width="2400" height="1634" alt="main" src="https://github.com/user-attachments/assets/258ac970-9fa7-49b7-a822-402eca6c0d8a" />
 
-![퀴즈: 정답, 오답, 중단 팝업, 결과](docs/screenshots/quiz.png)
+![퀴즈: 정답, 오답, 중단 팝업, 결과](<img width="2400" height="1229" alt="quiz" src="https://github.com/user-attachments/assets/c1eabc38-ffb8-46f6-ba24-05be75150526" />
 
 # 🌱 왜 만들었나
 JLPT N3를 준비하면서 단어 하나를 외우는 데에 사전 탭, 한자 어원 탭, 예문 검색 탭이 따로 열려있는 게 비효율적이었습니다.
