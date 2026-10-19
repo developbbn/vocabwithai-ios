@@ -26,8 +26,6 @@ JLPT N3를 준비하면서 단어 하나를 외우는 데에 사전 탭, 한자 
 원어민이 쓰는 톤으로 정리된 실전 통문장 2개
 한국인이 자주 실수하는 포인트 명시
 
-## 🎵 노래로 학습
-좋아하는 일본 노래(YouTube)를 가사와 함께 들으며 자연스러운 일본어 익히기.
 ## 🔥 학습 스트릭 & 통계
 오늘의 단어, 푼 퀴즈, 표현 학습 여부를 매일 기록. 꾸준한 학습 습관 형성.
 🔍 통합 검색
@@ -38,7 +36,6 @@ JLPT N3를 준비하면서 단어 하나를 외우는 데에 사전 탭, 한자 
 
 Swift · SwiftUI · Combine · MVVM
 Firebase iOS SDK (Auth · Firestore · Functions)
-YouTubePlayerKit
 
 ## Backend
 
