@@ -30,13 +30,38 @@ struct LibraryView: View {
                         .padding(.bottom, 16)
                         .background(Color(.systemGroupedBackground))
                     
+                    HStack {
+                        Text("전체 \(viewModel.words.count)개")
+                        
+                        Spacer()
+                        
+                        Menu {
+                            Picker("정렬 기준", selection: $viewModel.sortType) {
+                                Text("최신순").tag(LibraryViewModel.SortType.latest)
+                                Text("과거순").tag(LibraryViewModel.SortType.oldest)
+                            }
+                        } label: {
+                            HStack{
+                                Image(systemName: "arrow.up.arrow.down")
+                                Text(viewModel.sortType.title)
+                            }
+                            .padding(.vertical ,8)
+                            .padding(.horizontal, 10)
+                            .background(.white)
+                            .foregroundStyle(.gray)
+                            .font(.system(size: 12))
+                            .cornerRadius(8)
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 5)
+                    
                     // Content based on selected tab
                     if viewModel.selectedTab == .word {
                         wordListSection
                     }
                 }
                 
-                // AI 완료 토스트 제거 → ContentView 전역 토스트로 이동
             }
             .navigationBarHidden(true)
         }
@@ -68,12 +93,6 @@ struct LibraryView: View {
                 action: { viewModel.selectedTab = .word }
             )
             
-            TabButton(
-                title: "표현",
-                isSelected: viewModel.selectedTab == .expression,
-                action: { viewModel.selectedTab = .expression }
-            )
-            
             Spacer()
         }
     }
@@ -86,7 +105,7 @@ struct LibraryView: View {
             } else {
                 ScrollView {
                     VStack(spacing: 0) {
-                        ForEach(viewModel.words) { word in
+                        ForEach(viewModel.sortedWords) { word in
                             WordRowView(word: word, onDelete: {
                                 viewModel.deleteWord(word)
                             })

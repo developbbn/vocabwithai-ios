@@ -13,14 +13,37 @@ class LibraryViewModel: ObservableObject {
 
     // MARK: - Published Properties
     @Published var words: [Word] = []
-    @Published var phrases: [DailyPhrase] = []
     @Published var selectedTab: LibraryTab = .word
     @Published var searchText: String = ""
+    @Published var sortType: SortType = .latest
+    
+    var sortedWords : [Word]{
+        switch sortType {
+        case .latest:
+            words.sorted { $0.createdAt > $1.createdAt }
+        case .oldest:
+            words.sorted { $0.createdAt < $1.createdAt }
+        }
+    }
 
     // MARK: - Tab Enum
     enum LibraryTab {
         case word
         case expression
+    }
+    
+    enum SortType {
+        case latest
+        case oldest
+        
+        var title: String {
+            switch self {
+            case .latest:
+                "최신순"
+            case .oldest:
+                "과거순"
+            }
+        }
     }
 
     // MARK: - Dependency
@@ -60,16 +83,5 @@ class LibraryViewModel: ObservableObject {
 
     func deleteWords(at offsets: IndexSet) {
         repository.deleteWords(at: offsets)
-    }
-
-    func deletePhrase(_ phrase: DailyPhrase) {
-        phrases.removeAll { $0.id == phrase.id }
-        savePhrases()
-    }
-
-    private func savePhrases() {
-        if let encoded = try? JSONEncoder().encode(phrases) {
-            UserDefaults.standard.set(encoded, forKey: "bookmarkedPhrases")
-        }
     }
 }
