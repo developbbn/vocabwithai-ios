@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 
+@MainActor
 class AddWordViewModel: ObservableObject {
 
     // MARK: - Published Input (폼 상태만 관리)
@@ -22,6 +23,7 @@ class AddWordViewModel: ObservableObject {
     @Published var meaningError: String? = nil
     @Published var showToast: Bool = false
     @Published var toastMessage: String = ""
+    @Published var duplicateMessage: String = "텟"
 
     // MARK: - Dependency
     private let repository: WordRepository
@@ -30,19 +32,28 @@ class AddWordViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Init (DI로 Repository 주입, 기본값은 shared)
-    init(repository: WordRepository = .shared) {
-        self.repository = repository
+    init(repository: WordRepository? = nil) {
+        self.repository = repository ?? .shared
         setupBindings()
     }
 
     // MARK: - Combine Bindings
     private func setupBindings() {
-        Publishers.CombineLatest($word, $meaning)
-            .map { word, meaning in
+        Publishers.CombineLatest3($word, $meaning, repository.$words)
+            .map { word, meaning, words in
                 !word.trimmingCharacters(in: .whitespaces).isEmpty &&
-                !meaning.trimmingCharacters(in: .whitespaces).isEmpty
+                !meaning.trimmingCharacters(in: .whitespaces).isEmpty &&
+                !words.contains{ $0.word == word }
             }
             .assign(to: &$isRegisterEnabled)
+        
+        Publishers.CombineLatest($word, repository.$words)
+            .map{ word, words in
+                return words.contains{ $0.word == word.trimmingCharacters(in: .whitespaces) } ?
+                "이미 등록된 단어입니다" : ""
+            }
+            .assign(to: &$duplicateMessage)
+        
 
         $word
             .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)

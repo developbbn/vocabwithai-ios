@@ -32,6 +32,7 @@ struct AddWordView: View {
                         titleSection.padding(.top, 20)
                         previewCard
                         wordMeaningRow
+                        duplicateText
                         pronunciationField
                         memoField
                     }
@@ -160,6 +161,23 @@ struct AddWordView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    @ViewBuilder  //조건문에 따라서 View를 돌려주는 경우에 필요함
+    private var duplicateText: some View {
+        if !viewModel.duplicateMessage.isEmpty {
+            HStack(spacing: 6) {
+                Image(systemName: "exclamationmark.circle.fill")
+                    .font(.system(size: 14))
+                Text(viewModel.duplicateMessage)
+                    .font(.system(size: 13, weight: .medium))
+            }
+            .foregroundColor(.red)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(Color.red.opacity(0.08), in: RoundedRectangle(cornerRadius: 10))
+        }
+
     }
 
     // MARK: - 발음 필드
